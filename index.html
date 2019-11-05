@@ -29,7 +29,7 @@
           <li id="testMenu">
             <button type="button">*Test*</button>
           </li>
-          <li id="settings" class="bottomMenuElement">
+          <li id="settingsMenu" class="bottomMenuElement">
             <button type="button">Settings</button>
           </li>
         </ul>
@@ -102,7 +102,69 @@
           </div>
           <div id="settingsContent" class="hidden">
             <form id="settingsForm" autocomplete="off">
-
+              <fieldset>
+                <legend>Settings</legend>
+                <fieldset>
+                  <legend>Difficulty Level</legend>
+                  <table class="settingsTable">
+                    <tr>
+                      <th>
+                        <label for="general">All Sections:</label>
+                      </th>
+                      <th class="col_head">
+                        <input type="radio" name="general" value="0" checked="checked">easy
+                        <input type="radio" name="general" value="1">medium
+                        <input type="radio" name="general" value="2">hard
+                        <input type="radio" name="general" value="none">none
+                      </th>
+                    </tr>
+                    <tr>
+                      <th>
+                        <label for="addition">Addition:</label>
+                      </th>
+                      <td>
+                        <input type="radio" name="addition" value="0" checked="checked">easy
+                        <input type="radio" name="addition" value="1">medium
+                        <input type="radio" name="addition" value="2">hard
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>
+                        <label for="subtraction">Subtraction:</label>
+                      </th>
+                      <td>
+                        <input type="radio" name="subtraction" value="0" checked="checked">easy
+                        <input type="radio" name="subtraction" value="1">medium
+                        <input type="radio" name="subtraction" value="2">hard
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>
+                        <label for="multiplying">Multiplying:</label>
+                      </th>
+                      <td>
+                        <input type="radio" name="multiplying" value="0" checked="checked">easy
+                        <input type="radio" name="multiplying" value="1">medium
+                        <input type="radio" name="multiplying" value="2">hard
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>
+                        <label for="division">Division:</label>
+                      </th>
+                      <td>
+                        <input type="radio" name="division" value="0" checked="checked">easy
+                        <input type="radio" name="division" value="1">medium
+                        <input type="radio" name="division" value="2">hard
+                      </td>
+                    </tr>
+                  </table>
+                </fieldset>
+              </fieldset>
+              <p class="footer">
+                <input type="reset" value="default" />
+                <input type="submit" value="apply" />
+              </p>
             </form>
           </div>
         </div>

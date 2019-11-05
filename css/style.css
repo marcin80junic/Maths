@@ -17,7 +17,7 @@ div#page {
 }
 
 div#menu {
-  background-color: brown;
+  background-color: #cc0000;
   float: left;
   margin: 0 1%;
   width: 12%;
@@ -49,7 +49,7 @@ li {
 
 li button {
   width: 100%;
-  background: inherit;
+  background-color: #cc0000;
   color: orange;
   font-size: inherit;
   border: 2px solid black;
@@ -85,13 +85,32 @@ table {
   margin: auto;
 }
 
+.settingsTable {
+  width: 70%;
+  border-spacing: 5px;
+}
+
 td {
   width: 40px;
   text-align: left;
 }
 
+.settingsTable td {
+  width: 100%;
+}
+
 td.first {
   text-align: right;
+}
+
+th {
+  width: 35%;
+  text-align: right;
+  padding-right: 20px;
+}
+
+th.col_head {
+  text-align: left;
 }
 
 fieldset {
@@ -112,16 +131,20 @@ input {
   text-align: center;
 }
 
-input.warning {
+.warning {
   border: 2px solid red;
 }
 
-input[value="check all"] {
+input[value="check all"], input[value="apply"] {
   float: right;
 }
 
-input[value=reload]{
+input[type=reset]{
   float: left;
+}
+
+input[type=submit]:active, input[type=reset]:active {
+  background-color: #00e6e6;
 }
 
 img {
@@ -134,4 +157,8 @@ img {
 
 .visible {
   display: normal;
+}
+
+*:focus {
+    outline: none;
 }

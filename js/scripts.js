@@ -1,49 +1,67 @@
 
 (function(){
   var difficulty = {
-    addition: 1,
+    addition: 0,
     subtraction: 0,
     multiplying: 0,
     division: 0,
-    test: 0
+    test: 0,
+    general: function(num) {
+      if (!num) {
+        return 0;
+      }
+      var gen = Number.parseInt(num);
+      this.addition = this.subtraction = this.multiplying = this.division = gen;
+      return gen;
+    }
   };
   var count = 20;
+  var $menuButtons = $("li button");
+
+  setupOptions();
+
+  function setupOptions() {
+    var $general = $("input[name='general']");
+    var $addition = $("input[name='addition']");
+    var $subtraction = $("input[name='subtraction']");
+    var $multiplying = $("input[name='multiplying']");
+    var $division = $("input[name='division']");
+
+    $general.on("click", function(){
+      
+    })
+  }
 
   createTable("addition", "+");
   createTable("subtraction", "-");
   createTable("multiplying", "&times");
   createTable("division", ":");
 
-  document.getElementById("homeMenu")
-    .addEventListener("click", function(){
-      switchContent("home");
-    });
-  document.getElementById("additionMenu")
-    .addEventListener("click", function(){
-      switchContent("addition");
-    });
-  document.getElementById("subtractionMenu")
-    .addEventListener("click", function(){
-      switchContent("subtraction");
-    });
-  document.getElementById("multiplyingMenu")
-    .addEventListener("click", function(){
-      switchContent("multiplying");
-    });
-  document.getElementById("divisionMenu")
-    .addEventListener("click", function(){
-      switchContent("division");
-    });
-  document.getElementById("testMenu")
-    .addEventListener("click", function(){
-      switchContent("test");
-    });
-  document.getElementById("settingsMenu")
-    .addEventListener("click", function(){
-      switchContent("settings");
-    });
+  $("#homeMenu").on("click", function() {
+    switchContent(this, "home");
+  });
+  $("#additionMenu").on("click", function() {
+      switchContent(this, "addition");
+  });
+  $("#subtractionMenu").on("click", function() {
+      switchContent(this, "subtraction");
+  });
+  $("#multiplyingMenu").on("click", function() {
+      switchContent(this, "multiplying");
+  });
+  $("#divisionMenu").on("click", function() {
+      switchContent(this, "division");
+  });
+  $("#testMenu").on("click", function() {
+      switchContent(this, "test");
+  });
+  $("#settingsMenu").on("click", function() {
+      switchContent(this, "settings");
+  });
 
-  function switchContent(element) {
+  function switchContent(menu, element) {
+    $menuButtons.css("background-color", "inherit");
+    $(menu).children().css("background-color", "#990000");
     $(".visible").attr("class", "hidden");
     $("#"+element+"Intro, #"+element+"Content").attr("class", "visible");
   }
@@ -149,26 +167,27 @@
   }
 
   function addButtonListeners(name) {
-
     var spanValues = [],
         textValue, answer, correct;
-
     var checker = function(button, submit) {
       var $btn = $(button);
+      var $textField = $btn.prev();
       var $icon = $btn.parent().next().children();
-      textValue = $btn.prev().val();
+      textValue = $textField.val();
       if (textValue === "") {
         if (submit === false) {
           alert("Please enter your answer in a text field!");
-          $btn.prev().focus();
+          $textField.focus();
+          $textField.addClass("warning");
         }
         $icon.attr("src", "pics/question.png");
         return;
       }
-      answer = Number.parseInt(textValue);
+      $textField.removeClass("warning");
+      answer = parseInt(textValue);
       spanValues = [];
       $btn.prev().prev().find("span").each( function() {
-          spanValues.push(Number.parseInt($(this).text()));
+          spanValues.push(parseInt($(this).text()));
       });
       correct = false;
       switch (name) {
@@ -217,8 +236,8 @@
         return false;
       }
     });
-    $textFields.on("blur", function() {
-      checker($(this).next(), true);
+    $textFields.on("blur", function(e){
+      $(this).removeClass("warning");
     });
   }
 }());
