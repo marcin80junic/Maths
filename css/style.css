@@ -1,0 +1,137 @@
+body {
+  background-color: lightgrey;
+  color: #222222;
+  font-family: "Comic Sans MS", "Monotype Corsiva", cursive;
+  font-size: 120%;
+  font-weight: 500;
+}
+
+.special {
+  color: red;
+}
+
+div#page {
+  width: 95%;
+  text-align: center;
+  display: table;
+}
+
+div#menu {
+  background-color: brown;
+  float: left;
+  margin: 0 1%;
+  width: 12%;
+  height: 90%;
+  padding: 10px;
+  border: 4px solid "dark brown";
+  border-radius: 10px;
+}
+
+div#main {
+  width: 84%;
+  float: left;
+  margin: 1% auto auto auto;
+}
+
+div#content {
+  margin-top: 20px;
+}
+
+ul {
+  padding-left: 0;
+}
+
+li {
+  list-style-type: none;
+  text-align: left;
+  margin-bottom: 8%;
+}
+
+li button {
+  width: 100%;
+  background: inherit;
+  color: orange;
+  font-size: inherit;
+  border: 2px solid black;
+  border-radius: 6px;
+}
+
+.topMenuElement {
+  margin-bottom: 20%;
+}
+
+.bottomMenuElement {
+  margin-top: 160%;
+}
+
+h1 {
+  letter-spacing: 0.15em;
+  margin: 0;
+}
+
+p {
+  letter-spacing: 0.05em;
+  font-size: 110%;
+  margin: 1% 0 0 0;
+}
+
+p.footer {
+  width: 90%;
+  margin: 5px auto;
+}
+
+table {
+  width: 90%;
+  margin: auto;
+}
+
+td {
+  width: 40px;
+  text-align: left;
+}
+
+td.first {
+  text-align: right;
+}
+
+fieldset {
+  width: 90%;
+  margin: 20px auto 0 auto;
+  border-radius: 10px;
+  border-width: medium;
+}
+
+legend {
+  text-align: left;
+}
+
+input {
+  margin: 5px;
+  border-radius: 5px;
+  font-size: 100%;
+  text-align: center;
+}
+
+input.warning {
+  border: 2px solid red;
+}
+
+input[value="check all"] {
+  float: right;
+}
+
+input[value=reload]{
+  float: left;
+}
+
+img {
+  vertical-align: middle;
+}
+
+.hidden {
+  display: none;
+}
+
+.visible {
+  display: normal;
+}

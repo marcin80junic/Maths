@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Problem Solving for Paulina</title>
+    <link href="css/style.css" type="text/css" rel="stylesheet"/>
+  </head>
+
+  <body>
+
+    <div id="page">
+
+      <div id="menu">
+        <ul>
+          <li id="homeMenu" class="topMenuElement">
+            <button type="button" autofocus="autofocus">Home</button>
+          </li>
+          <li id="additionMenu">
+            <button type="button">Addition +</button>
+          </li>
+          <li id="subtractionMenu">
+            <button type="button">Subtraction -</button>
+          </li>
+          <li id="multiplyingMenu">
+            <button type="button">Multiplying &times</button>
+          </li>
+          <li id="divisionMenu">
+            <button type="button">Division :</button>
+          </li>
+          <li id="testMenu">
+            <button type="button">*Test*</button>
+          </li>
+          <li id="settings" class="bottomMenuElement">
+            <button type="button">Settings</button>
+          </li>
+        </ul>
+      </div>
+
+      <div id="main">
+
+        <div id="header">
+
+          <div id="homeIntro" class="visible">
+            <h1 id="h">Hello <span class="special">Paulina!</span></h1>
+            <p>I have prepared some interactive exercises for you to practice in your free time.</p>
+            <p>I hope they will help you to develop a logical thinking and improve your mathematical skills.</p>
+            <p>Have fun while playing and do not forget to take a break! :)
+              <img src="pics/detective.png" width="35px" height="35px"/></p>
+          </div>
+
+          <div id="additionIntro" class="hidden">
+            <p>Adding numbers is the most basic and straightforward mathematical operation</p>
+          </div>
+          <div id="subtractionIntro" class="hidden"></div>
+          <div id="multiplyingIntro" class="hidden"></div>
+          <div id="divisionIntro" class="hidden"></div>
+          <div id="testIntro" class="hidden"></div>
+          <div id="settingsIntro" class="hidden"></div>
+
+        </div>
+
+        <div id="content">
+
+          <div id="homeContent" class="visible">
+            <img src="pics/mathKids.png" alt="Math for kids" width="945px" height="360px"/>
+          </div>
+          <div id="additionContent" class="hidden">
+            <form id="additionForm" autocomplete="off">
+              <fieldset>
+                <legend>Adding numbers</legend>
+                <table id="additionTable"></table>
+              </fieldset>
+            </form>
+          </div>
+          <div id="subtractionContent" class="hidden">
+            <form id="subtractionForm" autocomplete="off">
+              <fieldset>
+                <legend>Subtracting numbers</legend>
+                <table id="subtractionTable"></table>
+              </fieldset>
+            </form>
+          </div>
+          <div id="multiplyingContent" class="hidden">
+            <form id="multiplyingForm" autocomplete="off">
+              <fieldset>
+                <legend>Multiplying numbers</legend>
+                <table id="multiplyingTable"></table>
+              </fieldset>
+            </form>
+          </div>
+          <div id="divisionContent" class="hidden">
+            <form id="divisionForm" autocomplete="off">
+              <fieldset>
+                <legend>Dividing numbers</legend>
+                <table id="divisionTable"></table>
+              </fieldset>
+            </form>
+          </div>
+          <div id="testContent" class="hidden">
+            <form id="testForm" autocomplete="off">
+
+            </form>
+          </div>
+          <div id="settingsContent" class="hidden">
+            <form id="settingsForm" autocomplete="off">
+
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="js/jquery-3.4.1.js"></script>
+    <script src="js/scripts.js"></script>
+  </body>
+</html>
