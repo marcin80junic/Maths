@@ -6,11 +6,12 @@
     multiplying: 0,
     division: 0,
     test: 0,
-    general: function(num) {
-      if (!num) {
-        return 0;
+    last_log: [["addition", 0], ["subtraction", 0], ["multiplying", 0], ["division", 0]],
+    setAll: function(num) {
+      if (num === "none") {
+        return null;
       }
-      var gen = Number.parseInt(num);
+      var gen = parseInt(num);
       this.addition = this.subtraction = this.multiplying = this.division = gen;
       return gen;
     }
@@ -18,20 +19,7 @@
   var count = 20;
   var $menuButtons = $("li button");
 
-  setupOptions();
-
-  function setupOptions() {
-    var $general = $("input[name='general']");
-    var $addition = $("input[name='addition']");
-    var $subtraction = $("input[name='subtraction']");
-    var $multiplying = $("input[name='multiplying']");
-    var $division = $("input[name='division']");
-
-    $general.on("click", function(){
-      
-    })
-  }
-
+  settingsSetup();
   createTable("addition", "+");
   createTable("subtraction", "-");
   createTable("multiplying", "&times");
@@ -239,5 +227,46 @@
     $textFields.on("blur", function(e){
       $(this).removeClass("warning");
     });
+  }
+
+  function settingsSetup() {
+    var $general = $("input[name='general']");
+    var $radios = $(".settingsTable input[name!=general]");
+
+    $general.on("click", function() {
+      var value = difficulty.setAll($(this).val());
+      if (value !== null) {
+        $radios.filter("[value="+value+"]").prop("checked", true);
+      }
+    });
+    $radios.on("click", function() {
+      difficulty[$(this).prop("name")] = parseInt($(this).val());
+      $general.filter("[value=none]").prop("checked", true);
+    });
+    $("#resetSettings").on("click", function() {
+      difficulty.setAll(0);
+      submitChanges();
+    });
+    $("#applySettings").on("click", function(e) {
+      e.preventDefault();
+      submitChanges();
+    });
+    function submitChanges() {
+      var name, num, i, length;
+      var current_log = [];
+      $radios.filter(":checked").each(function() {
+        name = $(this).prop("name");
+        num = parseInt($(this).val());
+        current_log.push([name, num]);
+      });
+      length = current_log.length;
+      for(i=0; i<length; i+=1) {
+        if(difficulty.last_log[i][1] !== current_log[i][1]) {
+          difficulty.last_log[i][1] = current_log[i][1];
+          randomizeTable(current_log[i][0]);
+          $("."+current_log[i][0]+"Reload").click();
+        }
+      }
+    }
   }
 }());
