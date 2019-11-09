@@ -54,6 +54,7 @@ li button {
   font-size: inherit;
   border: 2px solid black;
   border-radius: 6px;
+  box-shadow: 1px 2px 4px rgba(0, 0, 0, .5);
 }
 
 .topMenuElement {
@@ -76,8 +77,8 @@ p {
 }
 
 p.footer {
-  width: 90%;
-  margin: 5px auto;
+  width: 70%;
+  margin: 10px auto;
 }
 
 table {
@@ -95,22 +96,17 @@ td {
   text-align: left;
 }
 
-.settingsTable td {
-  width: 100%;
-}
-
 td.first {
   text-align: right;
 }
 
-th {
-  width: 35%;
-  text-align: right;
-  padding-right: 20px;
+th.col_head {
+  height: 40px;
+  vertical-align: top;
 }
 
-th.col_head {
-  text-align: left;
+th:not(.none) {
+  text-align: right;
 }
 
 fieldset {
@@ -127,6 +123,7 @@ legend {
 input {
   margin: 5px;
   border-radius: 5px;
+  box-shadow: 1px 2px 4px rgba(0, 0, 0, .5);
   font-size: 100%;
   text-align: center;
 }
@@ -147,6 +144,10 @@ input[type=submit]:active, input[type=reset]:active {
   background-color: #00e6e6;
 }
 
+#applySettings:enabled {
+  border: 3px solid red;
+}
+
 img {
   vertical-align: middle;
 }
@@ -161,4 +162,71 @@ img {
 
 *:focus {
     outline: none;
+}
+
+/* Customize the label (the container) */
+.container {
+  display: inline;
+  position: relative;
+  padding-left: 35px;
+  margin-bottom: 12px;
+  margin-right: 12px;
+  cursor: pointer;
+  font-size: 22px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Hide the browser's default radio button */
+.container input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+/* Create a custom radio button */
+.checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 25px;
+  width: 25px;
+  background-color: #fff;
+  border-radius: 50%;
+}
+
+/* On mouse-over, add a grey background color */
+.container:hover input ~ .checkmark {
+  background-color: #ccc;
+}
+
+/* When the radio button is checked, add a blue background */
+.container input:checked ~ .checkmark {
+  background-color: #009900;
+}
+
+/* Create the indicator (the dot/circle - hidden when not checked) */
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Show the indicator (dot/circle) when checked */
+.container input:checked ~ .checkmark:after {
+  display: block;
+}
+
+/* Style the indicator (dot/circle) */
+.container .checkmark:after {
+  top: 9px;
+  left: 9px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: white;
 }

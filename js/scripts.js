@@ -50,8 +50,8 @@
   function switchContent(menu, element) {
     $menuButtons.css("background-color", "inherit");
     $(menu).children().css("background-color", "#990000");
-    $(".visible").attr("class", "hidden");
-    $("#"+element+"Intro, #"+element+"Content").attr("class", "visible");
+    $(".visible").hide();
+    $("#"+element+"Intro, #"+element+"Content").attr("class", "visible").hide().fadeIn("slow");
   }
 
   function createTable(name, symbol) {
@@ -220,7 +220,8 @@
     var $textFields = $("."+name+"Input");
     $textFields.on("keypress", function(e) {
       var char = String.fromCharCode(e.which);
-      if(!$.isNumeric(char)){
+      var length = $(this).val().length;
+      if(!$.isNumeric(char) || (length === 3)) {
         return false;
       }
     });
@@ -237,19 +238,23 @@
       var value = difficulty.setAll($(this).val());
       if (value !== null) {
         $radios.filter("[value="+value+"]").prop("checked", true);
+        $("#applySettings").prop("disabled", false);
       }
     });
     $radios.on("click", function() {
       difficulty[$(this).prop("name")] = parseInt($(this).val());
       $general.filter("[value=none]").prop("checked", true);
+      $("#applySettings").prop("disabled", false);
     });
     $("#resetSettings").on("click", function() {
       difficulty.setAll(0);
       submitChanges();
+      $("#applySettings").prop("disabled", false);
     });
     $("#applySettings").on("click", function(e) {
       e.preventDefault();
       submitChanges();
+      $("#applySettings").prop("disabled", true);
     });
     function submitChanges() {
       var name, num, i, length;

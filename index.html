@@ -108,14 +108,32 @@
                   <legend>Difficulty Level</legend>
                   <table class="settingsTable">
                     <tr>
-                      <th>
+                      <th class="col_head">
                         <label for="general">All Sections:</label>
                       </th>
                       <th class="col_head">
-                        <input type="radio" name="general" value="0" checked="checked">easy
-                        <input type="radio" name="general" value="1">medium
-                        <input type="radio" name="general" value="2">hard
-                        <input type="radio" name="general" value="none">none
+                        <label class="container">easy
+                          <input type="radio" name="general" value="0" checked="checked">
+                          <span class="checkmark"></span>
+                        </label>
+                      </th>
+                      <th class="col_head">
+                        <label class="container">medium
+                          <input type="radio" name="general" value="1">
+                          <span class="checkmark"></span>
+                        </label>
+                      </th>
+                      <th class="col_head">
+                        <label class="container">hard
+                          <input type="radio" name="general" value="2">
+                          <span class="checkmark"></span>
+                        </label>
+                      </th>
+                      <th class="col_head none">
+                        <label class="container">none
+                          <input type="radio" name="general" value="none">
+                          <span class="checkmark"></span>
+                        </label>
                       </th>
                     </tr>
                     <tr>
@@ -123,9 +141,22 @@
                         <label for="addition">Addition:</label>
                       </th>
                       <td>
-                        <input type="radio" name="addition" value="0" checked="checked">easy
-                        <input type="radio" name="addition" value="1">medium
-                        <input type="radio" name="addition" value="2">hard
+                        <label class="container">easy
+                          <input type="radio" name="addition" value="0" checked="checked">
+                          <span class="checkmark"></span>
+                        </label>
+                      </td>
+                      <td>
+                        <label class="container">medium
+                          <input type="radio" name="addition" value="1">
+                          <span class="checkmark"></span>
+                        </label>
+                      </td>
+                      <td>
+                        <label class="container">hard
+                          <input type="radio" name="addition" value="2">
+                          <span class="checkmark"></span>
+                        </label>
                       </td>
                     </tr>
                     <tr>
@@ -133,9 +164,22 @@
                         <label for="subtraction">Subtraction:</label>
                       </th>
                       <td>
-                        <input type="radio" name="subtraction" value="0" checked="checked">easy
-                        <input type="radio" name="subtraction" value="1">medium
-                        <input type="radio" name="subtraction" value="2">hard
+                        <label class="container">easy
+                          <input type="radio" name="subtraction" value="0" checked="checked">
+                          <span class="checkmark"></span>
+                        </label>
+                      </td>
+                      <td>
+                        <label class="container">medium
+                          <input type="radio" name="subtraction" value="1">
+                          <span class="checkmark"></span>
+                        </label>
+                      </td>
+                      <td>
+                        <label class="container">hard
+                          <input type="radio" name="subtraction" value="2">
+                          <span class="checkmark"></span>
+                        </label>
                       </td>
                     </tr>
                     <tr>
@@ -143,9 +187,22 @@
                         <label for="multiplying">Multiplying:</label>
                       </th>
                       <td>
-                        <input type="radio" name="multiplying" value="0" checked="checked">easy
-                        <input type="radio" name="multiplying" value="1">medium
-                        <input type="radio" name="multiplying" value="2">hard
+                        <label class="container">easy
+                          <input type="radio" name="multiplying" value="0" checked="checked">
+                          <span class="checkmark"></span>
+                        </label>
+                      </td>
+                      <td>
+                        <label class="container">medium
+                          <input type="radio" name="multiplying" value="1">
+                          <span class="checkmark"></span>
+                        </label>
+                      </td>
+                      <td>
+                        <label class="container">hard
+                          <input type="radio" name="multiplying" value="2">
+                          <span class="checkmark"></span>
+                        </label>
                       </td>
                     </tr>
                     <tr>
@@ -153,17 +210,30 @@
                         <label for="division">Division:</label>
                       </th>
                       <td>
-                        <input type="radio" name="division" value="0" checked="checked">easy
-                        <input type="radio" name="division" value="1">medium
-                        <input type="radio" name="division" value="2">hard
+                        <label class="container">easy
+                          <input type="radio" name="division" value="0" checked="checked">
+                          <span class="checkmark"></span>
+                        </label>
+                      </td>
+                      <td>
+                        <label class="container">medium
+                          <input type="radio" name="division" value="1">
+                          <span class="checkmark"></span>
+                        </label>
+                      </td>
+                      <td>
+                        <label class="container">hard
+                          <input type="radio" name="division" value="2">
+                          <span class="checkmark"></span>
+                        </label>
                       </td>
                     </tr>
                   </table>
                 </fieldset>
               </fieldset>
               <p class="footer">
-                <input id="resetSettings" type="reset" value="default" />
-                <input id="applySettings" type="submit" value="apply" />
+                <input id="resetSettings" type="reset" value="default"/>
+                <input id="applySettings" type="submit" value="apply" disabled/>
               </p>
             </form>
           </div>
