@@ -19,6 +19,9 @@
   var count = 20;
   var $menuButtons = $("li button");
 
+  if (typeof(Storage) !== "undefined") {
+    loadData();
+  }
   settingsSetup();
   createTable("addition", "+");
   createTable("subtraction", "-");
@@ -47,9 +50,22 @@
       switchContent(this, "settings");
   });
 
+  function loadData() {
+    var add, sub, mul, div;
+    add = difficulty.last_log[0][1] = difficulty.addition = parseInt(localStorage.getItem("addition")) || 0;
+    sub = difficulty.last_log[1][1] = difficulty.subtraction = parseInt(localStorage.getItem("subtraction")) || 0;
+    mul = difficulty.last_log[2][1] = difficulty.multiplying = parseInt(localStorage.getItem("multiplying")) || 0;
+    div = difficulty.last_log[3][1] = difficulty.division= parseInt(localStorage.getItem("division")) || 0;
+    difficulty.test = parseInt(localStorage.getItem("test")) || 0;
+    $("input[type='radio'][name='addition'][value='"+add+"']").attr("checked", true);
+    $("input[type='radio'][name='subtraction'][value='"+sub+"']").attr("checked", true);
+    $("input[type='radio'][name='multiplying'][value='"+mul+"']").attr("checked", true);
+    $("input[type='radio'][name='division'][value='"+div+"']").attr("checked", true);
+  }
+
   function switchContent(menu, element) {
-    $menuButtons.css("background-color", "inherit");
-    $(menu).children().css("background-color", "#990000");
+    $("li button.selected").removeClass("selected");
+    $(menu).children().addClass("selected");
     $(".visible").hide();
     $("#"+element+"Intro, #"+element+"Content").attr("class", "visible").hide().fadeIn("slow");
   }
@@ -268,6 +284,9 @@
       for(i=0; i<length; i+=1) {
         if(difficulty.last_log[i][1] !== current_log[i][1]) {
           difficulty.last_log[i][1] = current_log[i][1];
+          if (typeof(Storage) !== "undefined") {
+            localStorage.setItem(current_log[i][0], current_log[i][1].toString());
+          }
           randomizeTable(current_log[i][0]);
           $("."+current_log[i][0]+"Reload").click();
         }

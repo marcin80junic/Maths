@@ -12,7 +12,7 @@
       <div id="menu">
         <ul>
           <li id="homeMenu" class="topMenuElement">
-            <button type="button" autofocus="autofocus">Home</button>
+            <button type="button" class="selected" autofocus="true">Home</button>
           </li>
           <li id="additionMenu">
             <button type="button">Addition +</button>
@@ -38,7 +38,6 @@
       <div id="main">
 
         <div id="header">
-
           <div id="homeIntro" class="visible">
             <h1 id="h">Hello <span class="special">Paulina!</span></h1>
             <p>I have prepared some interactive exercises for you to practice in your free time.</p>
@@ -46,7 +45,6 @@
             <p>Have fun while playing and do not forget to take a break! :)
               <img src="pics/detective.png" width="35px" height="35px"/></p>
           </div>
-
           <div id="additionIntro" class="hidden">
             <p>Adding numbers is the most basic and straightforward mathematical operation</p>
           </div>
@@ -55,11 +53,9 @@
           <div id="divisionIntro" class="hidden"></div>
           <div id="testIntro" class="hidden"></div>
           <div id="settingsIntro" class="hidden"></div>
-
         </div>
 
         <div id="content">
-
           <div id="homeContent" class="visible">
             <img src="pics/mathKids.png" alt="Math for kids" width="945px" height="360px"/>
           </div>
@@ -113,7 +109,7 @@
                       </th>
                       <th class="col_head">
                         <label class="container">easy
-                          <input type="radio" name="general" value="0" checked="checked">
+                          <input type="radio" name="general" value="0">
                           <span class="checkmark"></span>
                         </label>
                       </th>
@@ -131,7 +127,7 @@
                       </th>
                       <th class="col_head none">
                         <label class="container">none
-                          <input type="radio" name="general" value="none">
+                          <input type="radio" name="general" value="none" checked="true">
                           <span class="checkmark"></span>
                         </label>
                       </th>
@@ -142,7 +138,7 @@
                       </th>
                       <td>
                         <label class="container">easy
-                          <input type="radio" name="addition" value="0" checked="checked">
+                          <input type="radio" name="addition" value="0" checked="true">
                           <span class="checkmark"></span>
                         </label>
                       </td>
@@ -165,7 +161,7 @@
                       </th>
                       <td>
                         <label class="container">easy
-                          <input type="radio" name="subtraction" value="0" checked="checked">
+                          <input type="radio" name="subtraction" value="0" checked="true">
                           <span class="checkmark"></span>
                         </label>
                       </td>
@@ -188,7 +184,7 @@
                       </th>
                       <td>
                         <label class="container">easy
-                          <input type="radio" name="multiplying" value="0" checked="checked">
+                          <input type="radio" name="multiplying" value="0" checked="true">
                           <span class="checkmark"></span>
                         </label>
                       </td>
@@ -211,7 +207,7 @@
                       </th>
                       <td>
                         <label class="container">easy
-                          <input type="radio" name="division" value="0" checked="checked">
+                          <input type="radio" name="division" value="0" checked="true">
                           <span class="checkmark"></span>
                         </label>
                       </td>

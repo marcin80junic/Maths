@@ -52,9 +52,16 @@ li button {
   background-color: #cc0000;
   color: orange;
   font-size: inherit;
-  border: 2px solid black;
+  border: 2px solid rgba(127, 0, 0);
+  border: 2px solid rgba(0, 0, 0, .3);
+  background-clip: padding-box;
+  -webkit-background-clip: padding-box;
   border-radius: 6px;
   box-shadow: 1px 2px 4px rgba(0, 0, 0, .5);
+}
+
+li button.selected {
+  background-color: #990000;
 }
 
 .topMenuElement {
