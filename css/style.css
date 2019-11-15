@@ -2,7 +2,7 @@ body {
   background-color: lightgrey;
   color: #222222;
   font-family: "Comic Sans MS", "Monotype Corsiva", cursive;
-  font-size: 120%;
+  font-size: 1.2em;
   font-weight: 500;
 }
 
@@ -11,47 +11,60 @@ body {
 }
 
 div#page {
-  width: 95%;
+  width: 100%;
   text-align: center;
   display: table;
+  margin: auto;
+  padding: 0;
 }
 
 div#menu {
   background-color: #cc0000;
+  position: fixed;
   float: left;
-  margin: 0 1%;
-  width: 12%;
-  height: 90%;
+  margin-bottom: 10px;
+  width: 160px;
+  height: 570px;
   padding: 10px;
-  border: 4px solid "dark brown";
   border-radius: 10px;
 }
 
 div#main {
-  width: 84%;
-  float: left;
-  margin: 1% auto auto auto;
+  width: 85%;
+  margin-top: 1em;
+  margin-left: 190px;
 }
 
-div#content {
-  margin-top: 20px;
+div#homeContent {
+  height: 18em;
+  background-image: url("../pics/mathKids.png");
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
 ul {
-  padding-left: 0;
+  padding: 0;
 }
 
 li {
   list-style-type: none;
-  text-align: left;
-  margin-bottom: 8%;
+  text-align: center;
+  margin-bottom: 1em;
 }
 
-li button {
-  width: 100%;
+li:first-of-type {
+  margin-bottom: 2em;
+}
+
+li:last-of-type {
+  margin-top: 10em;
+}
+
+li a {
+  display: block;
+  text-decoration: none;
   background-color: #cc0000;
   color: orange;
-  font-size: inherit;
   border: 2px solid rgba(127, 0, 0);
   border: 2px solid rgba(0, 0, 0, .3);
   background-clip: padding-box;
@@ -60,16 +73,16 @@ li button {
   box-shadow: 1px 2px 4px rgba(0, 0, 0, .5);
 }
 
-li button.selected {
+li a:hover {
+  background-color: #b30000;
+}
+
+li a:active {
+  background-color: #800000;
+}
+
+.selected {
   background-color: #990000;
-}
-
-.topMenuElement {
-  margin-bottom: 20%;
-}
-
-.bottomMenuElement {
-  margin-top: 160%;
 }
 
 h1 {
@@ -79,8 +92,6 @@ h1 {
 
 p {
   letter-spacing: 0.05em;
-  font-size: 110%;
-  margin: 1% 0 0 0;
 }
 
 p.footer {
@@ -147,8 +158,13 @@ input[type=reset]{
   float: left;
 }
 
-input[type=submit]:active, input[type=reset]:active {
+input[type=reset]:hover, input[type=submit]:hover {
   background-color: #00e6e6;
+  cursor: pointer;
+}
+
+input[type=submit]:active, input[type=reset]:active {
+  background-color: #008080;
 }
 
 #applySettings:enabled {

@@ -28,26 +28,33 @@
   createTable("multiplying", "&times");
   createTable("division", ":");
 
-  $("#homeMenu").on("click", function() {
+  $("#homeMenu").on("click", function(e) {
+    e.preventDefault();
     switchContent(this, "home");
   });
-  $("#additionMenu").on("click", function() {
-      switchContent(this, "addition");
+  $("#additionMenu").on("click", function(e) {
+    e.preventDefault();
+    switchContent(this, "addition");
   });
-  $("#subtractionMenu").on("click", function() {
-      switchContent(this, "subtraction");
+  $("#subtractionMenu").on("click", function(e) {
+    e.preventDefault();
+    switchContent(this, "subtraction");
   });
-  $("#multiplyingMenu").on("click", function() {
-      switchContent(this, "multiplying");
+  $("#multiplyingMenu").on("click", function(e) {
+    e.preventDefault();
+    switchContent(this, "multiplying");
   });
-  $("#divisionMenu").on("click", function() {
-      switchContent(this, "division");
+  $("#divisionMenu").on("click", function(e) {
+    e.preventDefault();
+    switchContent(this, "division");
   });
-  $("#testMenu").on("click", function() {
-      switchContent(this, "test");
+  $("#testMenu").on("click", function(e) {
+    e.preventDefault();
+    switchContent(this, "test");
   });
-  $("#settingsMenu").on("click", function() {
-      switchContent(this, "settings");
+  $("#settingsMenu").on("click", function(e) {
+    e.preventDefault();
+    switchContent(this, "settings");
   });
 
   function loadData() {
@@ -64,8 +71,8 @@
   }
 
   function switchContent(menu, element) {
-    $("li button.selected").removeClass("selected");
-    $(menu).children().addClass("selected");
+    $("li a.selected").removeClass("selected");
+    $(menu).addClass("selected");
     $(".visible").hide();
     $("#"+element+"Intro, #"+element+"Content").attr("class", "visible").hide().fadeIn("slow");
   }
@@ -180,7 +187,6 @@
       textValue = $textField.val();
       if (textValue === "") {
         if (submit === false) {
-          alert("Please enter your answer in a text field!");
           $textField.focus();
           $textField.addClass("warning");
         }
