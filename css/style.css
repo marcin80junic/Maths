@@ -1,5 +1,5 @@
 body {
-  background-color: lightgrey;
+  background-color: #ccffb3;
   color: #222222;
   font-family: "Comic Sans MS", "Monotype Corsiva", cursive;
   font-size: 1.2em;
@@ -19,7 +19,7 @@ div#page {
 }
 
 div#menu {
-  background-color: #cc0000;
+  background-color: #1f7a1f;
   position: fixed;
   float: left;
   margin-bottom: 10px;
@@ -33,10 +33,12 @@ div#main {
   width: 85%;
   margin-top: 1em;
   margin-left: 190px;
+  margin-bottom: 4em;
 }
 
 div#homeContent {
   height: 18em;
+  margin-top: 2em;
   background-image: url("../pics/mathKids.png");
   background-repeat: no-repeat;
   background-position: center;
@@ -46,25 +48,25 @@ ul {
   padding: 0;
 }
 
-li {
+.menu li {
   list-style-type: none;
   text-align: center;
   margin-bottom: 1em;
 }
 
-li:first-of-type {
+.menu li:first-of-type {
   margin-bottom: 2em;
 }
 
-li:last-of-type {
+.menu li:last-of-type {
   margin-top: 10em;
 }
 
-li a {
+.menu li a {
   display: block;
   text-decoration: none;
-  background-color: #cc0000;
-  color: orange;
+  background-color: #ff0000;
+  color: #ffff66;
   border: 2px solid rgba(127, 0, 0);
   border: 2px solid rgba(0, 0, 0, .3);
   background-clip: padding-box;
@@ -73,24 +75,62 @@ li a {
   box-shadow: 1px 2px 4px rgba(0, 0, 0, .5);
 }
 
-li a:hover {
+.menu li a:hover {
+  background-color: #e60000;
+}
+
+.menu li a:active {
   background-color: #b30000;
 }
 
-li a:active {
-  background-color: #800000;
+.selected {
+  background-color: #b30000;
 }
 
-.selected {
-  background-color: #990000;
+div#test-difficulty-choice {
+  margin: 50px;
+}
+
+div#accordeon {
+  width: 80%;
+  margin: auto;
+  background-color: red;
+}
+
+#test-difficulty-choice button {
+  display: block;
+  width: 20%;
+  margin: 20px auto;
+}
+
+#test-accordeon li {
+  list-style-type: none;
+  padding: 0;
+}
+
+#test-accordeon li > button {
+  width: 100%;
+  color: white;
+  background-color: black;
+  margin: 0;
+}
+
+div.test-accordeon-content {
+  padding: 30px 0 10px 0;
+}
+
+#accordeon fieldset {
+  margin: auto;
 }
 
 h1 {
   letter-spacing: 0.15em;
   margin: 0;
+  text-shadow: 2px 2px 5px grey;
 }
 
 p {
+  font-weight: 600;
   letter-spacing: 0.05em;
 }
 
@@ -132,22 +172,27 @@ fieldset {
   margin: 20px auto 0 auto;
   border-radius: 10px;
   border-width: medium;
+  background-color: #ccffb3
 }
 
 legend {
   text-align: left;
 }
 
-input {
+input, button {
   margin: 5px;
   border-radius: 5px;
-  box-shadow: 1px 2px 4px rgba(0, 0, 0, .5);
-  font-size: 100%;
+  box-shadow: 3px 3px 3px #333300;
+  font: inherit;
   text-align: center;
 }
 
 .warning {
   border: 2px solid red;
+}
+
+input[type=text] {
+  background-color: #ffffcc;
 }
 
 input[value="check all"], input[value="apply"] {
@@ -158,13 +203,18 @@ input[type=reset]{
   float: left;
 }
 
+input[type=submit], input[type=reset] {
+  color: #ffff99;
+  background-color: #258e25;
+}
+
 input[type=reset]:hover, input[type=submit]:hover {
-  background-color: #00e6e6;
+  background-color: #1a651a;
   cursor: pointer;
 }
 
 input[type=submit]:active, input[type=reset]:active {
-  background-color: #008080;
+  background-color: #155115;
 }
 
 #applySettings:enabled {

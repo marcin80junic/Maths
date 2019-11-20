@@ -10,7 +10,7 @@
     <div id="page">
 
       <div id="menu">
-        <ul>
+        <ul class="menu">
           <li><a href="_blank" id="homeMenu" class="selected">Home</a></li>
           <li><a href="_blank" id="additionMenu">Addition +</a></li>
           <li><a href="_blank" id="subtractionMenu">Subtraction -</a></li>
@@ -32,16 +32,40 @@
               <img src="pics/detective.png" width="35px" height="35px"/></p>
           </div>
           <div id="additionIntro" class="hidden">
-            <p>Adding numbers is the most basic and straightforward mathematical operation</p>
+            <p><span class="special">Adding numbers</span>
+               is the most basic and straightforward mathematical operation</p>
+            <p>there are few exercises for you!</p>
           </div>
-          <div id="subtractionIntro" class="hidden"></div>
-          <div id="multiplyingIntro" class="hidden"></div>
-          <div id="divisionIntro" class="hidden"></div>
-          <div id="testIntro" class="hidden"></div>
+          <div id="subtractionIntro" class="hidden">
+            <p><span class="special">Subtracting</span>
+               is a little bit more difficult but you should learn it quickly</p>
+            <p>it may not feel as natural as adding but it is very useful in life</p>
+          </div>
+          <div id="multiplyingIntro" class="hidden">
+            <p>Mastering <span class="special">multiplying</span>
+               may feel like a milestone but memorizing few rules</p>
+            <p>will do the trick</p>
+          </div>
+          <div id="divisionIntro" class="hidden">
+            <p>The most difficult of all basic mathematical operations!</p>
+            <p>once you master <span class="special">dividing</span> you will be ready for
+              <span class="special">test!</span></p>
+          </div>
+          <div id="testIntro" class="hidden">
+            <p>So its time to test your skills, if you feel confident don't hesitate any longer</p>
+            <p>and follow the path to excellence!!<br><br></p>
+            <p>Dear <span class="special">Paulina</span>, please choose difficulty level:</p>
+            <div id="test-difficulty-choice">
+              <button id="easy" class="test-Difficulty-Button" value="0">Easy</button>
+              <button id="medium" class="test-Difficulty-Button" value="1" disabled="true">Medium</button>
+              <button id="hard" class="test-Difficulty-Button" value="2" disabled="true">Hard</button>
+            </div>
+          </div>
           <div id="settingsIntro" class="hidden"></div>
         </div>
 
         <div id="content">
+
           <div id="homeContent" class="visible"></div>
           <div id="additionContent" class="hidden">
             <form id="additionForm" autocomplete="off">
@@ -69,16 +93,61 @@
           </div>
           <div id="divisionContent" class="hidden">
             <form id="divisionForm" autocomplete="off">
-              <fieldset>
-                <legend>Dividing numbers</legend>
+              <fieldset><legend>Dividing numbers</legend>
                 <table id="divisionTable"></table>
               </fieldset>
             </form>
           </div>
           <div id="testContent" class="hidden">
-            <form id="testForm" autocomplete="off">
-
-            </form>
+            <div id="accordeon">
+            <ul id="test-accordeon">
+              <li>
+                <button class="test-accordeon-control">Addition</button>
+                <div class="test-accordeon-content">
+                  <fieldset><table id="additionTest"></table></fieldset>
+                  <p class="footer">
+                    <button class="next-button">next</button>
+                  </p>
+                </div>
+              </li>
+              <li>
+                <button class="test-accordeon-control">Subtraction</button>
+                <div class="test-accordeon-content">
+                  <fieldset><table id="subtractionTest"></table></fieldset>
+                  <p class="footer">
+                    <button class="previous-button">prev</button>
+                    <button class="next-button">next</button>
+                  </p>
+                </div>
+              </li>
+              <li>
+                <button class="test-accordeon-control">Multiplying</button>
+                <div class="test-accordeon-content">
+                  <fieldset><table id="multiplyingTest"></table></fieldset>
+                  <p class="footer">
+                    <button class="previous-button">prev</button>
+                    <button class="next-button">next</button>
+                  </p>
+                </div>
+              </li>
+              <li>
+                <button class="test-accordeon-control">Division</button>
+                <div class="test-accordeon-content">
+                  <fieldset><table id="divisionTest"></table></fieldset>
+                  <p class="footer">
+                    <button class="previous-button">prev</button>
+                    <button class="submit-button">submit</button>
+                  </p>
+                </div>
+              </li>
+              <li>
+                <button class="test-accordeon-control">Test Summary</button>
+                <div class="test-accordeon-content">
+                  <p>Test Summary: </p>
+                </div>
+              </li>
+            </ul>
+          </div>
           </div>
           <div id="settingsContent" class="hidden">
             <form id="settingsForm">
