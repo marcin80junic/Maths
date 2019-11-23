@@ -6,100 +6,91 @@
   </head>
 
   <body>
-
     <div id="page">
-
       <div id="menu">
         <ul class="menu">
-          <li><a href="_blank" id="homeMenu" class="selected">Home</a></li>
-          <li><a href="_blank" id="additionMenu">Addition +</a></li>
-          <li><a href="_blank" id="subtractionMenu">Subtraction -</a></li>
-          <li><a href="_blank" id="multiplyingMenu">Multiplying &times</a></li>
-          <li><a href="_blank" id="divisionMenu">Division :</a></li>
-          <li><a href="_blank" id="testMenu">*Test*</a></li>
-          <li><a href="_blank" id="settingsMenu">Settings</a></li>
+          <li><a href="#homeIntro" id="homeMenu" class="selected">Home</a></li>
+          <li><a href="#additionIntro" id="additionMenu">Addition +</a></li>
+          <li><a href="#subtractionIntro" id="subtractionMenu">Subtraction -</a></li>
+          <li><a href="#multiplyingIntro" id="multiplyingMenu">Multiplying &times</a></li>
+          <li><a href="#divisionIntro" id="divisionMenu">Division :</a></li>
+          <li><a href="#testIntro" id="testMenu">*Test*</a></li>
+          <li><a href="#settingsIntro" id="settingsMenu">Settings</a></li>
         </ul>
       </div>
-
       <div id="main">
-
-        <div id="header">
-          <div id="homeIntro" class="visible">
-            <h1 id="h">Hello <span class="special">Paulina!</span></h1>
-            <p>I have prepared some interactive exercises for you to practice in your free time.</p>
-            <p>I hope they will help you to develop a logical thinking and improve your mathematical skills.</p>
-            <p>Have fun while playing and do not forget to take a break! :)
-              <img src="pics/detective.png" width="35px" height="35px"/></p>
+        <div id="homeIntro">
+          <h1 id="h">Hello <span class="special">Paulina!</span></h1>
+          <p>I have prepared some interactive exercises for you to practice in your free time.</p>
+          <p>I hope they will help you to develop a logical thinking and improve your mathematical skills.</p>
+          <p>Have fun while playing and do not forget to take a break! :)
+            <img src="pics/detective.png" width="35px" height="35px"/></p>
           </div>
-          <div id="additionIntro" class="hidden">
-            <p><span class="special">Adding numbers</span>
-               is the most basic and straightforward mathematical operation</p>
-            <p>there are few exercises for you!</p>
-          </div>
-          <div id="subtractionIntro" class="hidden">
-            <p><span class="special">Subtracting</span>
-               is a little bit more difficult but you should learn it quickly</p>
-            <p>it may not feel as natural as adding but it is very useful in life</p>
-          </div>
-          <div id="multiplyingIntro" class="hidden">
-            <p>Mastering <span class="special">multiplying</span>
-               may feel like a milestone but memorizing few rules</p>
-            <p>will do the trick</p>
-          </div>
-          <div id="divisionIntro" class="hidden">
-            <p>The most difficult of all basic mathematical operations!</p>
-            <p>once you master <span class="special">dividing</span> you will be ready for
-              <span class="special">test!</span></p>
-          </div>
-          <div id="testIntro" class="hidden">
-            <p>So its time to test your skills, if you feel confident don't hesitate any longer</p>
-            <p>and follow the path to excellence!!<br><br></p>
-            <p>Dear <span class="special">Paulina</span>, please choose difficulty level:</p>
-            <div id="test-difficulty-choice">
-              <button id="easy" class="test-Difficulty-Button" value="0">Easy</button>
-              <button id="medium" class="test-Difficulty-Button" value="1" disabled="true">Medium</button>
-              <button id="hard" class="test-Difficulty-Button" value="2" disabled="true">Hard</button>
-            </div>
-          </div>
-          <div id="settingsIntro" class="hidden"></div>
+        <div id="homeContent"></div>
+        <div id="additionIntro">
+          <p><span class="special">Adding numbers</span>
+             is the most basic and straightforward mathematical operation</p>
+          <p>there are few exercises for you!</p>
         </div>
-
-        <div id="content">
-
-          <div id="homeContent" class="visible"></div>
-          <div id="additionContent" class="hidden">
-            <form id="additionForm" autocomplete="off">
-              <fieldset>
-                <legend>Adding numbers</legend>
-                <table id="additionTable"></table>
-              </fieldset>
-            </form>
+        <div id="additionContent">
+          <form id="additionForm" autocomplete="off">
+            <fieldset>
+              <legend>Adding numbers</legend>
+              <table id="additionTable"></table>
+            </fieldset>
+          </form>
+        </div>
+        <div id="subtractionIntro">
+          <p><span class="special">Subtracting</span>
+             is a little bit more difficult but you should learn it quickly</p>
+          <p>it may not feel as natural as adding but it is very useful in life</p>
+        </div>
+        <div id="subtractionContent">
+          <form id="subtractionForm" autocomplete="off">
+            <fieldset>
+              <legend>Subtracting numbers</legend>
+              <table id="subtractionTable"></table>
+            </fieldset>
+          </form>
+        </div>
+        <div id="multiplyingIntro">
+          <p>Mastering <span class="special">multiplying</span>
+             may feel like a milestone but memorizing few rules</p>
+          <p>will do the trick</p>
+        </div>
+        <div id="multiplyingContent">
+          <form id="multiplyingForm" autocomplete="off">
+            <fieldset>
+              <legend>Multiplying numbers</legend>
+              <table id="multiplyingTable"></table>
+            </fieldset>
+          </form>
+        </div>
+        <div id="divisionIntro">
+          <p>The most difficult of all basic mathematical operations!</p>
+          <p>once you master <span class="special">dividing</span> you will be ready for
+            <span class="special">test!</span></p>
+        </div>
+        <div id="divisionContent">
+          <form id="divisionForm" autocomplete="off">
+            <fieldset><legend>Dividing numbers</legend>
+              <table id="divisionTable"></table>
+            </fieldset>
+          </form>
+        </div>
+        <div id="testIntro">
+          <p>So its time to test your skills, if you feel confident don't hesitate any longer</p>
+          <p>and follow the path to excellence!!<br><br></p>
+          <p>Dear <span class="special">Paulina</span>, please choose difficulty level:</p>
+          <div id="test-difficulty-choice">
+            <button id="easy" class="test-Difficulty-Button" value="0">Easy</button>
+            <button id="medium" class="test-Difficulty-Button" value="1" disabled="true">Medium</button>
+            <button id="hard" class="test-Difficulty-Button" value="2" disabled="true">Hard</button>
           </div>
-          <div id="subtractionContent" class="hidden">
-            <form id="subtractionForm" autocomplete="off">
-              <fieldset>
-                <legend>Subtracting numbers</legend>
-                <table id="subtractionTable"></table>
-              </fieldset>
-            </form>
-          </div>
-          <div id="multiplyingContent" class="hidden">
-            <form id="multiplyingForm" autocomplete="off">
-              <fieldset>
-                <legend>Multiplying numbers</legend>
-                <table id="multiplyingTable"></table>
-              </fieldset>
-            </form>
-          </div>
-          <div id="divisionContent" class="hidden">
-            <form id="divisionForm" autocomplete="off">
-              <fieldset><legend>Dividing numbers</legend>
-                <table id="divisionTable"></table>
-              </fieldset>
-            </form>
-          </div>
-          <div id="testContent" class="hidden">
-            <div id="accordeon">
+        </div>
+        <div id="testContent">
+          <div id="accordeon">
+            <div id="timer"></div>
             <ul id="test-accordeon">
               <li>
                 <button class="test-accordeon-control">Addition</button>
@@ -141,151 +132,152 @@
                 </div>
               </li>
               <li>
-                <button class="test-accordeon-control">Test Summary</button>
+                <button class="test-accordeon-control" disabled="true">Test Summary</button>
                 <div class="test-accordeon-content">
                   <p>Test Summary: </p>
                 </div>
               </li>
             </ul>
           </div>
-          </div>
-          <div id="settingsContent" class="hidden">
-            <form id="settingsForm">
+        </div>
+
+        <div id="settingsIntro"></div>
+        <div id="settingsContent">
+          <form id="settingsForm">
+            <fieldset>
+              <legend>Settings</legend>
               <fieldset>
-                <legend>Settings</legend>
-                <fieldset>
-                  <legend>Difficulty Level</legend>
-                  <table class="settingsTable">
-                    <tr>
-                      <th class="col_head">
-                        <label for="general">All Sections:</label>
-                      </th>
-                      <th class="col_head">
-                        <label class="container">easy
-                          <input type="radio" name="general" value="0">
-                          <span class="checkmark"></span>
-                        </label>
-                      </th>
-                      <th class="col_head">
-                        <label class="container">medium
-                          <input type="radio" name="general" value="1">
-                          <span class="checkmark"></span>
-                        </label>
-                      </th>
-                      <th class="col_head">
-                        <label class="container">hard
-                          <input type="radio" name="general" value="2">
-                          <span class="checkmark"></span>
-                        </label>
-                      </th>
-                      <th class="col_head none">
-                        <label class="container">none
-                          <input type="radio" name="general" value="none" checked="true">
-                          <span class="checkmark"></span>
-                        </label>
-                      </th>
-                    </tr>
-                    <tr>
-                      <th>
-                        <label for="addition">Addition:</label>
-                      </th>
-                      <td>
-                        <label class="container">easy
-                          <input type="radio" name="addition" value="0" checked="true">
-                          <span class="checkmark"></span>
-                        </label>
-                      </td>
-                      <td>
-                        <label class="container">medium
-                          <input type="radio" name="addition" value="1">
-                          <span class="checkmark"></span>
-                        </label>
-                      </td>
-                      <td>
-                        <label class="container">hard
-                          <input type="radio" name="addition" value="2">
-                          <span class="checkmark"></span>
-                        </label>
-                      </td>
-                    </tr>
-                    <tr>
-                      <th>
-                        <label for="subtraction">Subtraction:</label>
-                      </th>
-                      <td>
-                        <label class="container">easy
-                          <input type="radio" name="subtraction" value="0" checked="true">
-                          <span class="checkmark"></span>
-                        </label>
-                      </td>
-                      <td>
-                        <label class="container">medium
-                          <input type="radio" name="subtraction" value="1">
-                          <span class="checkmark"></span>
-                        </label>
-                      </td>
-                      <td>
-                        <label class="container">hard
-                          <input type="radio" name="subtraction" value="2">
-                          <span class="checkmark"></span>
-                        </label>
-                      </td>
-                    </tr>
-                    <tr>
-                      <th>
-                        <label for="multiplying">Multiplying:</label>
-                      </th>
-                      <td>
-                        <label class="container">easy
-                          <input type="radio" name="multiplying" value="0" checked="true">
-                          <span class="checkmark"></span>
-                        </label>
-                      </td>
-                      <td>
-                        <label class="container">medium
-                          <input type="radio" name="multiplying" value="1">
-                          <span class="checkmark"></span>
-                        </label>
-                      </td>
-                      <td>
-                        <label class="container">hard
-                          <input type="radio" name="multiplying" value="2">
-                          <span class="checkmark"></span>
-                        </label>
-                      </td>
-                    </tr>
-                    <tr>
-                      <th>
-                        <label for="division">Division:</label>
-                      </th>
-                      <td>
-                        <label class="container">easy
-                          <input type="radio" name="division" value="0" checked="true">
-                          <span class="checkmark"></span>
-                        </label>
-                      </td>
-                      <td>
-                        <label class="container">medium
-                          <input type="radio" name="division" value="1">
-                          <span class="checkmark"></span>
-                        </label>
-                      </td>
-                      <td>
-                        <label class="container">hard
-                          <input type="radio" name="division" value="2">
-                          <span class="checkmark"></span>
-                        </label>
-                      </td>
-                    </tr>
-                  </table>
-                </fieldset>
+                <legend>Difficulty Level</legend>
+                <table class="settingsTable">
+                  <tr>
+                    <th class="col_head">
+                      <label for="general">All Sections:</label>
+                    </th>
+                    <th class="col_head">
+                      <label class="container">easy
+                        <input type="radio" name="general" value="0">
+                        <span class="checkmark"></span>
+                      </label>
+                    </th>
+                    <th class="col_head">
+                      <label class="container">medium
+                        <input type="radio" name="general" value="1">
+                        <span class="checkmark"></span>
+                      </label>
+                    </th>
+                    <th class="col_head">
+                      <label class="container">hard
+                        <input type="radio" name="general" value="2">
+                        <span class="checkmark"></span>
+                      </label>
+                    </th>
+                    <th class="col_head none">
+                      <label class="container">none
+                        <input type="radio" name="general" value="none" checked="true">
+                        <span class="checkmark"></span>
+                      </label>
+                    </th>
+                  </tr>
+                  <tr>
+                    <th>
+                      <label for="addition">Addition:</label>
+                    </th>
+                    <td>
+                      <label class="container">easy
+                        <input type="radio" name="addition" value="0" checked="true">
+                        <span class="checkmark"></span>
+                      </label>
+                    </td>
+                    <td>
+                      <label class="container">medium
+                        <input type="radio" name="addition" value="1">
+                        <span class="checkmark"></span>
+                      </label>
+                    </td>
+                    <td>
+                      <label class="container">hard
+                        <input type="radio" name="addition" value="2">
+                        <span class="checkmark"></span>
+                      </label>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>
+                      <label for="subtraction">Subtraction:</label>
+                    </th>
+                    <td>
+                      <label class="container">easy
+                        <input type="radio" name="subtraction" value="0" checked="true">
+                        <span class="checkmark"></span>
+                      </label>
+                    </td>
+                    <td>
+                      <label class="container">medium
+                        <input type="radio" name="subtraction" value="1">
+                        <span class="checkmark"></span>
+                      </label>
+                    </td>
+                    <td>
+                      <label class="container">hard
+                        <input type="radio" name="subtraction" value="2">
+                        <span class="checkmark"></span>
+                      </label>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>
+                      <label for="multiplying">Multiplying:</label>
+                    </th>
+                    <td>
+                      <label class="container">easy
+                        <input type="radio" name="multiplying" value="0" checked="true">
+                        <span class="checkmark"></span>
+                      </label>
+                    </td>
+                    <td>
+                      <label class="container">medium
+                        <input type="radio" name="multiplying" value="1">
+                        <span class="checkmark"></span>
+                      </label>
+                    </td>
+                    <td>
+                      <label class="container">hard
+                        <input type="radio" name="multiplying" value="2">
+                        <span class="checkmark"></span>
+                      </label>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>
+                      <label for="division">Division:</label>
+                    </th>
+                    <td>
+                      <label class="container">easy
+                        <input type="radio" name="division" value="0" checked="true">
+                        <span class="checkmark"></span>
+                      </label>
+                    </td>
+                    <td>
+                      <label class="container">medium
+                        <input type="radio" name="division" value="1">
+                        <span class="checkmark"></span>
+                      </label>
+                    </td>
+                    <td>
+                      <label class="container">hard
+                        <input type="radio" name="division" value="2">
+                        <span class="checkmark"></span>
+                      </label>
+                    </td>
+                  </tr>
+                </table>
               </fieldset>
-              <p class="footer">
-                <input id="resetSettings" type="reset" value="default"/>
-                <input id="applySettings" type="submit" value="apply" disabled/>
-              </p>
-            </form>
-          </div>
+            </fieldset>
+            <p class="footer">
+              <input id="resetSettings" type="reset" value="default"/>
+              <input id="applySettings" type="submit" value="apply" disabled/>
+            </p>
+          </form>
         </div>
       </div>
     </div>

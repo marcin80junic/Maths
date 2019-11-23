@@ -1,5 +1,5 @@
+(function() {
 
-(function(){
   var maths = {
     exerciseNum: 20,
     testNum: 6,
@@ -25,45 +25,95 @@
   if (typeof(Storage) !== "undefined") {
     loadData();
   }
+  menuEventsInit();
   settingsSetup();
-  createTable("addition", "+");
-  createTable("subtraction", "-");
-  createTable("multiplying", "&times");
-  createTable("division", ":");
+  createExercises();
 
-  $("#homeMenu").on("click", function(e) {
-    e.preventDefault();
-    switchContent(this, "home");
-  });
-  $("#additionMenu").on("click", function(e) {
-    e.preventDefault();
-    switchContent(this, "addition");
-  });
-  $("#subtractionMenu").on("click", function(e) {
-    e.preventDefault();
-    switchContent(this, "subtraction");
-  });
-  $("#multiplyingMenu").on("click", function(e) {
-    e.preventDefault();
-    switchContent(this, "multiplying");
-  });
-  $("#divisionMenu").on("click", function(e) {
-    e.preventDefault();
-    switchContent(this, "division");
-  });
-  $("#testMenu").on("click", function(e) {
-    e.preventDefault();
-    $(".test-accordeon-content").hide();
-    switchContent(this, "test");
-    $(".test-Difficulty-Button").on("click", function(){
-      var level = $(this).prop("value");
-      createTest(level);
-    })
-  });
-  $("#settingsMenu").on("click", function(e) {
-    e.preventDefault();
-    switchContent(this, "settings");
-  });
+  function menuEventsInit() {
+    var $content = $("div[id$='Intro'], div[id$='Content']");
+    $content.not("div[id^='home']").hide();
+    function switchContent(menu, contentName) {
+      $("li a.selected").removeClass("selected");
+      $(menu).addClass("selected");
+      $content.hide();
+      $content.filter("#"+contentName+"Intro, #"+contentName+"Content").fadeIn("slow");
+    }
+    $("#homeMenu").on("click", function(e) {
+      e.preventDefault();
+      switchContent(this, "home");
+    });
+    $("#additionMenu").on("click", function(e) {
+      e.preventDefault();
+      switchContent(this, "addition");
+    });
+    $("#subtractionMenu").on("click", function(e) {
+      e.preventDefault();
+      switchContent(this, "subtraction");
+    });
+    $("#multiplyingMenu").on("click", function(e) {
+      e.preventDefault();
+      switchContent(this, "multiplying");
+    });
+    $("#divisionMenu").on("click", function(e) {
+      e.preventDefault();
+      switchContent(this, "division");
+    });
+    $("#testMenu").on("click", function(e) {
+      e.preventDefault();
+      switchContent(this, "test");
+      $("#testContent").hide();
+      $(".test-accordeon-content").hide();
+      $(".test-Difficulty-Button").on("click", function(){
+        var level = $(this).prop("value");
+        createTest(level);
+        showTest(level);
+      })
+    });
+    $("#settingsMenu").on("click", function(e) {
+      e.preventDefault();
+      switchContent(this, "settings");
+    });
+  }
+
+  function showTest(level) {
+    var $dimmer = $("<div id='dim'></div>");
+    $("#testContent").fadeIn("slow");
+    $("body").append($dimmer);
+    timer.start(level);
+  }
+
+  var timer = {
+    container: $("#timer"),
+    minutes: "00",
+    seconds: "00",
+    state: function(){
+      return "<b>"+this.minutes+":"+this.seconds+"</b>"
+    },
+    show: function(){
+      this.container.html(this.state());
+    },
+    start: function(level){
+      var count = (level==0)? 600: ((level==1)? 300: 120);
+      var minutes = count/60;
+      this.minutes = (minutes < 10)? "0"+minutes: ""+minutes;
+      this.show();
+      var instance = this;
+      var secs = 0;
+      var start = Date.now();
+      var setTimer = setInterval(function(){
+        var elapsed = Math.floor((Date.now() - start)/1000) - 1;
+        if (elapsed >= count) {
+          clearInterval(setTimer);
+          return;
+        }
+        secs = 59 - ((elapsed + 60) % 60);
+        var mins = (count/60 - 1) - Math.floor(elapsed/60);
+        instance.minutes = (mins < 10)? "0"+mins: ""+mins;
+        instance.seconds = (secs < 10)? "0"+secs: ""+secs;
+        instance.show();
+      } ,1000);
+    }
+  }
 
   function loadData() {
     var add, sub, mul, div;
@@ -72,48 +122,44 @@
     mul = maths.settings_log[2][1] = maths.difficulty.multiplying = parseInt(localStorage.getItem("multiplying")) || 0;
     div = maths.settings_log[3][1] = maths.difficulty.division= parseInt(localStorage.getItem("division")) || 0;
     maths.difficulty.test = parseInt(localStorage.getItem("test")) || 0;
-    $("input[type='radio'][name='addition'][value='"+add+"']").attr("checked", true);
-    $("input[type='radio'][name='subtraction'][value='"+sub+"']").attr("checked", true);
-    $("input[type='radio'][name='multiplying'][value='"+mul+"']").attr("checked", true);
-    $("input[type='radio'][name='division'][value='"+div+"']").attr("checked", true);
+    $("input[type='radio'][name='addition'][value='"+add+"']").prop("checked", true);
+    $("input[type='radio'][name='subtraction'][value='"+sub+"']").prop("checked", true);
+    $("input[type='radio'][name='multiplying'][value='"+mul+"']").prop("checked", true);
+    $("input[type='radio'][name='division'][value='"+div+"']").prop("checked", true);
   }
 
-  function switchContent(menu, element) {
-    $("li a.selected").removeClass("selected");
-    $(menu).addClass("selected");
-    $(".visible").hide();
-    $("#"+element+"Intro, #"+element+"Content").attr("class", "visible").hide().fadeIn("slow");
-  }
-
-  function createTable(name, symbol) {
-    var tableContent = "";
-    var i, j, k;
-    for(i=0; i<maths.exerciseNum/2; i+=1) {
-      tableContent += '<tr>';
-      for(j=0; j<2; j+=1) {
-        k = i*2+j;
-        tableContent += '<td class="first" colspan="2"><label for="result'+k+'" class="'+name+'">';
-        tableContent += '<span class="'+name+'Number"></span> '+symbol+' <span class="'+name+'Number"></span>';
-        tableContent += ' =</label><input type="text" name="result"'+k+' size="3" class="'+name+'Input"/>';
-        tableContent += '<input type="submit" value="check" class="'+name+'Button"/></td>';
-        tableContent += '<td><img class="'+name+'Icon" src="pics/question.png" alt="?" width="32px" height="32px">'
-        tableContent += '</td><td></td>';
-        if(j === 1) {
-          tableContent += '</tr>';
+  function createExercises() {
+    var i, j, k, m, name, sign, tableContent;
+    for (m=0; m<maths.modules.length; m+=1) {
+      name = maths.modules[m][0];
+      sign = maths.modules[m][1];
+      tableContent = "";
+      for(i=0; i<maths.exerciseNum/2; i+=1) {
+        tableContent += '<tr>';
+        for(j=0; j<2; j+=1) {
+          k = i*2+j;
+          tableContent += '<td class="first" colspan="2"><label for="result'+k+'" class="'+name+'">';
+          tableContent += '<span class="'+name+'Number"></span> '+sign+' <span class="'+name+'Number"></span>';
+          tableContent += ' =</label><input type="text" name="result"'+k+' size="3" class="'+name+'Input"/>';
+          tableContent += '<input type="submit" value="check" class="'+name+'Button"/></td>';
+          tableContent += '<td><img class="'+name+'Icon" src="pics/question.png" alt="?" width="32px" height="32px">'
+          tableContent += '</td><td></td>';
+          if(j === 1) {
+            tableContent += '</tr>';
+          }
         }
       }
+      $('#'+name+'Table').html(tableContent);
+      var footerHTML = '<input type="reset" value="reload" class="'+name+'Reload"/>';
+      footerHTML += '<input type="submit" value="check all" class="'+name+'CheckAll"/>';
+      $('#'+name+'Form').append('<p class="footer">'+footerHTML+'</p>');
+      randomizeTable(name);
+      addButtonListeners(name);
     }
-    $('#'+name+'Table').html(tableContent);
-    var footerHTML = '<input type="reset" value="reload" class="'+name+'Reload"/>';
-    footerHTML += '<input type="submit" value="check all" class="'+name+'CheckAll"/>';
-    $('#'+name+'Form').append('<p class="footer">'+footerHTML+'</p>');
-    randomizeTable(name);
-    addButtonListeners(name);
   }
 
   function createTest(level) {
-    var tableContent;
-    var i, j, k, m, name, sign;
+    var i, j, k, m, name, sign, tableContent;
     for (m=0; m<maths.modules.length; m+=1) {
       name = maths.modules[m][0];
       sign = maths.modules[m][1];
@@ -122,10 +168,11 @@
         tableContent += '<tr>';
         for(j=0; j<2; j+=1) {
           k = i*2+j;
-          tableContent += '<td></td><td class="first"><span class="'+name+'TestNumber">';
+          tableContent += '<td class="first" colspan="2"><span class="'+name+'TestNumber">';
           tableContent += '</span> '+sign+' <span class="'+name+'TestNumber"></span> = </td>';
-          tableContent += '<td><input type="text" class="'+name+'TestInput" size="3"/>';
-          tableContent += '</td><td></td>'
+          tableContent += '<td><input type="text" class="'+name+'TestInput" size="3"/></td>';
+          tableContent += '<td colspan="2"><img class="'+name+'Icon" src="" alt="?" width="32px" height="32px">';
+          tableContent += '</td>';
           if(j === 1) {
             tableContent += '</tr>';
           }
@@ -137,15 +184,49 @@
         return validateInput(this, e);
       });
     }
-    $(".test-accordeon-control").on("click", function(e){
-      e.preventDefault();
-      $(this).next().slideToggle();
+    var $content = $(".test-accordeon-content");
+    $content.first().slideDown(function(){
+      $(this).addClass("accordeon-selected");
     });
+    $(".test-accordeon-control").on("click", function(){
+      $(".accordeon-selected").slideUp();
+      if($(this).next().is(".accordeon-selected")) {
+        classSelection(null);
+        return;
+      }
+      $(this).next().slideDown(function(){
+        classSelection($(this));
+      });
+    });
+    $content.on("click", ".next-button", function(){
+      $(".accordeon-selected").slideUp();
+      $(this).parents("li").next().find(".test-accordeon-content").slideDown(function(){
+        classSelection($(this));
+      });
+    });
+    $content.on("click", ".previous-button", function(){
+      $(".accordeon-selected").slideUp();
+      $(this).parents("li").prev().find(".test-accordeon-content").slideDown(function(){
+        classSelection($(this));
+      });
+    });
+    $content.on("click", ".submit-button", function(){
+      $content.slideDown(function(){
+        $(this).addClass("accordeon-selected");
+      });
+      var $summary = $(this).next();
+
+    });
+    function classSelection($activeDiv){
+      $(".accordeon-selected").removeClass("accordeon-selected");
+      $activeDiv.addClass("accordeon-selected");
+    }
   }
 
   function randomizeTable(name, level) {
     var $spans = level? $("."+name+"TestNumber"): $("."+name+"Number");
     var count = level? maths.testNum: maths.exerciseNum;
+    var difficulty = level? parseInt(level): maths.difficulty[name];
     var number, i, j, k,
         temp = [];
         numbers = [];
@@ -171,7 +252,7 @@
     };
     function getNumbers() {
       var nums = [];
-      switch(maths.difficulty[name]) {
+      switch(difficulty) {
         case 0:
           nums = [randomSingleDigit(), randomSingleDigit()];
           break;
@@ -291,6 +372,9 @@
     });
     $textFields.on("blur", function(e){
       $(this).removeClass("warning");
+      if($(this).val()==="") {
+        $(this).parent().next().find("img").prop("src", "pics/question.png");
+      }
     });
   }
 
