@@ -323,7 +323,7 @@
         var name = maths.modules[i][0];
         results.push([name][checkResults(true, true, name)]);
       }
-
+      
       localStorage.setItem("unlocked", ""+maths.unlocked);
     }
 
