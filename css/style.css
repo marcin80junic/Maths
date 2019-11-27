@@ -123,6 +123,15 @@ div#testContent {
   box-shadow: 10px 10px 15px grey;
 }
 
+#timer {
+  position: fixed;
+  top: 50px;
+  left: 644px;
+  font-size: 1.2em;
+  font-weight: 900;
+  background: rgba(255,255,255,0);
+}
+
 #test-accordeon li {
   list-style-type: none;
   padding: 0;

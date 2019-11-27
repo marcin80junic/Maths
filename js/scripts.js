@@ -3,6 +3,7 @@
   var maths = {
     exerciseNum: 20,
     testNum: 6,
+    unlocked: 0,
     modules: [["addition", "+"], ["subtraction", "-"], ["multiplying", "&times"], ["division", ":"]],
     settings_log: [["addition", 0], ["subtraction", 0], ["multiplying", 0], ["division", 0]],
     difficulty: {
@@ -28,6 +29,7 @@
   menuEventsInit();
   settingsSetup();
   createExercises();
+  createTest();
 
   function menuEventsInit() {
     var $content = $("div[id$='Intro'], div[id$='Content']");
@@ -36,7 +38,7 @@
       $("li a.selected").removeClass("selected");
       $(menu).addClass("selected");
       $content.hide();
-      $content.filter("#"+contentName+"Intro, #"+contentName+"Content").fadeIn("slow");
+      $content.filter("#"+contentName+"Intro, #"+contentName+"Content:not(#testContent)").fadeIn("slow");
     }
     $("#homeMenu").on("click", function(e) {
       e.preventDefault();
@@ -61,11 +63,8 @@
     $("#testMenu").on("click", function(e) {
       e.preventDefault();
       switchContent(this, "test");
-      $("#testContent").hide();
-      $(".test-accordeon-content").hide();
       $(".test-Difficulty-Button").on("click", function(){
         var level = $(this).prop("value");
-        createTest(level);
         showTest(level);
       })
     });
@@ -76,9 +75,17 @@
   }
 
   function showTest(level) {
+    maths.difficulty.test = level;
+    for (var i=0; i<maths.modules.length; i+=1) {
+      var name = maths.modules[i][0];
+      randomizeTable(name, level);
+    }
     var $dimmer = $("<div id='dim'></div>");
-    $("#testContent").fadeIn("slow");
     $("body").append($dimmer);
+    $("#testContent").fadeIn("slow");
+    $(".test-accordeon-content").first().slideDown(function(){
+      $(this).addClass("accordeon-selected");
+    });
     timer.start(level);
   }
 
@@ -93,6 +100,7 @@
       this.container.html(this.state());
     },
     start: function(level){
+      this.reset();
       var count = (level==0)? 600: ((level==1)? 300: 120);
       var minutes = count/60;
       this.minutes = (minutes < 10)? "0"+minutes: ""+minutes;
@@ -100,7 +108,7 @@
       var instance = this;
       var secs = 0;
       var start = Date.now();
-      var setTimer = setInterval(function(){
+      this.setTimer = setInterval(function(){
         var elapsed = Math.floor((Date.now() - start)/1000) - 1;
         if (elapsed >= count) {
           clearInterval(setTimer);
@@ -112,8 +120,16 @@
         instance.seconds = (secs < 10)? "0"+secs: ""+secs;
         instance.show();
       } ,1000);
+    },
+    stop: function(){
+      clearInterval(this.setTimer);
+      this.container.html("");
+    },
+    reset: function(){
+      this.minutes = "00";
+      this.seconds = "00";
     }
-  }
+  };
 
   function loadData() {
     var add, sub, mul, div;
@@ -121,11 +137,15 @@
     sub = maths.settings_log[1][1] = maths.difficulty.subtraction = parseInt(localStorage.getItem("subtraction")) || 0;
     mul = maths.settings_log[2][1] = maths.difficulty.multiplying = parseInt(localStorage.getItem("multiplying")) || 0;
     div = maths.settings_log[3][1] = maths.difficulty.division= parseInt(localStorage.getItem("division")) || 0;
-    maths.difficulty.test = parseInt(localStorage.getItem("test")) || 0;
+    maths.unlocked = parseInt(localStorage.getItem("unlocked")) || 0;
     $("input[type='radio'][name='addition'][value='"+add+"']").prop("checked", true);
     $("input[type='radio'][name='subtraction'][value='"+sub+"']").prop("checked", true);
     $("input[type='radio'][name='multiplying'][value='"+mul+"']").prop("checked", true);
     $("input[type='radio'][name='division'][value='"+div+"']").prop("checked", true);
+    var levels = document.getElementsByClassName("test-Difficulty-Button");
+    for(var i=0; i<maths.unlocked; i++){
+      levels[i].setAttribute("disabled", "false");
+    }
   }
 
   function createExercises() {
@@ -138,9 +158,9 @@
         tableContent += '<tr>';
         for(j=0; j<2; j+=1) {
           k = i*2+j;
-          tableContent += '<td class="first" colspan="2"><label for="result'+k+'" class="'+name+'">';
-          tableContent += '<span class="'+name+'Number"></span> '+sign+' <span class="'+name+'Number"></span>';
-          tableContent += ' =</label><input type="text" name="result"'+k+' size="3" class="'+name+'Input"/>';
+          tableContent += '<td class="first" colspan="2"><span class="'+name+'Number"></span> ';
+          tableContent += sign+' <span class="'+name+'Number"></span> =';
+          tableContent += '<input type="text" name="result"'+k+' size="3" class="'+name+'Input"/>';
           tableContent += '<input type="submit" value="check" class="'+name+'Button"/></td>';
           tableContent += '<td><img class="'+name+'Icon" src="pics/question.png" alt="?" width="32px" height="32px">'
           tableContent += '</td><td></td>';
@@ -158,7 +178,64 @@
     }
   }
 
-  function createTest(level) {
+  function checkResults(isTest, checkAll, name, textInput) {
+    var spanType = isTest? "TestNumber": "Number",
+        inputType = isTest? "TestInput": "Input",
+        $textInput = checkAll? $("."+name+inputType): $(textInput),
+        $spans = checkAll? $("."+name+spanType): $textInput.parent().find("span"),
+        spanValues = [],
+        score = 0,
+        answer, $icon;
+    if (checkAll === false) {
+      answer = $textInput.val();
+      if (answer === "") {
+        $textInput.focus();
+        $textInput.addClass("warning");
+        $icon.attr("src", "pics/question.png");
+        return;
+      }
+    }
+    $textInput.removeClass("warning");
+    $textInput.each(function(){
+      spanValues = [];
+      $(this).siblings().filter("span").each(function(){
+        spanValues.push(Number($(this).text()));
+      });
+      answer = Number($(this).val());
+      $icon = $(this).parent().next().find("img");
+      score = checker()? score++: score;
+    });
+    function checker() {
+      var correct = false;
+      switch (name) {
+        case "addition":
+          if (spanValues[0] + spanValues[1] === answer) {
+            correct = true;
+          } break;
+          case "subtraction":
+          if (spanValues[0] - spanValues[1] === answer) {
+            correct = true;
+          } break;
+          case "multiplying":
+          if (spanValues[0] * spanValues[1] === answer) {
+            correct = true;
+          } break;
+          case "division":
+          if (spanValues[0] / spanValues[1] === answer) {
+            correct = true;
+          } break;
+      }
+      if(correct) {
+        $icon.attr("src", "pics/correct.png");
+      } else {
+        $icon.attr("src", "pics/wrong.png");
+      }
+      return correct;
+    }
+    return score;
+  }
+
+  function createTest() {
     var i, j, k, m, name, sign, tableContent;
     for (m=0; m<maths.modules.length; m+=1) {
       name = maths.modules[m][0];
@@ -169,8 +246,8 @@
         for(j=0; j<2; j+=1) {
           k = i*2+j;
           tableContent += '<td class="first" colspan="2"><span class="'+name+'TestNumber">';
-          tableContent += '</span> '+sign+' <span class="'+name+'TestNumber"></span> = </td>';
-          tableContent += '<td><input type="text" class="'+name+'TestInput" size="3"/></td>';
+          tableContent += '</span> '+sign+' <span class="'+name+'TestNumber"></span> =';
+          tableContent += '<input type="text" class="'+name+'TestInput" size="3"/></td>';
           tableContent += '<td colspan="2"><img class="'+name+'Icon" src="" alt="?" width="32px" height="32px">';
           tableContent += '</td>';
           if(j === 1) {
@@ -179,56 +256,89 @@
         }
       }
       $("#"+name+"Test").html(tableContent);
-      randomizeTable(name, level);
       $("."+name+"TestInput").on("keypress", function(e){
         return validateInput(this, e);
       });
     }
-    var $content = $(".test-accordeon-content");
-    $content.first().slideDown(function(){
-      $(this).addClass("accordeon-selected");
-    });
-    $(".test-accordeon-control").on("click", function(){
+    var $testModal = $("#testContent"),
+        $contentDivs = $(".test-accordeon-content"),
+        $icons = $("#test-accordeon img"),
+        $headerButtons = $(".test-accordeon-control"),
+        $nextButtons = $(".next-button"),
+        $prevButtons = $(".previous-button"),
+        $submitButton = $(".submit-button"),
+        $closeButton = $(".close-button");
+
+    $icons.hide();
+    $testModal.hide();
+    $contentDivs.hide();
+
+    $headerButtons.on("click", function(e){
+      e.preventDefault();
       $(".accordeon-selected").slideUp();
       if($(this).next().is(".accordeon-selected")) {
-        classSelection(null);
+        toggleClass(null);
         return;
       }
       $(this).next().slideDown(function(){
-        classSelection($(this));
+        toggleClass($(this));
       });
     });
-    $content.on("click", ".next-button", function(){
+    $nextButtons.on("click", function(e){
+      e.preventDefault();
       $(".accordeon-selected").slideUp();
       $(this).parents("li").next().find(".test-accordeon-content").slideDown(function(){
-        classSelection($(this));
+        toggleClass($(this));
       });
     });
-    $content.on("click", ".previous-button", function(){
+    $prevButtons.on("click", function(e){
+      e.preventDefault();
       $(".accordeon-selected").slideUp();
       $(this).parents("li").prev().find(".test-accordeon-content").slideDown(function(){
-        classSelection($(this));
+        toggleClass($(this));
       });
     });
-    $content.on("click", ".submit-button", function(){
-      $content.slideDown(function(){
-        $(this).addClass("accordeon-selected");
-      });
-      var $summary = $(this).next();
+    $("#test").on("submit", function(e){
+      e.preventDefault();
+      timer.stop();
+      createSummary();
+      $icons.show();
+      $("#testContent button:not(.close-button)").prop("disabled", "true");
+      $testModal.css("overflow", "scroll");
+      $contentDivs.slideDown();
+    });
+    $closeButton.on("click", function(e){
+      e.preventDefault();
+      $("#testContent button:not(.test-accordeon-control:last)").removeAttr("disabled");
+      $contentDivs.slideUp();
+      $contentDivs.removeClass("accordeon-selected");
+      $testModal.css("overflow", "hidden");
+      $testModal.hide();
+      $("div").remove("#dim");
+    });
 
-    });
-    function classSelection($activeDiv){
+    function createSummary() {
+      var results = [];
+      for(var i=0; i<maths.modules.length; i++) {
+        var name = maths.modules[i][0];
+        results.push([name][checkResults(true, true, name)]);
+      }
+
+      localStorage.setItem("unlocked", ""+maths.unlocked);
+    }
+
+    function toggleClass($activeDiv){
       $(".accordeon-selected").removeClass("accordeon-selected");
       $activeDiv.addClass("accordeon-selected");
     }
   }
 
   function randomizeTable(name, level) {
-    var $spans = level? $("."+name+"TestNumber"): $("."+name+"Number");
-    var count = level? maths.testNum: maths.exerciseNum;
-    var difficulty = level? parseInt(level): maths.difficulty[name];
-    var number, i, j, k,
-        temp = [];
+    var $spans = level? $("."+name+"TestNumber"): $("."+name+"Number"),
+        count = level? maths.testNum: maths.exerciseNum,
+        difficulty = level? parseInt(level): maths.difficulty[name],
+        number, i, j, k,
+        temp = [],
         numbers = [];
     var randomSingleDigit = function() {
       while(true) {
@@ -305,68 +415,23 @@
   }
 
   function addButtonListeners(name) {
-    var spanValues = [],
-        textValue, answer, correct;
-    var checker = function(button, submit) {
-      var $btn = $(button);
-      var $textField = $btn.prev();
-      var $icon = $btn.parent().next().children();
-      textValue = $textField.val();
-      if (textValue === "") {
-        if (submit === false) {
-          $textField.focus();
-        }
-        $textField.addClass("warning");
-        $icon.attr("src", "pics/question.png");
-        return;
-      }
-      $textField.removeClass("warning");
-      answer = parseInt(textValue);
-      spanValues = [];
-      $btn.prev().prev().find("span").each( function() {
-          spanValues.push(parseInt($(this).text()));
-      });
-      correct = false;
-      switch (name) {
-        case "addition":
-          if (spanValues[0] + spanValues[1] === answer) {
-            correct = true;
-          } break;
-        case "subtraction":
-          if (spanValues[0] - spanValues[1] === answer) {
-            correct = true;
-          } break;
-        case "multiplying":
-          if (spanValues[0] * spanValues[1] === answer) {
-            correct = true;
-          } break;
-        case "division":
-          if (spanValues[0] / spanValues[1] === answer) {
-            correct = true;
-          } break;
-      }
-      if (correct) {
-        $icon.attr("src", "pics/correct.png");
-      } else {
-        $icon.attr("src", "pics/wrong.png");
-      }
-    };
-    var $checkButtons = $("."+name+"Button");
+    var $checkButtons = $("."+name+"Button"),
+        $textFields = $("."+name+"Input");
+
     $checkButtons.on("click", function(e) {
       e.preventDefault();
-      checker(this, false);
+      checkResults(false, false, name, this.previousSibling);
     });
     $("."+name+"CheckAll").on("click", function(e) {
       e.preventDefault();
       $checkButtons.each(function() {
-        checker(this, true);
+        checkResults(false, true, name);
       });
     });
     $("."+name+"Reload").on("click", function(){
       randomizeTable(name);
       $("."+name+"Icon").prop("src", "pics/question.png");
     });
-    var $textFields = $("."+name+"Input");
     $textFields.on("keypress", function(e) {
       return validateInput(this, e);
     });

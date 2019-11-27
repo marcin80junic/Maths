@@ -91,53 +91,64 @@
         <div id="testContent">
           <div id="accordeon">
             <div id="timer"></div>
-            <ul id="test-accordeon">
-              <li>
-                <button class="test-accordeon-control">Addition</button>
-                <div class="test-accordeon-content">
-                  <fieldset><table id="additionTest"></table></fieldset>
-                  <p class="footer">
-                    <button class="next-button">next</button>
-                  </p>
-                </div>
-              </li>
-              <li>
-                <button class="test-accordeon-control">Subtraction</button>
-                <div class="test-accordeon-content">
-                  <fieldset><table id="subtractionTest"></table></fieldset>
-                  <p class="footer">
-                    <button class="previous-button">prev</button>
-                    <button class="next-button">next</button>
-                  </p>
-                </div>
-              </li>
-              <li>
-                <button class="test-accordeon-control">Multiplying</button>
-                <div class="test-accordeon-content">
-                  <fieldset><table id="multiplyingTest"></table></fieldset>
-                  <p class="footer">
-                    <button class="previous-button">prev</button>
-                    <button class="next-button">next</button>
-                  </p>
-                </div>
-              </li>
-              <li>
-                <button class="test-accordeon-control">Division</button>
-                <div class="test-accordeon-content">
-                  <fieldset><table id="divisionTest"></table></fieldset>
-                  <p class="footer">
-                    <button class="previous-button">prev</button>
-                    <button class="submit-button">submit</button>
-                  </p>
-                </div>
-              </li>
-              <li>
-                <button class="test-accordeon-control" disabled="true">Test Summary</button>
-                <div class="test-accordeon-content">
-                  <p>Test Summary: </p>
-                </div>
-              </li>
-            </ul>
+            <form id="test">
+              <ul id="test-accordeon">
+                <li>
+                  <button class="test-accordeon-control">Addition</button>
+                  <div class="test-accordeon-content">
+                    <fieldset><table id="additionTest"></table></fieldset>
+                    <p class="footer">
+                      <button class="next-button">next</button>
+                    </p>
+                  </div>
+                </li>
+                <li>
+                  <button class="test-accordeon-control">Subtraction</button>
+                  <div class="test-accordeon-content">
+                    <fieldset><table id="subtractionTest"></table></fieldset>
+                    <p class="footer">
+                      <button class="previous-button">prev</button>
+                      <button class="next-button">next</button>
+                    </p>
+                  </div>
+                </li>
+                <li>
+                  <button class="test-accordeon-control">Multiplying</button>
+                  <div class="test-accordeon-content">
+                    <fieldset><table id="multiplyingTest"></table></fieldset>
+                    <p class="footer">
+                      <button class="previous-button">prev</button>
+                      <button class="next-button">next</button>
+                    </p>
+                  </div>
+                </li>
+                <li>
+                  <button class="test-accordeon-control">Division</button>
+                  <div class="test-accordeon-content">
+                    <fieldset><table id="divisionTest"></table></fieldset>
+                    <p class="footer">
+                      <button class="previous-button">prev</button>
+                      <button class="submit-button">submit</button>
+                    </p>
+                  </div>
+                </li>
+                <li>
+                  <button class="test-accordeon-control" disabled="true">Test Summary</button>
+                  <div class="test-accordeon-content">
+                    <p>Addition: <span></span></p>
+                    <p>Subtraction: <span></span></p>
+                    <p>Multiplying: <span></span></p>
+                    <p>Division: <span></span></p>
+                    <p>Total score: <span></span></p>
+                    <p>Time: <span></span></p>
+                    <p><br>Reward: <span></span><p>
+                    <p class="footer">
+                      <button class="close-button">close</button>
+                    </p>
+                  </div>
+                </li>
+              </ul>
+            </form>
           </div>
         </div>
 
