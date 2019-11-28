@@ -12,6 +12,7 @@
       multiplying: 0,
       division: 0,
       test: 0,
+      map: [["easy", 0], ["medium", 1], ["hard", 2]],
       setAll: function(num) {
         if (num === "none") {
           return null;
@@ -63,7 +64,7 @@
     $("#testMenu").on("click", function(e) {
       e.preventDefault();
       switchContent(this, "test");
-      $(".test-Difficulty-Button").on("click", function(){
+      $(".test-difficulty-button").on("click", function(){
         var level = $(this).prop("value");
         showTest(level);
       })
@@ -75,7 +76,7 @@
   }
 
   function showTest(level) {
-    maths.difficulty.test = level;
+    maths.difficulty.test = parseInt(level);
     for (var i=0; i<maths.modules.length; i+=1) {
       var name = maths.modules[i][0];
       randomizeTable(name, level);
@@ -93,6 +94,7 @@
     container: $("#timer"),
     minutes: "00",
     seconds: "00",
+    secondsElapsed: 0,
     state: function(){
       return "<b>"+this.minutes+":"+this.seconds+"</b>"
     },
@@ -101,21 +103,26 @@
     },
     start: function(level){
       this.reset();
-      var count = (level==0)? 600: ((level==1)? 300: 120);
-      var minutes = count/60;
+      var count = (level==0)? 500: ((level==1)? 300: 120);
+      var minutes = Math.floor(count/60);
+      var seconds = count % 60;
       this.minutes = (minutes < 10)? "0"+minutes: ""+minutes;
+      this.seconds = (seconds < 10)? "0"+seconds: ""+seconds;
       this.show();
       var instance = this;
-      var secs = 0;
       var start = Date.now();
       this.setTimer = setInterval(function(){
         var elapsed = Math.floor((Date.now() - start)/1000) - 1;
-        if (elapsed >= count) {
+        instance.secondsElapsed = elapsed;
+        if (elapsed >= count+1) {
+          $("#test").submit();
           clearInterval(setTimer);
           return;
         }
-        secs = 59 - ((elapsed + 60) % 60);
-        var mins = (count/60 - 1) - Math.floor(elapsed/60);
+        var secsElapsed = (elapsed + 60) % 60;
+        var secs = (seconds < secsElapsed)? 60 - (secsElapsed - seconds): seconds - secsElapsed;
+        var minsElapsed = Math.floor(elapsed/60);
+        var mins = (secsElapsed < seconds+1)? minutes - minsElapsed: minutes - minsElapsed - 1;
         instance.minutes = (mins < 10)? "0"+mins: ""+mins;
         instance.seconds = (secs < 10)? "0"+secs: ""+secs;
         instance.show();
@@ -138,13 +145,14 @@
     mul = maths.settings_log[2][1] = maths.difficulty.multiplying = parseInt(localStorage.getItem("multiplying")) || 0;
     div = maths.settings_log[3][1] = maths.difficulty.division= parseInt(localStorage.getItem("division")) || 0;
     maths.unlocked = parseInt(localStorage.getItem("unlocked")) || 0;
+    // localStorage.setItem("unlocked", "0");
     $("input[type='radio'][name='addition'][value='"+add+"']").prop("checked", true);
     $("input[type='radio'][name='subtraction'][value='"+sub+"']").prop("checked", true);
     $("input[type='radio'][name='multiplying'][value='"+mul+"']").prop("checked", true);
     $("input[type='radio'][name='division'][value='"+div+"']").prop("checked", true);
-    var levels = document.getElementsByClassName("test-Difficulty-Button");
-    for(var i=0; i<maths.unlocked; i++){
-      levels[i].setAttribute("disabled", "false");
+    var levels = document.getElementsByClassName("test-difficulty-button");
+    for(var i=0; i<=maths.unlocked; i++){
+      levels[i].removeAttribute("disabled");
     }
   }
 
@@ -183,29 +191,34 @@
         inputType = isTest? "TestInput": "Input",
         $textInput = checkAll? $("."+name+inputType): $(textInput),
         $spans = checkAll? $("."+name+spanType): $textInput.parent().find("span"),
-        spanValues = [],
         score = 0,
-        answer, $icon;
-    if (checkAll === false) {
-      answer = $textInput.val();
-      if (answer === "") {
-        $textInput.focus();
-        $textInput.addClass("warning");
-        $icon.attr("src", "pics/question.png");
-        return;
-      }
-    }
+        spanValues, answer, $icon;
     $textInput.removeClass("warning");
     $textInput.each(function(){
+      var $thisInput = $(this);
+      answer = parseInt($thisInput.val());
+      $icon = $thisInput.parent().next().find("img");
+      if(!isTest && isNaN(answer)) {
+        $thisInput.addClass("warning");
+        $icon.attr("src", "pics/question.png");
+        if (!checkAll) {
+          $thisInput.focus();
+          return;
+        }
+      }
       spanValues = [];
       $(this).siblings().filter("span").each(function(){
         spanValues.push(Number($(this).text()));
       });
-      answer = Number($(this).val());
-      $icon = $(this).parent().next().find("img");
-      score = checker()? score++: score;
+      score = checker()? ++score: score;
     });
     function checker() {
+      if(isNaN(answer)) {
+        if(isTest) {
+          $icon.attr("src", "pics/wrong.png");
+        }
+        return 0;
+      }
       var correct = false;
       switch (name) {
         case "addition":
@@ -248,7 +261,7 @@
           tableContent += '<td class="first" colspan="2"><span class="'+name+'TestNumber">';
           tableContent += '</span> '+sign+' <span class="'+name+'TestNumber"></span> =';
           tableContent += '<input type="text" class="'+name+'TestInput" size="3"/></td>';
-          tableContent += '<td colspan="2"><img class="'+name+'Icon" src="" alt="?" width="32px" height="32px">';
+          tableContent += '<td colspan="2"><img class="'+name+'TestIcon" src="" alt="?" width="32px" height="32px">';
           tableContent += '</td>';
           if(j === 1) {
             tableContent += '</tr>';
@@ -270,7 +283,6 @@
         $closeButton = $(".close-button");
 
     $icons.hide();
-    $testModal.hide();
     $contentDivs.hide();
 
     $headerButtons.on("click", function(e){
@@ -310,6 +322,8 @@
     $closeButton.on("click", function(e){
       e.preventDefault();
       $("#testContent button:not(.test-accordeon-control:last)").removeAttr("disabled");
+      $("#test input").val("");
+      $icons.hide();
       $contentDivs.slideUp();
       $contentDivs.removeClass("accordeon-selected");
       $testModal.css("overflow", "hidden");
@@ -318,13 +332,44 @@
     });
 
     function createSummary() {
-      var results = [];
+      var results = [],
+          score = 0,
+          rewardText = "";
       for(var i=0; i<maths.modules.length; i++) {
         var name = maths.modules[i][0];
-        results.push([name][checkResults(true, true, name)]);
+        results.push(checkResults(true, true, name));
+        score += results[i];
       }
-      
-      localStorage.setItem("unlocked", ""+maths.unlocked);
+      var $summary = $(".summary");
+      $summary.empty();
+      $summary.filter(":lt(4)").each(function(index){
+        var txt = results[index] + " of 6 (" +Math.round(results[index]/6*100)+ "%)";
+        $(this).text(txt);
+      });
+      var percent = Math.round(score/24*100);
+      $summary.eq(4).text(score + " of 24  (" +percent+ "%)");
+      var minutes = (timer.secondsElapsed > 59)? Math.floor(timer.secondsElapsed / 60): 0;
+      var seconds = (timer.secondsElapsed > 59)? timer.secondsElapsed % 60: timer.secondsElapsed;
+      var time = (minutes > 0)? minutes+ ((minutes===1)? " minute ": " minutes ") +seconds+ " seconds": seconds+ " seconds";
+      $summary.eq(5).text(time);
+      if(percent < 66) {
+        rewardText = "test failed, you need to practise a little more<br>don't give up and try again!";
+      }
+      else if(percent > 65 && percent < 86) {
+        rewardText = "Well done you passed!"
+        rewardText += ( (maths.unlocked < 2) && (maths.unlocked === maths.difficulty.test) )?
+          "<br>(to unlock next level your score needs to be at least 90%)": "";
+      }
+      else {
+        alert(maths.unlocked + " is number?: "+ !isNaN(maths.unlocked));
+        rewardText = "Well done you passed!";
+        rewardText += ( (maths.unlocked < 2) && (maths.unlocked === maths.difficulty.test) )?
+          "<br>Next level unlocked: " +maths.difficulty.map[maths.unlocked+1][0] : "";
+        maths.unlocked = maths.difficulty.test + 1;
+        $(".test-difficulty-button[value="+maths.unlocked+"]").removeAttr("disabled");
+        localStorage.setItem("unlocked", maths.unlocked);
+      }
+      $summary.eq(6).html(rewardText);
     }
 
     function toggleClass($activeDiv){
@@ -424,9 +469,7 @@
     });
     $("."+name+"CheckAll").on("click", function(e) {
       e.preventDefault();
-      $checkButtons.each(function() {
-        checkResults(false, true, name);
-      });
+      checkResults(false, true, name);
     });
     $("."+name+"Reload").on("click", function(){
       randomizeTable(name);

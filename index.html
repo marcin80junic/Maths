@@ -83,9 +83,9 @@
           <p>and follow the path to excellence!!<br><br></p>
           <p>Dear <span class="special">Paulina</span>, please choose difficulty level:</p>
           <div id="test-difficulty-choice">
-            <button id="easy" class="test-Difficulty-Button" value="0">Easy</button>
-            <button id="medium" class="test-Difficulty-Button" value="1" disabled="true">Medium</button>
-            <button id="hard" class="test-Difficulty-Button" value="2" disabled="true">Hard</button>
+            <button id="easy" class="test-difficulty-button" value="0">Easy</button>
+            <button id="medium" class="test-difficulty-button" value="1" disabled="true">Medium</button>
+            <button id="hard" class="test-difficulty-button" value="2" disabled="true">Hard</button>
           </div>
         </div>
         <div id="testContent">
@@ -97,54 +97,54 @@
                   <button class="test-accordeon-control">Addition</button>
                   <div class="test-accordeon-content">
                     <fieldset><table id="additionTest"></table></fieldset>
-                    <p class="footer">
+                    <div class="footer">
                       <button class="next-button">next</button>
-                    </p>
+                    </div>
                   </div>
                 </li>
                 <li>
                   <button class="test-accordeon-control">Subtraction</button>
                   <div class="test-accordeon-content">
                     <fieldset><table id="subtractionTest"></table></fieldset>
-                    <p class="footer">
+                    <div class="footer">
                       <button class="previous-button">prev</button>
                       <button class="next-button">next</button>
-                    </p>
+                    </div>
                   </div>
                 </li>
                 <li>
                   <button class="test-accordeon-control">Multiplying</button>
                   <div class="test-accordeon-content">
                     <fieldset><table id="multiplyingTest"></table></fieldset>
-                    <p class="footer">
+                    <div class="footer">
                       <button class="previous-button">prev</button>
                       <button class="next-button">next</button>
-                    </p>
+                    </div>
                   </div>
                 </li>
                 <li>
                   <button class="test-accordeon-control">Division</button>
                   <div class="test-accordeon-content">
                     <fieldset><table id="divisionTest"></table></fieldset>
-                    <p class="footer">
+                    <div class="footer">
                       <button class="previous-button">prev</button>
                       <button class="submit-button">submit</button>
-                    </p>
+                    </div>
                   </div>
                 </li>
                 <li>
                   <button class="test-accordeon-control" disabled="true">Test Summary</button>
                   <div class="test-accordeon-content">
-                    <p>Addition: <span></span></p>
-                    <p>Subtraction: <span></span></p>
-                    <p>Multiplying: <span></span></p>
-                    <p>Division: <span></span></p>
-                    <p>Total score: <span></span></p>
-                    <p>Time: <span></span></p>
-                    <p><br>Reward: <span></span><p>
-                    <p class="footer">
+                    <p>Addition: <span class="summary"></span></p>
+                    <p>Subtraction: <span class="summary"></span></p>
+                    <p>Multiplying: <span class="summary"></span></p>
+                    <p>Division: <span class="summary"></span></p>
+                    <p>Total score: <span class="summary"></span></p>
+                    <p>Time: <span class="summary"></span></p>
+                    <p><br>Feedback: <span class="summary"></span><p>
+                    <div class="footer">
                       <button class="close-button">close</button>
-                    </p>
+                    </div>
                   </div>
                 </li>
               </ul>
@@ -284,10 +284,10 @@
                 </table>
               </fieldset>
             </fieldset>
-            <p class="footer">
+            <div class="footer">
               <input id="resetSettings" type="reset" value="default"/>
               <input id="applySettings" type="submit" value="apply" disabled/>
-            </p>
+            </div>
           </form>
         </div>
       </div>

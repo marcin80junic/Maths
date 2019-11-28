@@ -10,7 +10,11 @@ body {
   color: red;
 }
 
-div#page {
+.warning {
+  border: 2px solid red;
+}
+
+#page {
   width: 100%;
   text-align: center;
   display: table;
@@ -18,7 +22,7 @@ div#page {
   padding: 0;
 }
 
-div#menu {
+#menu {
   background-color: #1f7a1f;
   position: fixed;
   float: left;
@@ -29,14 +33,14 @@ div#menu {
   border-radius: 10px;
 }
 
-div#main {
+#main {
   width: 85%;
   margin-top: 1em;
   margin-left: 190px;
   margin-bottom: 4em;
 }
 
-div#homeContent {
+#homeContent {
   height: 18em;
   margin-top: 2em;
   background-image: url("../pics/mathKids.png");
@@ -75,19 +79,21 @@ ul {
   box-shadow: 1px 2px 4px rgba(0, 0, 0, .5);
 }
 
-.menu li a:hover:not(.selected) {
+.test-difficulty-button:not(:disabled) {
+  background-color: #ff0000;
+  color: #ffff66;
+  border: 2px solid rgba(0, 0, 0, .2);
+}
+
+.menu li a:hover:not(.selected), .test-difficulty-button:not(:disabled):hover {
   background-color: #e60000;
 }
 
-.menu li a:active {
+.menu li .selected, .test-difficulty-button:not(:disabled):active{
   background-color: #b30000;
 }
 
-.menu li .selected {
-  background-color: #b30000;
-}
-
-div#test-difficulty-choice {
+#test-difficulty-choice {
   margin: 50px;
 }
 
@@ -97,7 +103,7 @@ div#test-difficulty-choice {
   margin: 20px auto;
 }
 
-div#dim {
+#dim {
   position: absolute;
   top: 0;
   left: 0;
@@ -107,7 +113,8 @@ div#dim {
   background-color: rgba(0,0,0,0.7);
 }
 
-div#testContent {
+#testContent {
+  display: none;
   position: absolute;
   overflow: hidden;
   margin: auto;
@@ -144,7 +151,7 @@ div#testContent {
   margin: 0;
 }
 
-div.test-accordeon-content {
+.test-accordeon-content {
   padding: 30px 0 10px 0;
 }
 
@@ -163,7 +170,7 @@ p {
   letter-spacing: 0.05em;
 }
 
-p.footer {
+.footer {
   width: 70%;
   margin: 10px auto;
 }
@@ -183,11 +190,11 @@ td {
   text-align: left;
 }
 
-td.first {
+.first {
   text-align: right;
 }
 
-th.col_head {
+.col_head {
   height: 40px;
   vertical-align: top;
 }
@@ -216,9 +223,7 @@ input, button {
   text-align: center;
 }
 
-.warning {
-  border: 2px solid red;
-}
+
 
 input[type=text] {
   background-color: #ffffcc;
@@ -247,7 +252,7 @@ input[type=submit]:active, input[type=reset]:active {
 }
 
 #applySettings:enabled {
-  border: 3px solid red;
+  border: 3px solid blue;
 }
 
 img {
