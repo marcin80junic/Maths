@@ -132,9 +132,7 @@ ul {
 }
 
 #timer {
-  position: fixed;
-  top: 50px;
-  left: 645px;
+  position: relative;
   font-size: 1.2em;
   font-weight: 900;
   background: rgba(255,255,255,0);
@@ -161,6 +159,9 @@ ul {
 
 .test-accordeon-content {
   padding: 30px 0 10px 0;
+}
+.test-accordeon-content:last-of-type {
+  padding: 10px 0 2px 0;
 }
 
 #accordeon fieldset {
@@ -231,6 +232,10 @@ input, button:not(.test-accordeon-control) {
   text-align: center;
 }
 
+input {
+  box-shadow: 3px 3px 3px rgba(55,55,55,.5);
+}
+
 input[type=text] {
   background-color: #ffffcc;
 }
@@ -238,23 +243,20 @@ input[type=text] {
 input[value="check all"], input[value="apply"] {
   float: right;
 }
-
 input[type=reset]{
   float: left;
 }
 
 input[type=submit], input[type=reset] {
-  color: #ffff99;
-  background-color: #258e25;
+  background-color: #80ff80;
+  border: 2px solid #0099e6;
 }
-
 input[type=reset]:hover, input[type=submit]:hover {
-  background-color: #1a651a;
+  background-color: #1aff1a;
   cursor: pointer;
 }
-
 input[type=submit]:active, input[type=reset]:active {
-  background-color: #155115;
+  background-color: #00b300;
 }
 
 #applySettings:enabled {

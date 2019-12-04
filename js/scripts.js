@@ -317,7 +317,9 @@
       $icons.show();
       $("#testContent button:not(.close-button)").prop("disabled", "true");
       $testModal.css("overflow", "scroll");
-      $contentDivs.slideDown();
+      $contentDivs.slideDown(function(){
+        $testModal.scrollTop(1500);
+      });
     });
     $closeButton.on("click", function(e){
       e.preventDefault();
@@ -350,7 +352,7 @@
       $summary.eq(4).text(score + " of 24  (" +percent+ "%)");
       var minutes = (timer.secondsElapsed > 59)? Math.floor(timer.secondsElapsed / 60): 0;
       var seconds = (timer.secondsElapsed > 59)? timer.secondsElapsed % 60: timer.secondsElapsed;
-      var time = (minutes > 0)? minutes+ ((minutes===1)? " minute ": " minutes ") +seconds+ " seconds": seconds+ " seconds";
+      var time = (minutes > 0)? minutes+ ((minutes===1)? " minute ": " minutes ") +seconds+ " second(s)": seconds+ " second(s)";
       $summary.eq(5).text(time);
       if(percent < 66) {
         rewardText = "test failed, you need to practise a little more<br>don't give up and try again!";
