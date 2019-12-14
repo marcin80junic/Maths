@@ -287,11 +287,10 @@
 
     $headerButtons.on("click", function(e){
       e.preventDefault();
-      $(".accordeon-selected").slideUp();
       if($(this).next().is(".accordeon-selected")) {
-        toggleClass(null);
         return;
       }
+      $(".accordeon-selected").slideUp();
       $(this).next().slideDown(function(){
         toggleClass($(this));
       });
@@ -363,7 +362,6 @@
           "<br>(to unlock next level your score needs to be at least 90%)": "";
       }
       else {
-        alert(maths.unlocked + " is number?: "+ !isNaN(maths.unlocked));
         rewardText = "Well done you passed!";
         rewardText += ( (maths.unlocked < 2) && (maths.unlocked === maths.difficulty.test) )?
           "<br>Next level unlocked: " +maths.difficulty.map[maths.unlocked+1][0] : "";
