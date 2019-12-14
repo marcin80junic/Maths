@@ -101,6 +101,7 @@
     show: function(){
       this.container.html(this.state());
     },
+    setTimer: null,
     start: function(level){
       this.reset();
       var count = (level==0)? 500: ((level==1)? 300: 120);
@@ -116,7 +117,7 @@
         instance.secondsElapsed = elapsed;
         if (elapsed >= count+1) {
           $("#test").submit();
-          clearInterval(setTimer);
+          clearInterval(this.setTimer);
           return;
         }
         var secsElapsed = (elapsed + 60) % 60;
