@@ -195,7 +195,6 @@ table {
 }
 
 td {
-  width: 40px;
   text-align: left;
 }
 
@@ -237,6 +236,7 @@ input {
 }
 
 input[type=text] {
+  width: 15%;
   background-color: #ffffcc;
 }
 
