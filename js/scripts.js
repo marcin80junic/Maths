@@ -1,28 +1,88 @@
 (function() {
 
   var maths = {
+    addition: {
+      name: "addition",
+      sign: "+",
+      difficulty: 0,
+      create: creator,
+      getNumbers: ()=> {
+        switch(this.difficulty) {
+          case 0:
+            return [maths.randomSingleDigit(), maths.randomSingleDigit()];
+          case 1:
+            return (Math.random() < 0.5)?
+                      (Math.random() < 0.5)?
+                        [maths.randomSeveralDigit(), maths.randomSingleDigit()]
+                        : [maths.randomSingleDigit(), maths.randomSeveralDigit()]
+                      : [maths.randomSingleDigit(), maths.randomSingleDigit(), maths.randomSingleDigit()];
+          case 2:
+            return (Math.random() < 0.5)?
+                      [maths.randomDoubleDigit(), maths.randomSeveralDigit(), maths.randomSingleDigit()]
+                      : [maths.randomSeveralDigit(), maths.randomSingleDigit(), maths.randomDoubleDigit()];
+        }
+      },
+      numbers: [],
+      results: [],
+      answers: []
+    },
+    randomSingleDigit: ()=> {
+      let number;
+      while(true) {
+        number = Math.floor(Math.random() * 10);
+        if (number !== 0) {
+          return number;
+        }
+      }
+    },
+    randomSeveralDigit: ()=> {
+      return Math.floor(Math.random() * 10) + 10;
+    },
+    randomDoubleDigit: ()=> {
+      let number = Math.floor(Math.random() * 100);
+      return (number === 0 || number < 9)? number + 10: number;
+    },
+    isUnique: (nums, array)=> {
+      let max = array.length,
+          i; 
+      for (i = 0; i < max; i += 1) {
+        if (nums === array[i]) {
+          return false;
+        }
+      }
+      return true;
+    },
     exerciseNum: 20,
     testNum: 6,
-    unlocked: 0,
-    modules: [["addition", "+"], ["subtraction", "-"], ["multiplying", "&times"], ["division", ":"]],
-    settings_log: [["addition", 0], ["subtraction", 0], ["multiplying", 0], ["division", 0]],
-    difficulty: {
-      addition: 0,
-      subtraction: 0,
-      multiplying: 0,
-      division: 0,
-      test: 0,
-      map: [["easy", 0], ["medium", 1], ["hard", 2]],
-      setAll: function(num) {
-        if (num === "none") {
-          return null;
+  };
+
+  var creator = (isTest)=> {
+    let operation = [],
+        numbers = [],
+        results = [],
+        max = isTest? maths.testNum: maths.exerciseNum,
+        i;
+    for (i = 0; i < max; i += 1) {
+      while(true) {
+        operation = this.getNumbers();
+        if (maths.isUnique(operation, numbers)) {
+          numbers.push(operation);
+          results.push(operation.reduce((accumulator, num)=> {
+            return accumulator + num;
+          }));
+          break;
         }
-        var gen = parseInt(num);
-        this.addition = this.subtraction = this.multiplying = this.division = gen;
-        return gen;
       }
     }
-  };
+    if (!isTest) {
+      this.numbers = numbers;
+      this.results = results;
+    } else {
+      maths.test.numbers.push(numbers);
+      maths.test.results.push(results);
+    }
+    return numbers;
+  },
 
   if (typeof(Storage) !== "undefined") {
     loadData();
@@ -32,63 +92,6 @@
   createExercises();
   createTest();
 
-  function menuEventsInit() {
-    var $content = $("div[id$='Intro'], div[id$='Content']");
-    $content.not("div[id^='home']").hide();
-    function switchContent(menu, contentName) {
-      $("li a.selected").removeClass("selected");
-      $(menu).addClass("selected");
-      $content.hide();
-      $content.filter("#"+contentName+"Intro, #"+contentName+"Content:not(#testContent)").fadeIn("slow");
-    }
-    $("#homeMenu").on("click", function(e) {
-      e.preventDefault();
-      switchContent(this, "home");
-    });
-    $("#additionMenu").on("click", function(e) {
-      e.preventDefault();
-      switchContent(this, "addition");
-    });
-    $("#subtractionMenu").on("click", function(e) {
-      e.preventDefault();
-      switchContent(this, "subtraction");
-    });
-    $("#multiplyingMenu").on("click", function(e) {
-      e.preventDefault();
-      switchContent(this, "multiplying");
-    });
-    $("#divisionMenu").on("click", function(e) {
-      e.preventDefault();
-      switchContent(this, "division");
-    });
-    $("#testMenu").on("click", function(e) {
-      e.preventDefault();
-      switchContent(this, "test");
-      $(".test-difficulty-button").on("click", function(){
-        var level = $(this).prop("value");
-        showTest(level);
-      })
-    });
-    $("#settingsMenu").on("click", function(e) {
-      e.preventDefault();
-      switchContent(this, "settings");
-    });
-  }
-
-  function showTest(level) {
-    maths.difficulty.test = parseInt(level);
-    for (var i=0; i<maths.modules.length; i+=1) {
-      var name = maths.modules[i][0];
-      randomizeTable(name, level);
-    }
-    var $dimmer = $("<div id='dim'></div>");
-    $("body").append($dimmer);
-    $("#testContent").fadeIn("slow");
-    $(".test-accordeon-content").first().slideDown(function(){
-      $(this).addClass("accordeon-selected");
-    });
-    timer.start(level);
-  }
 
   var timer = {
     container: $("#timer"),
@@ -157,181 +160,9 @@
     }
   }
 
-  function createExercises() {
-    var i, j, k, m, name, sign, tableContent;
-    for (m=0; m<maths.modules.length; m+=1) {
-      name = maths.modules[m][0];
-      sign = maths.modules[m][1];
-      tableContent = "";
-      for(i=0; i<maths.exerciseNum/2; i+=1) {
-        tableContent += '<tr>';
-        for(j=0; j<2; j+=1) {
-          k = i*2+j;
-          tableContent += '<td class="first" colspan="2"><span class="'+name+'Number"></span> ';
-          tableContent += sign+' <span class="'+name+'Number"></span> =';
-          tableContent += '<input type="text" name="result"'+k+' size="3" class="'+name+'Input"/>';
-          tableContent += '<input type="submit" value="check" class="'+name+'Button"/></td>';
-          tableContent += '<td><img class="'+name+'Icon" src="pics/question.png" alt="?" width="32px" height="32px">'
-          tableContent += '</td><td></td>';
-          if(j === 1) {
-            tableContent += '</tr>';
-          }
-        }
-      }
-      $('#'+name+'Table').html(tableContent);
-      var footerHTML = '<input type="reset" value="reload" class="'+name+'Reload"/>';
-      footerHTML += '<input type="submit" value="check all" class="'+name+'CheckAll"/>';
-      $('#'+name+'Form').append('<p class="footer">'+footerHTML+'</p>');
-      randomizeTable(name);
-      addButtonListeners(name);
-    }
-  }
 
-  function checkResults(isTest, checkAll, name, textInput) {
-    var spanType = isTest? "TestNumber": "Number",
-        inputType = isTest? "TestInput": "Input",
-        $textInput = checkAll? $("."+name+inputType): $(textInput),
-        $spans = checkAll? $("."+name+spanType): $textInput.parent().find("span"),
-        score = 0,
-        spanValues, answer, $icon;
-    $textInput.removeClass("warning");
-    $textInput.each(function(){
-      var $thisInput = $(this);
-      answer = parseInt($thisInput.val());
-      $icon = $thisInput.parent().next().find("img");
-      if(!isTest && isNaN(answer)) {
-        $thisInput.addClass("warning");
-        $icon.attr("src", "pics/question.png");
-        if (!checkAll) {
-          $thisInput.focus();
-          return;
-        }
-      }
-      spanValues = [];
-      $(this).siblings().filter("span").each(function(){
-        spanValues.push(Number($(this).text()));
-      });
-      score = checker()? ++score: score;
-    });
-    function checker() {
-      if(isNaN(answer)) {
-        if(isTest) {
-          $icon.attr("src", "pics/wrong.png");
-        }
-        return 0;
-      }
-      var correct = false;
-      switch (name) {
-        case "addition":
-          if (spanValues[0] + spanValues[1] === answer) {
-            correct = true;
-          } break;
-          case "subtraction":
-          if (spanValues[0] - spanValues[1] === answer) {
-            correct = true;
-          } break;
-          case "multiplying":
-          if (spanValues[0] * spanValues[1] === answer) {
-            correct = true;
-          } break;
-          case "division":
-          if (spanValues[0] / spanValues[1] === answer) {
-            correct = true;
-          } break;
-      }
-      if(correct) {
-        $icon.attr("src", "pics/correct.png");
-      } else {
-        $icon.attr("src", "pics/wrong.png");
-      }
-      return correct;
-    }
-    return score;
-  }
 
-  function createTest() {
-    var i, j, k, m, name, sign, tableContent;
-    for (m=0; m<maths.modules.length; m+=1) {
-      name = maths.modules[m][0];
-      sign = maths.modules[m][1];
-      tableContent = "";
-      for (i=0; i<maths.testNum/2; i+=1) {
-        tableContent += '<tr>';
-        for(j=0; j<2; j+=1) {
-          k = i*2+j;
-          tableContent += '<td class="first" colspan="2"><span class="'+name+'TestNumber">';
-          tableContent += '</span> '+sign+' <span class="'+name+'TestNumber"></span> =';
-          tableContent += '<input type="text" class="'+name+'TestInput" size="3"/></td>';
-          tableContent += '<td colspan="2"><img class="'+name+'TestIcon" src="" alt="?" width="32px" height="32px">';
-          tableContent += '</td>';
-          if(j === 1) {
-            tableContent += '</tr>';
-          }
-        }
-      }
-      $("#"+name+"Test").html(tableContent);
-      $("."+name+"TestInput").on("keypress", function(e){
-        return validateInput(this, e);
-      });
-    }
-    var $testModal = $("#testContent"),
-        $contentDivs = $(".test-accordeon-content"),
-        $icons = $("#test-accordeon img"),
-        $headerButtons = $(".test-accordeon-control"),
-        $nextButtons = $(".next-button"),
-        $prevButtons = $(".previous-button"),
-        $submitButton = $(".submit-button"),
-        $closeButton = $(".close-button");
-
-    $icons.hide();
-    $contentDivs.hide();
-
-    $headerButtons.on("click", function(e){
-      e.preventDefault();
-      if($(this).next().is(".accordeon-selected")) {
-        return;
-      }
-      $(".accordeon-selected").slideUp();
-      $(this).next().slideDown(function(){
-        toggleClass($(this));
-      });
-    });
-    $nextButtons.on("click", function(e){
-      e.preventDefault();
-      $(".accordeon-selected").slideUp();
-      $(this).parents("li").next().find(".test-accordeon-content").slideDown(function(){
-        toggleClass($(this));
-      });
-    });
-    $prevButtons.on("click", function(e){
-      e.preventDefault();
-      $(".accordeon-selected").slideUp();
-      $(this).parents("li").prev().find(".test-accordeon-content").slideDown(function(){
-        toggleClass($(this));
-      });
-    });
-    $("#test").on("submit", function(e){
-      e.preventDefault();
-      timer.stop();
-      createSummary();
-      $icons.show();
-      $("#testContent button:not(.close-button)").prop("disabled", "true");
-      $testModal.css("overflow", "scroll");
-      $contentDivs.slideDown(function(){
-        $testModal.scrollTop(1500);
-      });
-    });
-    $closeButton.on("click", function(e){
-      e.preventDefault();
-      $("#testContent button:not(.test-accordeon-control:last)").removeAttr("disabled");
-      $("#test input").val("");
-      $icons.hide();
-      $contentDivs.slideUp();
-      $contentDivs.removeClass("accordeon-selected");
-      $testModal.css("overflow", "hidden");
-      $testModal.hide();
-      $("div").remove("#dim");
-    });
+  
 
     function createSummary() {
       var results = [],
@@ -377,115 +208,9 @@
       $(".accordeon-selected").removeClass("accordeon-selected");
       $activeDiv.addClass("accordeon-selected");
     }
-  }
+  
 
-  function randomizeTable(name, level) {
-    var $spans = level? $("."+name+"TestNumber"): $("."+name+"Number"),
-        count = level? maths.testNum: maths.exerciseNum,
-        difficulty = level? parseInt(level): maths.difficulty[name],
-        number, i, j, k,
-        temp = [],
-        numbers = [];
-    var randomSingleDigit = function() {
-      while(true) {
-        if ((number = Math.floor(Math.random()*10)) !== 0) {
-          break;
-        }
-      }
-      return number;
-    };
-    var randomSeveralDigit = function() {
-      return (number = Math.floor(Math.random()*10) + 10);
-    };
-    var randomDoubleDigit = function() {
-      while(true) {
-        number = Math.floor(Math.random()*100);
-        if (number !== 0 && number > 9) {
-          break;
-        }
-      }
-      return number;
-    };
-    function getNumbers() {
-      var nums = [];
-      switch(difficulty) {
-        case 0:
-          nums = [randomSingleDigit(), randomSingleDigit()];
-          break;
-        case 1:
-          if (Math.random() < 0.5) {
-            nums = [randomSingleDigit(), randomSeveralDigit()];
-          } else {
-            nums = [randomSeveralDigit(), randomSingleDigit()];
-          }
-          break;
-        case 2:
-          nums = [randomDoubleDigit(), randomDoubleDigit()];
-          break;
-      }
-      return nums;
-    }
-    function helper() {
-      if( (name === "subtraction" || name === "division") && (temp[0] < temp[1]) ) {
-        var num = temp[0];
-        temp[0] = temp[1];
-        temp[1] = num;
-      }
-      if( (name === "division") && (temp[0] % temp[1] !== 0) ) {
-        return false;
-      }
-      for(j=0; j<numbers.length; j+=1) {
-        if((numbers[j][0] === temp[0]) && (numbers[j][1] === temp[1])) {
-          return false;
-        }
-      }
-      return true;
-    }
-    for(i=0; i<count; i+=1) {
-      k = i*2;
-      while(true) {
-        temp = getNumbers();
-        if(helper()) {
-          numbers[i] = temp;
-          $spans.eq(k).text(temp[0]);
-          $spans.eq(k+1).text(temp[1]);
-          break;
-        }
-      }
-    }
-    $("."+name+"Input").each(function(){
-      if($(this).is(".warning")){
-        $(this).removeClass("warning");
-      }
-    });
-  }
-
-  function addButtonListeners(name) {
-    var $checkButtons = $("."+name+"Button"),
-        $textFields = $("."+name+"Input");
-
-    $checkButtons.on("click", function(e) {
-      e.preventDefault();
-      checkResults(false, false, name, this.previousSibling);
-    });
-    $("."+name+"CheckAll").on("click", function(e) {
-      e.preventDefault();
-      checkResults(false, true, name);
-    });
-    $("."+name+"Reload").on("click", function(){
-      randomizeTable(name);
-      $("."+name+"Icon").prop("src", "pics/question.png");
-    });
-    $textFields.on("keypress", function(e) {
-      return validateInput(this, e);
-    });
-    $textFields.on("blur", function(e){
-      $(this).removeClass("warning");
-      if($(this).val()==="") {
-        $(this).parent().next().find("img").prop("src", "pics/question.png");
-      }
-    });
-  }
+  
 
   function validateInput(element, e) {
     var char = String.fromCharCode(e.which);
