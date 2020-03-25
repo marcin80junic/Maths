@@ -35,11 +35,12 @@ $(function () {
   */
  var maths = {
   active: $("#home"),
-  switch: (id)=> {
-    maths.active = $(id);
-    let module = id.replace("#", "");
-    if (maths[module]["sign"] !== undefined) {
-      alert(module);
+  switch: function(id) {
+    this.active = $(id);
+    let moduleName = id.replace("#", "");
+    let module = this[moduleName];
+    if (module["sign"] !== undefined) {
+      module.initialize();
     }
   },
   home: {
@@ -48,10 +49,22 @@ $(function () {
   addition: {
     name: "addition",
     sign: "+",
-    difficulty: 0,
-    create: creator,
-    getNumbers: () => {
-      switch (this.difficulty) {
+    level: 0,
+    levelDisplayed: null,
+    container: $("#addition-exercises"),
+    isLayoutInit: false,
+    isRandomized: false,
+    initialize: function() {
+      if(this.isRandomized && this.level === this.levelDisplayed) {
+        return;
+      }
+      if(!this.isLayoutInit) {
+        maths.randomizer.layoutCreator(maths.exerciseNum, this.container);
+      }
+      
+    },
+    getNumbers: function() {
+      switch (this.level) {
         case 0:
           return [maths.randomSingleDigit(), maths.randomSingleDigit()];
         case 1:
@@ -70,35 +83,57 @@ $(function () {
     results: [],
     answers: []
   },
+  subtraction: {
+
+  },
+  multiplication: {
+
+  },
+  division: {
+
+  },
+  test: {
+
+  },
   settings: {
 
   },
-  randomSingleDigit: () => {
-    let number;
-    while (true) {
-      number = Math.floor(Math.random() * 10);
-      if (number !== 0) {
-        return number;
+  randomizer: {
+    layoutCreator: (num, container)=> {
+      let html = "",
+          i;
+      for (i = 0; i < num; i += 1) {
+
       }
+    },
+    randomSingleDigit: () => {
+      let number;
+      while (true) {
+        number = Math.floor(Math.random() * 10);
+        if (number !== 0) {
+          return number;
+        }
+      }
+    },
+    randomSeveralDigit: () => {
+      return Math.floor(Math.random() * 10) + 10;
+    },
+    randomDoubleDigit: () => {
+      let number = Math.floor(Math.random() * 100);
+      return (number === 0 || number < 9) ? number + 10 : number;
+    },
+    isUnique: (nums, array) => {
+      let max = array.length,
+        i;
+      for (i = 0; i < max; i += 1) {
+        if (nums === array[i]) {
+          return false;
+        }
+      }
+      return true;
     }
   },
-  randomSeveralDigit: () => {
-    return Math.floor(Math.random() * 10) + 10;
-  },
-  randomDoubleDigit: () => {
-    let number = Math.floor(Math.random() * 100);
-    return (number === 0 || number < 9) ? number + 10 : number;
-  },
-  isUnique: (nums, array) => {
-    let max = array.length,
-      i;
-    for (i = 0; i < max; i += 1) {
-      if (nums === array[i]) {
-        return false;
-      }
-    }
-    return true;
-  },
+  
   exerciseNum: 20,
   testNum: 6,
   timer: {
