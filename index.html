@@ -1,35 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <title>Problem Solving for Paulina</title>
-    <link href="css/style.css" type="text/css" rel="stylesheet"/>
-  </head>
 
-  <body>
-    <div id="page">
-      <div id="menu">
-        <ul class="menu">
-          <li><a href="#homeIntro" id="homeMenu" class="selected">Home</a></li>
-          <li><a href="#additionIntro" id="additionMenu">Addition +</a></li>
-          <li><a href="#subtractionIntro" id="subtractionMenu">Subtraction -</a></li>
-          <li><a href="#multiplyingIntro" id="multiplyingMenu">Multiplication &times</a></li>
-          <li><a href="#divisionIntro" id="divisionMenu">Division :</a></li>
-          <li><a href="#testIntro" id="testMenu">*Test*</a></li>
-          <li><a href="#settingsIntro" id="settingsMenu">Settings</a></li>
-        </ul>
-      </div>
-      <div id="main">
+<head>
+  <title>Problem Solving for Paulina</title>
+  <link href="css/style.css" type="text/css" rel="stylesheet" />
+</head>
+
+<body>
+  <div id="page">
+    <nav id="navigation">
+      <ul id="main-menu">
+        <li><a href="#home" class="selected">Home</a></li>
+        <li><a href="#addition">Addition +</a></li>
+        <li><a href="#subtraction">Subtraction -</a></li>
+        <li><a href="#multiplication">Multiplication &times</a></li>
+        <li><a href="#division">Division :</a></li>
+        <li><a href="#test">*Test*</a></li>
+        <li><a href="#settings">Settings</a></li>
+      </ul>
+    </nav>
+    <div id="main">
+      <div id="home">
         <div id="homeIntro">
           <h1 id="h">Hello <span class="special">Paulina!</span></h1>
           <p>I have prepared some interactive exercises for you to practice in your free time.</p>
           <p>I hope they will help you to develop a logical thinking and improve your mathematical skills.</p>
           <p>Have fun while playing and do not forget to take a break! :)
-            <img src="pics/detective.png" width="35px" height="35px"/></p>
-          </div>
+            <img src="pics/detective.png" width="35px" height="35px" /></p>
+        </div>
         <div id="homeContent"></div>
+      </div>
+      <div id="addition">
         <div id="additionIntro">
           <p><span class="special">Adding numbers</span>
-             is the most basic and straightforward mathematical operation</p>
+            is the most basic and straightforward mathematical operation</p>
           <p>there are few exercises for you!</p>
         </div>
         <div id="additionContent">
@@ -40,9 +44,11 @@
             </fieldset>
           </form>
         </div>
+      </div>
+      <div id="subtraction">
         <div id="subtractionIntro">
           <p><span class="special">Subtracting</span>
-             is a little bit more difficult but you should learn it quickly</p>
+            is a little bit more difficult but you should learn it quickly</p>
           <p>it may not feel as natural as adding but it is very useful in life</p>
         </div>
         <div id="subtractionContent">
@@ -53,19 +59,23 @@
             </fieldset>
           </form>
         </div>
-        <div id="multiplyingIntro">
+      </div>
+      <div id="multiplication">
+        <div id="multiplicationIntro">
           <p>Mastering <span class="special">multiplication</span>
-             may feel like a milestone but memorizing few rules</p>
+            may feel like a milestone but memorizing few rules</p>
           <p>will do the trick</p>
         </div>
-        <div id="multiplyingContent">
-          <form id="multiplyingForm" autocomplete="off">
+        <div id="multiplicationContent">
+          <form id="multiplicationForm" autocomplete="off">
             <fieldset>
               <legend>Multiplying numbers</legend>
-              <table id="multiplyingTable"></table>
+              <table id="multiplicationTable"></table>
             </fieldset>
           </form>
         </div>
+      </div>
+      <div id="division">
         <div id="divisionIntro">
           <p>The most difficult of all basic mathematical operations!</p>
           <p>once you master <span class="special">dividing</span> you will be ready for
@@ -73,11 +83,14 @@
         </div>
         <div id="divisionContent">
           <form id="divisionForm" autocomplete="off">
-            <fieldset><legend>Dividing numbers</legend>
+            <fieldset>
+              <legend>Dividing numbers</legend>
               <table id="divisionTable"></table>
             </fieldset>
           </form>
         </div>
+      </div>
+      <div id="test">
         <div id="testIntro">
           <p>So its time to test your skills, if you feel confident don't hesitate any longer</p>
           <p>and follow the path to excellence!!<br><br></p>
@@ -96,7 +109,9 @@
                 <li>
                   <button class="test-accordeon-control">Addition</button>
                   <div class="test-accordeon-content">
-                    <fieldset><table id="additionTest"></table></fieldset>
+                    <fieldset>
+                      <table id="additionTest"></table>
+                    </fieldset>
                     <div class="footer">
                       <button class="next-button">next</button>
                     </div>
@@ -105,7 +120,9 @@
                 <li>
                   <button class="test-accordeon-control">Subtraction</button>
                   <div class="test-accordeon-content">
-                    <fieldset><table id="subtractionTest"></table></fieldset>
+                    <fieldset>
+                      <table id="subtractionTest"></table>
+                    </fieldset>
                     <div class="footer">
                       <button class="previous-button">prev</button>
                       <button class="next-button">next</button>
@@ -115,7 +132,9 @@
                 <li>
                   <button class="test-accordeon-control">Multiplying</button>
                   <div class="test-accordeon-content">
-                    <fieldset><table id="multiplyingTest"></table></fieldset>
+                    <fieldset>
+                      <table id="multiplyingTest"></table>
+                    </fieldset>
                     <div class="footer">
                       <button class="previous-button">prev</button>
                       <button class="next-button">next</button>
@@ -125,7 +144,9 @@
                 <li>
                   <button class="test-accordeon-control">Division</button>
                   <div class="test-accordeon-content">
-                    <fieldset><table id="divisionTest"></table></fieldset>
+                    <fieldset>
+                      <table id="divisionTest"></table>
+                    </fieldset>
                     <div class="footer">
                       <button class="previous-button">prev</button>
                       <button class="submit-button">submit</button>
@@ -141,17 +162,19 @@
                     <p>Division: <span class="summary"></span></p>
                     <p>Total score: <span class="summary"></span></p>
                     <p>Time: <span class="summary"></span></p>
-                    <p><br>Feedback: <span class="summary"></span><p>
-                    <div class="footer">
-                      <button class="close-button">close</button>
-                    </div>
+                    <p><br>Feedback: <span class="summary"></span>
+                      <p>
+                        <div class="footer">
+                          <button class="close-button">close</button>
+                        </div>
                   </div>
                 </li>
               </ul>
             </form>
           </div>
         </div>
-
+      </div>
+      <div id="settings">
         <div id="settingsIntro"></div>
         <div id="settingsContent">
           <form id="settingsForm">
@@ -285,14 +308,16 @@
               </fieldset>
             </fieldset>
             <div class="footer">
-              <input id="resetSettings" type="reset" value="default"/>
-              <input id="applySettings" type="submit" value="apply" disabled/>
+              <input id="resetSettings" type="reset" value="default" />
+              <input id="applySettings" type="submit" value="apply" disabled />
             </div>
           </form>
         </div>
       </div>
     </div>
-    <script src="js/jquery-3.4.1.js"></script>
-    <script src="js/scripts.js"></script>
-  </body>
+  </div>
+  <script src="js/jquery-3.4.1.js"></script>
+  <script src="js/scripts.js"></script>
+</body>
+
 </html>
