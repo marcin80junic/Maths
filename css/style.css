@@ -1,5 +1,9 @@
 
 :root {
+  --yellow-color: #ffff66;
+  --green-bg: #1f7a1f;
+  --red-bg: #ff0000;
+  --main-bg: #ccffb3;
   font-size: calc(0.5em + 1vw);
   box-sizing: border-box;
 }
@@ -10,43 +14,59 @@
   box-sizing: inherit;
 }
 
-/* fix for jumping scrollbar issue */ 
-html {
-  width: 100vw;
-  overflow-x: hidden;
+*:focus {
+  outline: none;
 }
 
 body {
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none;
+  margin: 0;
+  overflow: overlay;
   font-family: "Comic Sans MS", "Monotype Corsiva", cursive;
-  background-color: #ccffb3;
+  background-color: var(--main-bg);
 }
 
-body * + * {
-  margin-top: .5em;
+body::-webkit-scrollbar, nav::-webkit-scrollbar, .accordeon-content::-webkit-scrollbar {
+  width: 1em;
 }
 
-#page {
-  display: flex;
+body::-webkit-scrollbar-track, nav::-webkit-scrollbar-track, .accordeon-content::-webkit-scrollbar-track {
+  background: var(--green-bg);
+}
+body::-webkit-scrollbar-thumb, nav::-webkit-scrollbar-thumb, .accordeon-content::-webkit-scrollbar-thumb {
+  background-color: var(--red-bg);
+  border-radius: .3em;
+  border: .2em solid #b30000;
 }
 
 nav {
-  width: 14%;
-  position: -webkit-sticky;
-  position: sticky;
-  top: 8px;
-  align-self: flex-start;
-  background-color: #1f7a1f;
+  width: 13%;
+  position: fixed;
+  top: 5px;
+  left: .5%;
+  bottom: 5px;
+  background-color: var(--green-bg);
   word-wrap: break-word;
   text-align: center;
   border-radius: 10px;
+  overflow: auto;
 }
 
 nav ul {
-  padding: .5em .2em;
+  height: 100%;
+  padding: .2em;
 }
 
 nav li {
   list-style-type: none;
+}
+
+nav li + li {
+  margin-bottom: .5em;
 }
 
 nav li:first-of-type {
@@ -54,14 +74,16 @@ nav li:first-of-type {
 }
 
 nav li:last-of-type {
-  margin-top: 16vw;
+  margin-top: auto;
 }
 
 nav a {
   display: block;
+  padding: 0 .2em;
   text-decoration: none;
-  background-color: #ff0000;
-  color: #ffff66;
+  background-color: var(--red-bg);
+  color: var(--yellow-color);
+  border: 1px solid #b30000;
   border-radius: 6px;
   box-shadow: 1px 2px 4px rgba(0, 0, 0, .5);
 }
@@ -75,9 +97,9 @@ nav a:hover:not(.selected) {
 }
 
 main {
-  width: 86%;
-  margin-top: 0;
-  padding: 1.5em;
+  width: 80%;
+  margin-left: calc((100% - 80% - 16%) / 2 + 13%); /* (body - main - nav) / 2 + nav */
+  padding: 2em;
 }
 
 #home .content {
@@ -97,10 +119,309 @@ p {
   line-height: 2em;
 }
 
-img {
+fieldset {
+  padding: 1em;
+  margin: 1.5em auto;
+  border-radius: 10px;
+  border-width: medium;
+}
+
+.center {
+  text-align: center;
+  align-items: center;
+}
+
+.vertical-center {
   vertical-align: middle;
 }
 
 .special {
   color: red;
 }
+
+.warning {
+  border: 2px solid red;
+}
+
+.invisible {
+  visibility: hidden;
+}
+
+.flex {
+  display: flex;
+}
+
+.flex-column {
+  flex-direction: column;
+}
+
+.flex-score {
+  min-width: 9em;
+  max-width: 9em;
+  justify-content: space-between;
+}
+
+.flex-interface {
+  justify-content: space-between;
+}
+
+.flex-interface > div:nth-child(n) {
+  margin-top: 1em;
+  margin-right: 1em;
+}
+
+.flex-interface > div:last-child {
+  margin-right: 0;
+}
+
+.flex-content {
+  justify-content: space-around;
+  flex-wrap: wrap;
+  margin: 2em 0;
+}
+
+.flex-content-column {
+  flex-direction: column;
+  min-width: 16em;
+}
+
+.accordeon-section-content .flex-column {
+  min-width: 0;
+}
+
+.flex-row {
+  width: 100%;
+  justify-content: flex-end;
+  align-items: center;
+  padding: .5em;
+}
+
+.flex-row > div + div {
+  margin-left: .4em;
+}
+
+.icon {
+  margin-right: .5em;
+}
+
+label {
+  margin-right: .5em;
+}
+
+input, select, button {
+  font: inherit;
+  font-size: .9em;
+  background-color: #80ff80;
+  border: 2px solid rgba(0, 0, 0, .3);
+  border-radius: 5px;
+  box-shadow: 3px 3px 3px rgba(55,55,55,.5);
+}
+
+input[type=reset]:hover, input[type=submit]:hover, button:not(:disabled):hover {
+  background-color: #1aff1a;
+  cursor: pointer;
+}
+
+input[type=submit]:active, input[type=reset]:active, .check:active {
+  background-color: #00b300;
+}
+
+input[type="text"] {
+  font-size: .9em;
+  text-align: center;
+  height: 85%;
+  width: 2.3em;
+  background-color: #ffffcc;
+}
+
+.fraction {
+  display: inline-block;
+  position: relative;
+  vertical-align: middle;
+  letter-spacing: 0.001em;
+  text-align: center;
+}
+
+.fraction div.bottom {
+  border-top: 2px solid black;
+}
+
+.fraction div.dash {
+  display: none;
+}
+
+.fraction input {
+  width: 1.5em;
+  border: none;
+  box-shadow: none;
+}
+
+.test-level-choice {
+  font: inherit;
+  width: 10em;
+  margin-top: 1em;
+  padding: .2em;
+  border-radius: 10px;
+  color: var(--yellow-color);
+  background-color: var(--red-bg);
+  background-image: url("../pics/unlocked.png");
+  background-position: 5%, 50%;
+  background-repeat: no-repeat;
+}
+
+.test-level-choice:disabled {
+  opacity: .8;
+  background-image: url("../pics/locked.png");
+}
+
+.test-navigation {
+  padding-top: 1em;
+  text-align: center;
+}
+
+.test-navigation > button {
+  width: 4em;
+}
+
+.test-navigation > * + * {
+  margin-left: 1em;
+}
+
+.accordeon-container {
+  position: absolute;
+  top: 2.5%;
+  left: 25%;
+  min-width: 50%;
+  max-height: 95vmin;
+  z-index: 1000;
+  overflow: hidden;
+  background-color: var(--main-bg);
+  border: 3px solid grey;
+  border-radius: 5px;
+  box-shadow: 10px 10px 15px grey;
+}
+
+.accordeon-titlebar {
+  display: flex;
+  justify-content: space-between;
+  padding: .1em;
+  background-color: var(--green-bg);
+  border-bottom: 2px solid grey;;
+}
+
+.accordeon-titlebar > * {
+  margin: 0;
+}
+
+.accordeon-titlebar-close {
+  font: inherit;
+  width: 1.5em;
+  height: 1.5em;
+  line-height: 100%;
+  color: var(--yellow-color);
+  background-color: var(--red-bg);
+}
+
+.accordeon-titlebar-title {
+  max-width: 1.5em;
+}
+
+.accordeon-content {
+  max-height: 88vmin;
+  overflow: auto;
+}
+
+.accordeon-section-header {
+  margin: 0;
+  padding: .1em;
+  cursor: pointer;
+  color: var(--yellow-color);
+  background-color: var(--red-bg);
+  border: 2px solid #b30000;
+  box-shadow: px grey;
+}
+
+.accordeon-section-content {
+  margin: .5em;
+  padding: .5em;
+  border: 2px solid grey;
+  border-radius: 10px;
+}
+
+.accordeon-section-content > * {
+  margin: 0;
+}
+
+.dim {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 999;
+  background-color: rgba(0,0,0,0.7);
+}
+
+/* Customize the label (the container) */
+.container {
+  display: inline;
+  position: relative;
+  padding-left: 30px;
+  margin-right: 12px;
+  cursor: pointer;
+  font-size: 22px;
+}
+
+/* Hide the browser's default radio button */
+.container input {
+  display: none;
+}
+
+/* Create a custom radio button */
+.checkmark {
+  position: absolute;
+  top: 2px;
+  left: 0;
+  height: 25px;
+  width: 25px;
+  background-color: #fff;
+  border: 1px solid rgba(0, 0, 0, .3);
+  border-radius: 50%;
+}
+
+/* On mouse-over, add a grey background color */
+.container:hover input ~ .checkmark {
+  background-color: #ccc;
+}
+
+/* When the radio button is checked, add a green background */
+.container input:checked ~ .checkmark {
+  background-color: #009900;
+}
+
+/* Create the indicator (the dot/circle - hidden when not checked) */
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Show the indicator (dot/circle) when checked */
+.container input:checked ~ .checkmark:after {
+  display: block;
+}
+
+/* Style the indicator (dot/circle) */
+.container .checkmark:after {
+  top: 8px;
+  left: 8px;
+  width: 8px;
+  height: 8px;
+  border: 1px solid rgba(0, 0, 0, .6);
+  border-radius: 50%;
+  background: white;
+}
+
+
+
