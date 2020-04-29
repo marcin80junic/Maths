@@ -1,8 +1,11 @@
 
 :root {
-  --yellow-color: #ffff66;
+  --yellow-light: #ffff99;
+  --yellow: #ffff66;
+  --yellow-dark: #ffff00;
   --green-bg: #1f7a1f;
   --red-bg: #ff0000;
+  --red-dark: #b30000;
   --main-bg: #ccffb3;
   font-size: calc(0.5em + 1vw);
   box-sizing: border-box;
@@ -40,7 +43,7 @@ body::-webkit-scrollbar-track, nav::-webkit-scrollbar-track, .accordeon-content:
 body::-webkit-scrollbar-thumb, nav::-webkit-scrollbar-thumb, .accordeon-content::-webkit-scrollbar-thumb {
   background-color: var(--red-bg);
   border-radius: .3em;
-  border: .2em solid #b30000;
+  border: .2em solid var(--red-dark);
 }
 
 nav {
@@ -82,18 +85,18 @@ nav a {
   padding: 0 .2em;
   text-decoration: none;
   background-color: var(--red-bg);
-  color: var(--yellow-color);
-  border: 1px solid #b30000;
+  color: var(--yellow);
+  border: 1px solid var(--red-dark);
   border-radius: 6px;
   box-shadow: 1px 2px 4px rgba(0, 0, 0, .5);
 }
 
-nav .selected {
-  background-color: #b30000;
+nav a:hover:not(.selected), a:focus {
+  background-color: #e60000;
 }
 
-nav a:hover:not(.selected) {
-  background-color: #e60000;
+nav .selected {
+  background-color: var(--red-dark);
 }
 
 main {
@@ -111,7 +114,6 @@ main {
 
 h1, h2, h3, h4, h5, h6 {
   margin-top: 0;
-  text-align: center;
 }
 
 p {
@@ -131,12 +133,24 @@ fieldset {
   align-items: center;
 }
 
+.left {
+  text-align: left;
+}
+
+.right {
+  text-align: right;
+}
+
 .vertical-center {
   vertical-align: middle;
 }
 
 .special {
   color: red;
+}
+
+.correct {
+  border: 2px solid #1aff1a;
 }
 
 .warning {
@@ -217,19 +231,19 @@ input, select, button {
   box-shadow: 3px 3px 3px rgba(55,55,55,.5);
 }
 
-input[type=reset]:hover, input[type=submit]:hover, button:not(:disabled):hover {
+input:hover, select:hover, button:not(:disabled):hover, 
+input:focus, select:focus, button:not(:disabled):focus {
   background-color: #1aff1a;
   cursor: pointer;
 }
 
-input[type=submit]:active, input[type=reset]:active, .check:active {
+input:active, .check:active {
   background-color: #00b300;
 }
 
 input[type="text"] {
   font-size: .9em;
   text-align: center;
-  height: 85%;
   width: 2.3em;
   background-color: #ffffcc;
 }
@@ -238,6 +252,7 @@ input[type="text"] {
   display: inline-block;
   position: relative;
   vertical-align: middle;
+  font-size: .95em;
   letter-spacing: 0.001em;
   text-align: center;
 }
@@ -252,7 +267,19 @@ input[type="text"] {
 
 .fraction input {
   width: 1.5em;
-  border: none;
+  box-shadow: none;
+}
+
+.close + .fraction {
+  margin-left: 0;
+}
+
+.close {
+  font-size: 1.4em;
+}
+
+.close input {
+  width: .9em;
   box-shadow: none;
 }
 
@@ -262,7 +289,7 @@ input[type="text"] {
   margin-top: 1em;
   padding: .2em;
   border-radius: 10px;
-  color: var(--yellow-color);
+  color: var(--yellow);
   background-color: var(--red-bg);
   background-image: url("../pics/unlocked.png");
   background-position: 5%, 50%;
@@ -272,6 +299,14 @@ input[type="text"] {
 .test-level-choice:disabled {
   opacity: .8;
   background-image: url("../pics/locked.png");
+}
+
+.test-interface > * {
+  margin-bottom: 0;
+}
+
+.test-interface > h2 {
+  margin: .3em 0;
 }
 
 .test-navigation {
@@ -291,7 +326,8 @@ input[type="text"] {
   position: absolute;
   top: 2.5%;
   left: 25%;
-  min-width: 50%;
+  min-width: 57vmax;
+  max-width: 57vmax;
   max-height: 95vmin;
   z-index: 1000;
   overflow: hidden;
@@ -305,11 +341,12 @@ input[type="text"] {
   display: flex;
   justify-content: space-between;
   padding: .1em;
-  background-color: var(--green-bg);
+  background-color: var(--red-dark);
   border-bottom: 2px solid grey;;
 }
 
 .accordeon-titlebar > * {
+  color: var(--yellow-dark);
   margin: 0;
 }
 
@@ -318,12 +355,13 @@ input[type="text"] {
   width: 1.5em;
   height: 1.5em;
   line-height: 100%;
-  color: var(--yellow-color);
   background-color: var(--red-bg);
 }
 
 .accordeon-titlebar-title {
+  min-width: 1.5em;
   max-width: 1.5em;
+  padding: 0 .2em;
 }
 
 .accordeon-content {
@@ -334,8 +372,9 @@ input[type="text"] {
 .accordeon-section-header {
   margin: 0;
   padding: .1em;
+  text-align: center;
   cursor: pointer;
-  color: var(--yellow-color);
+  color: var(--yellow-light);
   background-color: var(--red-bg);
   border: 2px solid #b30000;
   box-shadow: px grey;
@@ -353,7 +392,6 @@ input[type="text"] {
 }
 
 .dim {
-  display: none;
   position: absolute;
   top: 0;
   left: 0;
