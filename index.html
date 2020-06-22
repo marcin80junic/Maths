@@ -140,7 +140,7 @@
         <p class="center">
           Dear <span class="special">Paulina</span>, please choose difficulty level:
         </p>
-        <div class="flex flex-column center">
+        <div>
           <button class="test-level-choice" value="0">Fair</button>
           <button class="test-level-choice" value="1" disabled="true">Advanced</button>
           <button class="test-level-choice" value="2" disabled="true">Super Hard</button>
@@ -154,90 +154,56 @@
     <div id="settings">
       <div class="intro"></div>
       <div class="content">
-        <form id="settingsForm">
+        <form id="settings-form">
           <fieldset>
             <legend>Settings</legend>
             
-            <fieldset>
-              <legend>Addition</legend>
-              <label for=""></label>
-              <label class="container">
-                <input type="radio" name="addition" value="0">
-                <span class="checkmark"></span>
-              </label>
-              <label class="container">
-                <input type="radio" name="general" value="1">
-                <span class="checkmark"></span>
-              </label>
-              <label class="container">hard
-                <input type="radio" name="general" value="2">
-                <span class="checkmark"></span>
-              </label>
-              <label class="container">none
-                <input type="radio" name="general" value="none" checked="true">
-                <span class="checkmark"></span>
-              </label>
-
-              <label for="addition">Addition:</label>
-              <label class="container">easy
-                <input type="radio" name="addition" value="0" checked="true">
-                <span class="checkmark"></span>
-              </label>
-              <label class="container">medium
-                <input type="radio" name="addition" value="1">
-                <span class="checkmark"></span>
-              </label>
-              <label class="container">hard
-                <input type="radio" name="addition" value="2">
-                <span class="checkmark"></span>
-              </label>
-
-              <label for="subtraction">Subtraction:</label>
-              <label class="container">easy
-                <input type="radio" name="subtraction" value="0" checked="true">
-                <span class="checkmark"></span>
-              </label>
-              <label class="container">medium
-                <input type="radio" name="subtraction" value="1">
-                <span class="checkmark"></span>
-              </label>
-              <label class="container">hard
-                <input type="radio" name="subtraction" value="2">
-                <span class="checkmark"></span>
-              </label>
-
-              <label for="multiplying">Multiplying:</label>
-              <label class="container">easy
-                <input type="radio" name="multiplying" value="0" checked="true">
-                <span class="checkmark"></span>
-              </label>
-              <label class="container">medium
-                <input type="radio" name="multiplying" value="1">
-                <span class="checkmark"></span>
-              </label>
-              <label class="container">hard
-                <input type="radio" name="multiplying" value="2">
-                <span class="checkmark"></span>
-              </label>
-
-              <label for="division">Division:</label>
-              <label class="container">easy
-                <input type="radio" name="division" value="0" checked="true">
-                <span class="checkmark"></span>
-              </label>
-              <label class="container">medium
-                <input type="radio" name="division" value="1">
-                <span class="checkmark"></span>
-              </label>
-              <label class="container">hard
-                <input type="radio" name="division" value="2">
-                <span class="checkmark"></span>
-              </label>
-
+            <fieldset class="settings-group">
+              <legend>System</legend>
+              <div class="slider">
+                <div class="slider-label">
+                  <label>Volume</label>
+                  <label id="volume-label"></label>
+                </div>
+                <input type="range" min="0" max="100" value="50" id="volume">
+              </div>
             </fieldset>
+            
+            <fieldset>
+              <legend>General</legend>
+            
+              <div>
+                <label>Randomized answer fields:</label>
+                <label class="container">Yes
+                  <input type="radio" name="isRandomized" value="true" checked="true">
+                  <span class="checkmark"></span>
+                </label>
+                <label class="container">No
+                  <input type="radio" name="isRandomized" value="false">
+                  <span class="checkmark"></span>
+                </label>
+              </div>
+              <div>
+                <label>Show tooltips:</label>
+                <label class="container">Yes
+                  <input type="radio" name="showTooltips" value="true" checked="true">
+                  <span class="checkmark"></span>
+                </label>
+                <label class="container">No
+                  <input type="radio" name="showTooltips" value="false">
+                  <span class="checkmark"></span>
+                </label>
+              </div>
+            
+            </fieldset>
+            
+            <fieldset>
+              <legend>Test</legend>
+            </fieldset>
+            
             <div class="control">
-              <input id="resetSettings" type="reset" value="default" />
-              <input id="applySettings" type="submit" value="apply" disabled />
+              <input id="settings-default" type="reset" value="Default" />
+              <input id="settings-apply" type="submit" value="Apply" disabled />
             </div>
           </fieldset>
         </form>
@@ -249,6 +215,7 @@
   <script src="js/m-resources.js"></script>
   <script src="js/m-operations.js"></script>
   <script src="js/m-test.js"></script>
+  <script src="js/m-settings.js"></script>
   <script src="js/m-layout.js"></script>
   <script src="js/init.js"></script>
 </body>

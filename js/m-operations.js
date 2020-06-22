@@ -153,14 +153,14 @@ maths.addition = (function() {
       let numbers = [], base1, base2;
       switch(level) {
         case 0:
-          base1 = rand(2, 4);
+          base1 = rand(2, 6);
           numbers = [fraction(base1, base1 - 1), fraction(base1, base1 - 1)];
           break;
         case 1:
           base1 = rand(2, 4);
           base2 = rand(2, 5);
           if (base1 === base2) {
-            numbers = [fraction(base1, base1 - 1), fraction(base2, base2 - 1)];
+            numbers = [fraction(base1, base1 + 1), fraction(base2, base2 -1)];
           } else {
             numbers = [fraction(base1, Math.floor(base1 / 2)), fraction(base2, Math.floor(base2 / 2))];
           }

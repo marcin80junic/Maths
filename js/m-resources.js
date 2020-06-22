@@ -25,6 +25,8 @@ var maths = {
       if (module.level !== module.levelDisplayed) {
         module.init();
       }
+    } else if (moduleName === "settings") {
+      if (!this.settings.isLoaded) module.init();
     }
   },
   playSound: function (isCorrect) {
@@ -64,6 +66,7 @@ var maths = {
         continue;
       }
       if (nums[i].length === 2) {
+        
         drawFraction(c, nums[i]);
       } else {
         drawInteger(nums[i]);
@@ -137,11 +140,6 @@ var maths = {
 
   home: {
 
-  },
-
-  settings: {
-
-
-  },
+  }
 
 };

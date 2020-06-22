@@ -47,17 +47,16 @@ maths.layout = {
     },
 
     main: function (module) {
-        let num = module.exerciseNum,
-            allNumbers = module.numbers, // numbers bank
+        let allNumbers = module.numbers, // numbers bank
+            length = allNumbers.length,
             numbers, index, perc, len, random, i, j, isFraction, isAnswer,
-            half = num / 2, //half of all operations
             sign = module.sign,
             isTest = module.name === "test",
             isRandomized = module.randomized,
             results = module.results,
             html = '<div class="exercises">';
-    //    html += '<div class="flex flex-content-column">';
-        for (i = 0; i < num; i += 1) {
+    
+        for (i = 0; i < length; i += 1) {
             numbers = allNumbers[i];  // numbers for single operation
             len = numbers.length;
             if (isRandomized) { // if true randomize placement of answer field
@@ -67,9 +66,7 @@ maths.layout = {
             } else {  // answer field on the right of equality sign
                 index = len - 1; // index of answer field
             }
-            if (i === half) {  //start second column in the middle of iteration
-      //          html += '</div><div class="flex flex-content-column">';
-            }
+    
             // single operation
             html += '<div class="exercises-operation">';
             for (j = 0; j < len; j += 1) {
@@ -92,8 +89,8 @@ maths.layout = {
             html += !isTest ?  // insert a check button if not a test
                 '<input type="submit" value="check" class="check">' : "";
             html += '</div>';
-            // end of single operation
-        }
+        }   // end of single operation
+
         html += '</div>';
         return html;
     },

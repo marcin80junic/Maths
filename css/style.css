@@ -231,6 +231,9 @@ fieldset {
 .interface-item {
   display: flex;
 }
+.interface-item > label {
+  margin-right: .5em;
+}
 .interface-item-score {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -244,7 +247,7 @@ fieldset {
 
 .exercises {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(30%, 14em));
+  grid-template-columns: repeat(auto-fill, minmax(30%, 12em));
   grid-auto-rows: 1fr;
   grid-row-gap: 1em;
   grid-column-gap: 6em;
@@ -271,7 +274,6 @@ fieldset {
   position: relative;
   display: inline-block;
 }
-
 .tiptext {
   visibility: hidden;
  /* width: 120px;*/
@@ -286,7 +288,6 @@ fieldset {
   opacity: 0;       /* Fade in tooltip */
   transition: opacity 0.3s;
 }
-
 .tooltip .tiptext::after {    /* Tooltip arrow */
   content: "";
   position: absolute;
@@ -297,20 +298,25 @@ fieldset {
   border-style: solid;
   border-color: #555 transparent transparent transparent;
 }
-
 .showtip {
   visibility: visible;
   opacity: 1;
 }
-
+.tooltip .close {
+  font-size: 1.4em;
+  margin-left: 0;
+}
+.tooltip input.close {
+  width: .9em;
+  box-shadow: none;
+}
 .canvas {
   width: 100%;
   border: 1px solid black;
 }
 
-label {
-  margin-right: .5em;
-}
+
+
 
 input, select, button {
   font: inherit;
@@ -338,6 +344,7 @@ input[type="text"] {
   background-color: #ffffcc;
 }
 
+
 .fraction {
   display: inline-block;
   position: relative;
@@ -346,29 +353,17 @@ input[type="text"] {
   letter-spacing: 0.001em;
   text-align: center;
 }
-
 .fraction div.bottom {
   border-top: 2px solid black;
 }
-
 .fraction div.dash {
   display: none;
 }
-
 .fraction input {
   width: 1.5em;
   box-shadow: none;
 }
 
-.tooltip .close {
-  font-size: 1.4em;
-  margin-left: 0;
-}
-
-.tooltip input.close {
-  width: .9em;
-  box-shadow: none;
-}
 
 .test-level-choice {
   font: inherit;
@@ -382,33 +377,26 @@ input[type="text"] {
   background-position: 5%, 50%;
   background-repeat: no-repeat;
 }
-
 .test-level-choice:disabled {
   opacity: .8;
   background-image: url("../pics/locked.png");
 }
-
 .test-interface > * {
   margin-bottom: 0;
 }
-
 .test-interface > h2 {
   margin: .3em 0;
 }
-
 .test-navigation {
   padding-top: 1em;
   text-align: center;
 }
-
 .test-navigation > button {
   width: 4em;
 }
-
 .test-navigation > * + * {
   margin-left: 1em;
 }
-
 .accordeon-container {
   position: absolute;
   top: 2.5%;
@@ -423,7 +411,6 @@ input[type="text"] {
   border-radius: 5px;
   box-shadow: 10px 10px 15px grey;
 }
-
 .accordeon-titlebar {
   display: flex;
   justify-content: space-between;
@@ -431,12 +418,10 @@ input[type="text"] {
   background-color: var(--red-dark);
   border-bottom: 2px solid grey;;
 }
-
 .accordeon-titlebar > * {
   color: var(--yellow-dark);
   margin: 0;
 }
-
 .accordeon-titlebar-close {
   font: inherit;
   width: 1.5em;
@@ -444,18 +429,15 @@ input[type="text"] {
   line-height: 100%;
   background-color: var(--red-bg);
 }
-
 .accordeon-titlebar-title {
   min-width: 1.5em;
   max-width: 1.5em;
   padding: 0 .2em;
 }
-
 .accordeon-content {
   max-height: 88vmin;
   overflow: auto;
 }
-
 .accordeon-section-header {
   margin: 0;
   padding: .1em;
@@ -466,18 +448,15 @@ input[type="text"] {
   border: 2px solid #b30000;
   box-shadow: px grey;
 }
-
 .accordeon-section-content {
   margin: .5em;
   padding: .5em;
   border: 2px solid grey;
   border-radius: 10px;
 }
-
 .accordeon-section-content > * {
   margin: 0;
 }
-
 .dim {
   position: absolute;
   top: 0;
@@ -488,6 +467,7 @@ input[type="text"] {
   background-color: rgba(0,0,0,0.7);
 }
 
+
 /* Customize the label (the container) */
 .container {
   display: inline;
@@ -497,12 +477,10 @@ input[type="text"] {
   cursor: pointer;
   font-size: 22px;
 }
-
 /* Hide the browser's default radio button */
 .container input {
   display: none;
 }
-
 /* Create a custom radio button */
 .checkmark {
   position: absolute;
@@ -514,29 +492,24 @@ input[type="text"] {
   border: 1px solid rgba(0, 0, 0, .3);
   border-radius: 50%;
 }
-
 /* On mouse-over, add a grey background color */
 .container:hover input ~ .checkmark {
   background-color: #ccc;
 }
-
 /* When the radio button is checked, add a green background */
 .container input:checked ~ .checkmark {
   background-color: #009900;
 }
-
 /* Create the indicator (the dot/circle - hidden when not checked) */
 .checkmark:after {
   content: "";
   position: absolute;
   display: none;
 }
-
 /* Show the indicator (dot/circle) when checked */
 .container input:checked ~ .checkmark:after {
   display: block;
 }
-
 /* Style the indicator (dot/circle) */
 .container .checkmark:after {
   top: 8px;
@@ -546,6 +519,69 @@ input[type="text"] {
   border: 1px solid rgba(0, 0, 0, .6);
   border-radius: 50%;
   background: white;
+}
+
+
+.settings-group {
+  display: flex;
+}
+
+
+.slider {
+  width: 15%;
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  grid-template-columns: 1fr;
+}
+.slider-label {
+  display: grid;
+  grid-template-rows: 1fr;
+  grid-template-columns: 1fr 1fr;
+}
+.slider-label label:last-child {
+  text-align: right;
+}
+.slider input {
+  color: green;
+  background: green;
+}
+.slider input::-webkit-slider-thumb {
+  background: #009900; /* Green background */
+}
+
+
+
+.glidecontainer {
+  width: 100%; /* Width of the outside container */
+}
+.glider { /* The slider itself */
+  -webkit-appearance: none;  /* Override default CSS styles */
+  appearance: none;
+  width: 100%; /* Full-width */
+  height: 25px; /* Specified height */
+  background: #d3d3d3; /* Grey background */
+  outline: none; /* Remove outline */
+  opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
+  -webkit-transition: .2s; /* 0.2 seconds transition on hover */
+  transition: opacity .2s;
+}
+.glider:hover { /* Mouse-over effects */
+  opacity: 1; /* Fully shown on mouse-over */
+}
+/* The slider handle - use -webkit- (Chrome, Opera, Safari, Edge)... */
+.glider::-webkit-slider-thumb {
+  -webkit-appearance: none; /* Override default look */
+  appearance: none;
+  width: 25px; /* Set a specific slider handle width */
+  height: 25px; /* Slider handle height */
+  background: #009900; /* Green background */
+  cursor: pointer; /* Cursor on hover */
+}
+.glider::-moz-range-thumb { /* ...and -moz- (Firefox) to override default look) */
+  width: 25px; /* Set a specific slider handle width */
+  height: 25px; /* Slider handle height */
+  background: #009900; /* Green background */
+  cursor: pointer; /* Cursor on hover */
 }
 
 
