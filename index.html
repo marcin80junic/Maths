@@ -160,39 +160,45 @@
             
             <fieldset class="settings-group">
               <legend>System</legend>
-              <div class="slider">
-                <div class="slider-label">
-                  <label>Volume</label>
+
+              <div class="settings-group-line">
+                <label>Volume:</label>
+                <div>
                   <label id="volume-label"></label>
+                  <input type="range" min="0" max="100" value="50" id="volume">
                 </div>
-                <input type="range" min="0" max="100" value="50" id="volume">
               </div>
+              
             </fieldset>
             
-            <fieldset>
+            <fieldset class="settings-group">
               <legend>General</legend>
             
-              <div>
+              <div class="settings-group-line">
                 <label>Randomized answer fields:</label>
-                <label class="container">Yes
-                  <input type="radio" name="isRandomized" value="true" checked="true">
-                  <span class="checkmark"></span>
-                </label>
-                <label class="container">No
-                  <input type="radio" name="isRandomized" value="false">
-                  <span class="checkmark"></span>
-                </label>
+                <div>
+                  <label class="container">Yes
+                    <input type="radio" name="isRandomized" value="true" checked="true">
+                    <span class="checkmark"></span>
+                  </label>
+                  <label class="container">No
+                    <input type="radio" name="isRandomized" value="false">
+                    <span class="checkmark"></span>
+                  </label>
+                </div>
               </div>
-              <div>
+              <div class="settings-group-line">
                 <label>Show tooltips:</label>
-                <label class="container">Yes
-                  <input type="radio" name="showTooltips" value="true" checked="true">
-                  <span class="checkmark"></span>
-                </label>
-                <label class="container">No
-                  <input type="radio" name="showTooltips" value="false">
-                  <span class="checkmark"></span>
-                </label>
+                <div>
+                  <label class="container">Yes
+                    <input type="radio" name="showTooltips" value="true" checked="true">
+                    <span class="checkmark"></span>
+                  </label>
+                  <label class="container">No
+                    <input type="radio" name="showTooltips" value="false">
+                    <span class="checkmark"></span>
+                  </label>
+                </div>
               </div>
             
             </fieldset>

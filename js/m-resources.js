@@ -1,12 +1,8 @@
 
 /*
   *define global application object which contains:
-  @active property which is a currently displayed module,
-  @switch function is switching active module and checking if it needs to be randomized
-  @home, addition, subtraction, multiplying, division, test and settings module objects
-  @layout object creating layout for exercises
-  @timer object used in test module
-  */
+  ...
+*/
 
 var maths = {
 
@@ -26,7 +22,7 @@ var maths = {
         module.init();
       }
     } else if (moduleName === "settings") {
-      if (!this.settings.isLoaded) module.init();
+      if (!this.settings.areLoaded) module.init();
     }
   },
   playSound: function (isCorrect) {

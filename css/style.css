@@ -475,7 +475,6 @@ input[type="text"] {
   padding-left: 30px;
   margin-right: 12px;
   cursor: pointer;
-  font-size: 22px;
 }
 /* Hide the browser's default radio button */
 .container input {
@@ -486,8 +485,8 @@ input[type="text"] {
   position: absolute;
   top: 2px;
   left: 0;
-  height: 25px;
-  width: 25px;
+  height: 1.2em;
+  width: 1.2em;
   background-color: #fff;
   border: 1px solid rgba(0, 0, 0, .3);
   border-radius: 50%;
@@ -512,10 +511,10 @@ input[type="text"] {
 }
 /* Style the indicator (dot/circle) */
 .container .checkmark:after {
-  top: 8px;
-  left: 8px;
-  width: 8px;
-  height: 8px;
+  top: .28em;
+  left: .28em;
+  width: .56em;
+  height: .56em;
   border: 1px solid rgba(0, 0, 0, .6);
   border-radius: 50%;
   background: white;
@@ -525,64 +524,12 @@ input[type="text"] {
 .settings-group {
   display: flex;
 }
-
-
-.slider {
-  width: 15%;
-  display: grid;
-  grid-template-rows: 1fr 1fr;
-  grid-template-columns: 1fr;
+.settings-group div + div {
+  margin-top: .3em;
 }
-.slider-label {
-  display: grid;
-  grid-template-rows: 1fr;
-  grid-template-columns: 1fr 1fr;
+.settings-group-line {
+  display: flex;
 }
-.slider-label label:last-child {
-  text-align: right;
+.settings-group-line :last-child {
+  margin-left: auto;
 }
-.slider input {
-  color: green;
-  background: green;
-}
-.slider input::-webkit-slider-thumb {
-  background: #009900; /* Green background */
-}
-
-
-
-.glidecontainer {
-  width: 100%; /* Width of the outside container */
-}
-.glider { /* The slider itself */
-  -webkit-appearance: none;  /* Override default CSS styles */
-  appearance: none;
-  width: 100%; /* Full-width */
-  height: 25px; /* Specified height */
-  background: #d3d3d3; /* Grey background */
-  outline: none; /* Remove outline */
-  opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
-  -webkit-transition: .2s; /* 0.2 seconds transition on hover */
-  transition: opacity .2s;
-}
-.glider:hover { /* Mouse-over effects */
-  opacity: 1; /* Fully shown on mouse-over */
-}
-/* The slider handle - use -webkit- (Chrome, Opera, Safari, Edge)... */
-.glider::-webkit-slider-thumb {
-  -webkit-appearance: none; /* Override default look */
-  appearance: none;
-  width: 25px; /* Set a specific slider handle width */
-  height: 25px; /* Slider handle height */
-  background: #009900; /* Green background */
-  cursor: pointer; /* Cursor on hover */
-}
-.glider::-moz-range-thumb { /* ...and -moz- (Firefox) to override default look) */
-  width: 25px; /* Set a specific slider handle width */
-  height: 25px; /* Slider handle height */
-  background: #009900; /* Green background */
-  cursor: pointer; /* Cursor on hover */
-}
-
-
-

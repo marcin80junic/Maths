@@ -60,8 +60,6 @@ function Operation() { };
         let namespace = "maths." + this.name + ".";
         this.level = parseInt((localStorage.getItem(namespace + "level")), 10) || 0;
         this.exerciseNum = parseInt((localStorage.getItem(namespace + "exerciseNum")), 10) || 6;
-        this.randomized = (localStorage.getItem(namespace + "randomized") === 'true')? true: false;
-        this.tooltips = (localStorage.getItem(namespace + "tooltips") === 'true')? true: false;
         if (this.modules) { //check for existence of modules property which is contained only by test module
           let str;
           this.unlocked = parseInt(localStorage.getItem(namespace + "unlocked"), 10) || 0;

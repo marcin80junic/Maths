@@ -52,10 +52,10 @@ maths.layout = {
             numbers, index, perc, len, random, i, j, isFraction, isAnswer,
             sign = module.sign,
             isTest = module.name === "test",
-            isRandomized = module.randomized,
+            isRandomized = maths.settings.general.isRandomized === "true",
             results = module.results,
             html = '<div class="exercises">';
-    
+        
         for (i = 0; i < length; i += 1) {
             numbers = allNumbers[i];  // numbers for single operation
             len = numbers.length;
@@ -170,6 +170,7 @@ maths.layout = {
                 rows = module.container.find(".exercises-operation"),
                 answerFields = rows.find(".answer"),
                 tooltips = rows.find(".tooltip"),
+                showTooltips = maths.settings.general.showTooltips === "true",
                 icons = rows.find(".icon"),
                 checkButtons = rows.find(".check"),
                 resetButton = module.container.find(".reset"),
@@ -208,7 +209,7 @@ maths.layout = {
                 module.setExerciseNum(parseInt(number, 10));
             });
             tooltips.on("mouseover mouseout", function (e) {
-                if (module.tooltips = true) {       // to be changed!
+                if (showTooltips) {       
                     let tip = $(this).find(".tiptext"),
                         idx = tooltips.index(this);
                     if (e.type === "mouseover") {
