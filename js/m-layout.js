@@ -55,7 +55,7 @@ maths.layout = {
             isRandomized = maths.settings.general.isRandomized === "true",
             results = module.results,
             html = '<div class="exercises">';
-        
+            
         for (i = 0; i < length; i += 1) {
             numbers = allNumbers[i];  // numbers for single operation
             len = numbers.length;
@@ -85,7 +85,7 @@ maths.layout = {
                     '<div> = </div>'
                     : '<div>' + sign + '</div>';
             }
-            html += '<img src="' + maths.questMark + '" class="icon">';
+            html += '<img src="' + maths.icons.questMark + '" class="icon">';
             html += !isTest ?  // insert a check button if not a test
                 '<input type="submit" value="check" class="check">' : "";
             html += '</div>';
@@ -115,9 +115,10 @@ maths.layout = {
         number = Math.floor(number);
         if (number >= 1) {
             html += isAnswer ?
-                '<div class="tooltip"><input type="text" maxlength="1" class="answer close vertical-center">' +
-                '<span class="tiptext"></span>'
-                : '<div class="close">' + number + '</div>';
+                '<div class="tooltip fraction">' +
+                    '<input type="text" maxlength="1" class="answer close">' +
+                    '<span class="tiptext"></span>'
+                : '<div class="fraction"><span class="close">' + number + '</span></div>';
             if (isInteger) {
                 if (isAnswer) {
                     html += "</div>";
@@ -129,16 +130,15 @@ maths.layout = {
         }
         if (isAnswer) {
             html += (number >= 1)?
-                '<div class="fraction">'
-                : '<div class="fraction tooltip">';
+                '<div class="fraction-unit">'
+                : '<div class="fraction fraction-unit tooltip">';
             html += '<div><input type="text" maxlength="3" class="answer"></div>';
             html += '<div class="dash">/</div>';
             html += '<div class="bottom"><input type="text" maxlength="3" class="answer"></div>';
-        //    html += '<span class="tiptext"></span></div>';
             html += (number >= 1)? '</div></div>': '<span class="tiptext"></span></div>';
             results.push(array);
         } else {
-            html += '<div class="fraction">';
+            html += '<div class="fraction-unit">';
             html += '<div>' + modulus[0] + '</div>';
             html += '<div class="dash">/</div>';
             html += '<div class="bottom">' + modulus[1] + '</div></div>';
@@ -180,14 +180,15 @@ maths.layout = {
             const goodAnswer = function () {
                 scoreField.text(++score);
                 answerField.each(function (idx) {
-                    $(this).hide().after("<span>" + answers[idx] + "</span>");
+                    let className = $(this).parents().is('.fraction-unit')? "": "close";
+                    $(this).hide().after('<span class="' + className + '">' + answers[idx] + '</span>');
                 });
-                icon.prop("src", maths.tick);
+                icon.prop("src", maths.icons.tick);
                 checkBtn.addClass("invisible");
                 return true;
             },
                 wrongAnswer = function () {
-                    icon.prop("src", maths.cross);
+                    icon.prop("src", maths.icons.cross);
                     answerField.addClass("warning");
                     return false;
                 },
@@ -237,7 +238,7 @@ maths.layout = {
                 score = 0;
                 scoreField.text(score);
                 answerFields.show().removeClass("warning").next().remove();
-                icons.prop("src", maths.questMark);
+                icons.prop("src", maths.icons.questMark);
                 checkButtons.removeClass("invisible");
             });
             reloadButton.on("click", (e) => {   //reload button
@@ -308,12 +309,12 @@ maths.layout = {
                 const wrongAnswer = function (index) {
                     scores[index] = 0;
                     rows.eq(index).find(".answer").addClass("warning");
-                    icons.eq(index).prop("src", maths.cross);
+                    icons.eq(index).prop("src", maths.icons.cross);
                 };
                 const correctAnswer = function (index) {
                     scores[index] = 1;
                     rows.eq(index).find(".answer").addClass("correct");
-                    icons.eq(index).prop("src", maths.tick);
+                    icons.eq(index).prop("src", maths.icons.tick);
                 };
                 rows.each(function (idx, row) {
                     let fields = $(row).find(".answer"),
@@ -379,7 +380,7 @@ maths.layout = {
                             return;
                         }
                     }
-                    parent.find(".icon").prop("src", maths.questMark);
+                    parent.find(".icon").prop("src", maths.icons.questMark);
                 }
             });
             answerFields.on("keydown", function (e) {

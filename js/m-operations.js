@@ -74,7 +74,7 @@ maths.addition = (function() {
   maths.multiplication = (function() {
     let multiplication = objectCreator(Operation.prototype);
     multiplication.name = "multiplication";
-    multiplication.sign = "&times";
+    multiplication.sign = "\u00D7";
     multiplication.container = $("#multiplication-exercises");
     multiplication.reducer = (accumulator, number) => accumulator * number;
     multiplication.getNumbers = function (level) {
@@ -108,7 +108,7 @@ maths.addition = (function() {
   maths.division = (function() {
     let division = objectCreator(Operation.prototype);
     division.name = "division";
-    division.sign = "&divide;";
+    division.sign = "\u00F7";
     division.container = $("#division-exercises");
     division.reducer = (accumulator, number) => accumulator / number;
     division.getNumbers = function (level) {
@@ -144,9 +144,22 @@ maths.addition = (function() {
     fractions.name = "fractions";
     fractions.sign = "+";
     fractions.container = $("#fractions-exercises");
+    fractions.simpleReducer = (accArray, array) => {
+      let num = accArray[0] + array[0], // add two fractions assuming denominators are equal
+          den = accArray[1]; 
+      return [num, den];
+    };
     fractions.reducer = (accArray, array) => {
-      return [accArray[0] * array[1] + array[0] * accArray[1], accArray[1] * array[1]];
-    }
+      let num = accArray[0] * array[1] + array[0] * accArray[1],
+          den = accArray[1] * array[1],  // add two fractions using common denominator
+          x = num, y = den;
+      while (y) {  // find greatest common divisor
+        var temp = y;
+        y = x % y;
+        x = temp;
+      }
+      return [num / x, den / x]; // return reduced fraction
+    };
     fractions.getNumbers = function (level) {
       const rand = maths.range,
             fraction = (base, max) => [rand(1, max), base];
@@ -166,13 +179,14 @@ maths.addition = (function() {
           }
           break;
         case 2:
-          base1 = rand(2, 9);
-          base2 = rand(2, 9);
+          base1 = rand(2, 10);
+          base2 = rand(2, 4);
           numbers = [fraction(base1, 2 * base1 - 1), fraction(base2, 2 * base2 - 1)];
           break;
       }
-      numbers.push(numbers.reduce(this.reducer));
+      if (level === 0) numbers.push(numbers.reduce(this.simpleReducer));
+      else numbers.push(numbers.reduce(this.reducer));
       return numbers;
-    }
+    };
     return fractions;
   }());

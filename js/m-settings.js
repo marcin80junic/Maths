@@ -10,7 +10,7 @@ maths.settings = {
         settingsForm: $('#settings-form')
     },
     system: {
-        volume: 50
+        volume: 0.5
     },
     general: {
         showTooltips: "true",
@@ -38,19 +38,28 @@ maths.settings = {
                 fractions: this.fractions,
                 test: this.test
             },
-            updateVolumeLabel = value => $('#volume-label').html(value + "%"),
             enableApplyButton = enable => ns.fields.applyButton.prop('disabled', !enable),
-
+            updateVolumeLabel = value => {
+                $('#volume-label').html(value + "%");
+                if (value < 1) $('#speaker').prop('src', 'pics/speaker-muted.png');
+                else if (value < 30) $('#speaker').prop('src', 'pics/speaker-low-volume.png');
+                else if (value < 70) $('#speaker').prop('src', 'pics/speaker-medium-volume.png');
+                else $('#speaker').prop('src', 'pics/speaker-high-volume.png');
+            };
         this.accessStorage(all, namespace, false);
         this.areLoaded = true;
-        this.fields.volume.val(this.system.volume);
-        updateVolumeLabel(this.system.volume);
+        this.fields.volume.val(this.system.volume * 100);
+        updateVolumeLabel(this.system.volume * 100);
         this.fields.isRandomized.filter('[value="' + this.general.isRandomized + '"]').prop('checked', true);
         this.fields.showTooltips.filter('[value="' + this.general.showTooltips + '"]').prop('checked', true);
-
-        this.fields.volume.on('input change', function() {
+        
+        this.fields.volume.on('input', function() {
             updateVolumeLabel($(this).val());
-            ns.changed.system.volume = this.value;
+        });
+        this.fields.volume.on('change', function() {
+            let volume = $(this).val() / 100;
+            ns.changed.system.volume = volume;
+            maths.playSound(true, volume);
             enableApplyButton(true);
         });
         this.fields.isRandomized.on('change', function() {
@@ -71,7 +80,6 @@ maths.settings = {
         this.fields.settingsForm.on('reset', ()=>{
             setTimeout(() => this.fields.volume.trigger('change'), 100);
         });
-
     },
     accessStorage: function(object, namespace, write) {
         try {
@@ -82,11 +90,9 @@ maths.settings = {
                             this.accessStorage(object[field], namespace + field + ".", write);
                         } else if(write) {
                             localStorage.setItem(namespace + field, object[field]);
-                            console.log("saving: " + namespace + field + "\t" + object[field]);
                         } else {
                             let loaded = localStorage.getItem(namespace + field);
                             if (loaded !== null) object[field] = loaded;
-                            console.log("loading: " + namespace + field + "\t" + loaded);
                         }
                     }
                 }
@@ -97,24 +103,29 @@ maths.settings = {
     },
     applyChanges: function() {
         let changed = this.changed,
-            object, temp, field;
-        for (object in changed) {   // assign temporary changes to actual settings
-            if (changed.hasOwnProperty(object)) {
-                temp = changed[object];
-                for (field in temp) {
-                    if (temp.hasOwnProperty(field)) {
-                        this[object][field] = temp[field];
+            object, temp, field, isEmpty,
+            resetModules = () => {  // resets levelDisplayed property of Operation modules, this will cause
+                for (object in maths) {  // the program to reload modules next time they will be displayed
+                    if (maths.hasOwnProperty(object) &&  
+                        Object.getPrototypeOf(maths[object]) === Operation.prototype) {
+                        maths[object]["levelDisplayed"] = null; // actual reset
                     }
                 }
             }
-        }   
-        // reset levelDisplayed property of Operation modules, this will cause
-        for (object in maths) {  // the program to reload modules next time they will be displayed
-            if (maths.hasOwnProperty(object) &&  
-                Object.getPrototypeOf(maths[object]) === Operation.prototype) {
-                    maths[object]["levelDisplayed"] = null;
+        for (object in changed) {   // assign temporary changes to actual settings
+            if (changed.hasOwnProperty(object)) {
+                temp = changed[object];
+                isEmpty = true;
+                for (field in temp) {
+                    if (temp.hasOwnProperty(field)) {
+                        this[object][field] = temp[field];
+                        isEmpty = false;
+                    }
+                }
+                if (!isEmpty && object === "general") resetModules();
+                if (!isEmpty && object === "test") maths.test; // *****
             }
-        }
+        }   
     },
     resetChanges: function() {
         for (let field in this.changed) {

@@ -272,11 +272,9 @@ fieldset {
 
 .tooltip {    /* Tooltip container */
   position: relative;
-  display: inline-block;
 }
 .tiptext {
   visibility: hidden;
- /* width: 120px;*/
   background-color: var(--yellow-light);
   border: 1px solid grey;
   border-radius: 6px;
@@ -284,7 +282,7 @@ fieldset {
   z-index: 1;
   bottom: 100%;
   left: 50%;
-  margin-left: -60px;
+  margin-left: -80px;
   opacity: 0;       /* Fade in tooltip */
   transition: opacity 0.3s;
 }
@@ -302,20 +300,9 @@ fieldset {
   visibility: visible;
   opacity: 1;
 }
-.tooltip .close {
-  font-size: 1.4em;
-  margin-left: 0;
-}
-.tooltip input.close {
-  width: .9em;
-  box-shadow: none;
-}
 .canvas {
   width: 100%;
-  border: 1px solid black;
 }
-
-
 
 
 input, select, button {
@@ -345,7 +332,12 @@ input[type="text"] {
 }
 
 
+
 .fraction {
+  display: flex;
+  align-items: center;
+}
+.fraction-unit {
   display: inline-block;
   position: relative;
   vertical-align: middle;
@@ -353,16 +345,24 @@ input[type="text"] {
   letter-spacing: 0.001em;
   text-align: center;
 }
-.fraction div.bottom {
+.fraction-unit div.bottom {
   border-top: 2px solid black;
 }
-.fraction div.dash {
+.fraction-unit div.dash {
   display: none;
 }
 .fraction input {
-  width: 1.5em;
+  width: 1.7em;
   box-shadow: none;
 }
+.fraction input.close {
+  width: .9em;
+}
+.fraction .close {
+  font-size: 1.4em;
+  margin-left: 0;
+}
+
 
 
 .test-level-choice {

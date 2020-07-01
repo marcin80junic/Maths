@@ -17,13 +17,11 @@ function Operation() { };
     this.init();
   };
   Operation.prototype.init = function () {
-    if (!this.levelDisplayed) { //true only when loading module first time
-      this.loadSettings();
-    }
+    if (!this.levelDisplayed) this.loadSettings(); //true only when loading module first time
     this.numbers = this.numbersCreator();
     this.results = []; // reset results array
     this.answersIdxs = [] // and indexes of answers
-    maths.layout.exercises(this); //  creates layout and assigns results property value
+    maths.layout.exercises(this); //  create layout and assign results property value
     maths.handlers.exercises(this); // attaching handlers to layout elements
   };
   Operation.prototype.numbersCreator = function(num, level) {
@@ -60,7 +58,7 @@ function Operation() { };
         let namespace = "maths." + this.name + ".";
         this.level = parseInt((localStorage.getItem(namespace + "level")), 10) || 0;
         this.exerciseNum = parseInt((localStorage.getItem(namespace + "exerciseNum")), 10) || 6;
-        if (this.modules) { //check for existence of modules property which is contained only by test module
+        if (this.modules) { //check for existence of modules property which only exists in a test module
           let str;
           this.unlocked = parseInt(localStorage.getItem(namespace + "unlocked"), 10) || 0;
           str = localStorage.getItem(namespace + "modules");
