@@ -1,26 +1,26 @@
 
+/* general settings */
+
 :root {
   --yellow-light: #ffff99;
   --yellow: #ffff66;
   --yellow-dark: #ffff00;
-  --green-bg: #1f7a1f;
-  --red-bg: #ff0000;
+  --green-light: #1aff1a;
+  --green: #00b300;
+  --green-dark: #1f7a1f;
+  --red-light: #ff0000;
+  --red: #e60000;
   --red-dark: #b30000;
   --main-bg: #ccffb3;
   font-size: calc(0.5em + 1vw);
   box-sizing: border-box;
 }
-
-*,
-::before,
-::after {
+*, ::before, ::after {
   box-sizing: inherit;
 }
-
 *:focus {
   outline: none;
 }
-
 body {
   -webkit-user-select: none; /* Safari */
   -khtml-user-select: none; /* Konqueror HTML */
@@ -35,26 +35,76 @@ body {
 .body-hidden-overflow {
   overflow: hidden;
 }
-
 body::-webkit-scrollbar, 
 .navigation-menu::-webkit-scrollbar, 
-.accordeon-content::-webkit-scrollbar {
+.test-accordeon-content::-webkit-scrollbar {
   width: 1em;
 }
-
 body::-webkit-scrollbar-track, 
 .navigation-menu::-webkit-scrollbar-track, 
-.accordeon-content::-webkit-scrollbar-track {
-  background: var(--green-bg);
+.test-accordeon-content::-webkit-scrollbar-track {
+  background: var(--green-dark);
 }
 body::-webkit-scrollbar-thumb, 
 .navigation-menu::-webkit-scrollbar-thumb, 
-.accordeon-content::-webkit-scrollbar-thumb {
-  background-color: var(--red-bg);
+.test-accordeon-content::-webkit-scrollbar-thumb {
+  background-color: var(--red-light);
   border-radius: .3em;
   border: .2em solid var(--red-dark);
 }
+main {
+  width: 83%;
+  margin-left: calc((100% - 80% - 16%) / 2 + 13%); /* (body - main - nav) / 2 + nav */
+  padding: 2em;
+}
+h1, h2, h3, h4, h5, h6 {
+  margin-top: 0;
+}
+p {
+  text-align: justify;
+  line-height: 2em;
+}
+fieldset {
+  padding: 1em;
+  margin: 1.5em auto;
+  border-radius: 10px;
+  border-width: medium;
+}
+input, select, button {
+  font: inherit;
+  font-size: .9em;
+  background-color: #80ff80;
+  border: 2px solid rgba(0, 0, 0, .3);
+  border-radius: 5px;
+  box-shadow: 3px 3px 3px rgba(55,55,55,.5);
+}
+button:hover, input:hover, select:hover {
+  background-color: var(--green-light);
+  cursor: pointer;
+}
+input:active {
+  background-color: var(--green);
+}
+input[type="text"] {
+  font-size: .9em;
+  text-align: center;
+  width: 2.3em;
+  background-color: #ffffcc;
+}
+/* end of general settings */
 
+
+
+#home .content {
+  height: 18em;
+  background-image: url("../pics/mathKids.png");
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+
+
+/* navigation module */
 
 .navigation {
   position: relative;
@@ -71,7 +121,7 @@ body::-webkit-scrollbar-thumb,
   padding: 1em .2em;
   text-align: center;
   word-wrap: break-word;
-  background-color: var(--green-bg);
+  background-color: var(--green-dark);
   border-radius: 10px;
   overflow: auto;
 }
@@ -87,18 +137,18 @@ body::-webkit-scrollbar-thumb,
 .navigation-menu li:last-of-type {
   margin-top: auto;
 }
-.navigation-menu li a {
+.navigation-menu a {
   display: block;
   padding: 0 .2em;
   text-decoration: none;
-  background-color: var(--red-bg);
+  background-color: var(--red-light);
   color: var(--yellow);
   border: 1px solid var(--red-dark);
   border-radius: 6px;
   box-shadow: 1px 2px 4px rgba(0, 0, 0, .5);
 }
 .navigation-menu a:hover:not(.selected), a:focus {
-  background-color: #e60000;
+  background-color: var(--red);
 }
 .navigation-menu .selected {
   background-color: var(--red-dark);
@@ -106,15 +156,11 @@ body::-webkit-scrollbar-thumb,
 .menu-toggle {
   display: none;
 }
+/* end of navigation module */
 
 
-main {
-  width: 83%;
-  margin-left: calc((100% - 80% - 16%) / 2 + 13%); /* (body - main - nav) / 2 + nav */
-  padding: 2em;
-}
 
-
+/* menu-toggle module */
 
 @media (max-width: 664px) {
   .menu-toggle {
@@ -159,64 +205,11 @@ main {
     margin: 0;
   }
 }
+/* end of menu-toggle module */
 
 
-#home .content {
-  height: 18em;
-  background-image: url("../pics/mathKids.png");
-  background-repeat: no-repeat;
-  background-position: center;
-}
 
-h1, h2, h3, h4, h5, h6 {
-  margin-top: 0;
-}
-
-p {
-  text-align: justify;
-  line-height: 2em;
-}
-
-fieldset {
-  padding: 1em;
-  margin: 1.5em auto;
-  border-radius: 10px;
-  border-width: medium;
-}
-
-.center {
-  text-align: center;
-  align-items: center;
-}
-
-.left {
-  text-align: left;
-}
-
-.right {
-  text-align: right;
-}
-
-.vertical-center {
-  vertical-align: middle;
-}
-
-.special {
-  color: red;
-}
-
-.correct {
-  border: 2px solid #1aff1a;
-}
-
-.warning {
-  border: 2px solid red;
-}
-
-.invisible {
-  visibility: hidden;
-}
-
+/* interface module */
 
 .interface {
   display: flex;
@@ -243,7 +236,15 @@ fieldset {
 .interface-item-score > * > * {
   display: inline-block;
 }
+.interface-control {
+  display: flex;
+  justify-content: space-between;
+}
+/* end of interface module */
 
+
+
+/* exercises module */
 
 .exercises {
   display: grid;
@@ -262,13 +263,46 @@ fieldset {
 .exercises-operation > * + * {
   margin-left: .2em;
 }
+/* end of exercises module */
 
 
-.control {
+
+/* fraction module */
+
+.fraction {
   display: flex;
-  justify-content: space-between;
+  align-items: center;
 }
+.fraction-unit {
+  display: inline-block;
+  position: relative;
+  vertical-align: middle;
+  font-size: .95em;
+  letter-spacing: 0.001em;
+  text-align: center;
+}
+.fraction-unit div.bottom {
+  border-top: 2px solid black;
+}
+.fraction-unit div.dash {
+  display: none;
+}
+.fraction input {
+  width: 1.7em;
+  box-shadow: none;
+}
+.fraction input.close {
+  width: .9em;
+}
+.fraction .close {
+  font-size: 1.4em;
+  margin-left: 0;
+}
+/* end of fraction module */
 
+
+
+/* tooltip module */
 
 .tooltip {    /* Tooltip container */
   position: relative;
@@ -303,84 +337,46 @@ fieldset {
 .canvas {
   width: 100%;
 }
-
-
-input, select, button {
-  font: inherit;
-  font-size: .9em;
-  background-color: #80ff80;
-  border: 2px solid rgba(0, 0, 0, .3);
-  border-radius: 5px;
-  box-shadow: 3px 3px 3px rgba(55,55,55,.5);
-}
-
-input:hover, select:hover, button:not(:disabled):hover, 
-input:focus, select:focus, button:not(:disabled):focus {
-  background-color: #1aff1a;
-  cursor: pointer;
-}
-
-input:active, .check:active {
-  background-color: #00b300;
-}
-
-input[type="text"] {
-  font-size: .9em;
-  text-align: center;
-  width: 2.3em;
-  background-color: #ffffcc;
-}
+/* end of tooltip module */
 
 
 
-.fraction {
+/* button-ladder module */
+
+.button-ladder {
   display: flex;
+  flex-direction: column;
   align-items: center;
+  margin: 1em;
 }
-.fraction-unit {
-  display: inline-block;
-  position: relative;
-  vertical-align: middle;
-  font-size: .95em;
-  letter-spacing: 0.001em;
-  text-align: center;
-}
-.fraction-unit div.bottom {
-  border-top: 2px solid black;
-}
-.fraction-unit div.dash {
-  display: none;
-}
-.fraction input {
-  width: 1.7em;
-  box-shadow: none;
-}
-.fraction input.close {
-  width: .9em;
-}
-.fraction .close {
-  font-size: 1.4em;
-  margin-left: 0;
-}
-
-
-
-.test-level-choice {
-  font: inherit;
+.button-ladder button {
   width: 10em;
   margin-top: 1em;
-  padding: .2em;
+  padding: .3em;
   border-radius: 10px;
   color: var(--yellow);
-  background-color: var(--red-bg);
+  background-color: var(--red-light);
   background-image: url("../pics/unlocked.png");
   background-position: 5%, 50%;
   background-repeat: no-repeat;
 }
-.test-level-choice:disabled {
+.button-ladder button:disabled {
   opacity: .8;
   background-image: url("../pics/locked.png");
 }
+.button-ladder button:not(:disabled):hover,
+.button-ladder button:focus {
+  background-color: var(--red);
+}
+.button-ladder button:not(:disabled):active {
+  background-color: var(--red-dark);
+}
+/* end of button-ladder module */
+
+
+
+/* test-interface module */
+
 .test-interface > * {
   margin-bottom: 0;
 }
@@ -397,7 +393,13 @@ input[type="text"] {
 .test-navigation > * + * {
   margin-left: 1em;
 }
-.accordeon-container {
+/* end of test-interface module */
+
+
+
+/* test-accordeon module */
+
+.test-accordeon {
   position: absolute;
   top: 2.5%;
   left: 25%;
@@ -411,50 +413,56 @@ input[type="text"] {
   border-radius: 5px;
   box-shadow: 10px 10px 15px grey;
 }
-.accordeon-titlebar {
+.test-accordeon-titlebar {
   display: flex;
   justify-content: space-between;
   padding: .1em;
   background-color: var(--red-dark);
   border-bottom: 2px solid grey;;
 }
-.accordeon-titlebar > * {
+.test-accordeon-titlebar > * {
   color: var(--yellow-dark);
   margin: 0;
 }
-.accordeon-titlebar-close {
+.test-accordeon-titlebar-close {
   font: inherit;
   width: 1.5em;
   height: 1.5em;
   line-height: 100%;
-  background-color: var(--red-bg);
+  background-color: var(--red-light);
 }
-.accordeon-titlebar-title {
+.test-accordeon-titlebar-title {
   min-width: 1.5em;
   max-width: 1.5em;
   padding: 0 .2em;
 }
-.accordeon-content {
+.test-accordeon-content {
   max-height: 88vmin;
   overflow: auto;
 }
-.accordeon-section-header {
-  margin: 0;
-  padding: .1em;
-  text-align: center;
-  cursor: pointer;
+.test-accordeon-section-header {
+  width: 100%;
+  padding: .4em;
   color: var(--yellow-light);
-  background-color: var(--red-bg);
-  border: 2px solid #b30000;
-  box-shadow: px grey;
+  background-color: var(--red-light);
 }
-.accordeon-section-content {
+.test-accordeon-section-header:hover,
+.test-accordeon-section-header:focus {
+  background-color: var(--red);
+}
+.test-accordeon-section-header:active {
+  background-color: var(--red-dark);
+}
+.test-accordeon-section-header.selected {
+  background-color: var(--red-dark);
+}
+.test-accordeon-section-content {
   margin: .5em;
   padding: .5em;
   border: 2px solid grey;
   border-radius: 10px;
 }
-.accordeon-section-content > * {
+.test-accordeon-section-content > * {
   margin: 0;
 }
 .dim {
@@ -466,22 +474,23 @@ input[type="text"] {
   z-index: 999;
   background-color: rgba(0,0,0,0.7);
 }
+/* end of accordeon module */
 
 
-/* Customize the label (the container) */
-.container {
+
+/* custom-radio module */
+
+.custom-radio {    /* Customize the label (the container) */
   display: inline;
   position: relative;
   padding-left: 30px;
   margin-right: 12px;
   cursor: pointer;
 }
-/* Hide the browser's default radio button */
-.container input {
+.custom-radio input {    /* Hide the browser's default radio button */
   display: none;
 }
-/* Create a custom radio button */
-.checkmark {
+.checkmark {    /* Create a custom radio button */
   position: absolute;
   top: 2px;
   left: 0;
@@ -491,26 +500,21 @@ input[type="text"] {
   border: 1px solid rgba(0, 0, 0, .3);
   border-radius: 50%;
 }
-/* On mouse-over, add a grey background color */
-.container:hover input ~ .checkmark {
+.custom-radio:hover input ~ .checkmark {   /* On mouse-over, add a grey background color */
   background-color: #ccc;
 }
-/* When the radio button is checked, add a green background */
-.container input:checked ~ .checkmark {
+.custom-radio input:checked ~ .checkmark {   /* When the radio button is checked, add a green background */
   background-color: #009900;
 }
-/* Create the indicator (the dot/circle - hidden when not checked) */
-.checkmark:after {
+.checkmark:after {    /* Create the indicator (the dot/circle - hidden when not checked) */
   content: "";
   position: absolute;
   display: none;
 }
-/* Show the indicator (dot/circle) when checked */
-.container input:checked ~ .checkmark:after {
+.custom-radio input:checked ~ .checkmark:after {   /* Show the indicator (dot/circle) when checked */
   display: block;
 }
-/* Style the indicator (dot/circle) */
-.container .checkmark:after {
+.custom-radio .checkmark:after {   /* Style the indicator (dot/circle) */
   top: .28em;
   left: .28em;
   width: .56em;
@@ -519,7 +523,11 @@ input[type="text"] {
   border-radius: 50%;
   background: white;
 }
+/* end of custom-radio module */
 
+
+
+/* settings-group module */
 
 .settings-group {
   display: flex;
@@ -533,3 +541,35 @@ input[type="text"] {
 .settings-group-line :last-child {
   margin-left: auto;
 }
+/* end of settings-group module */
+
+
+
+/* utility classes */
+
+.center {
+  text-align: center;
+  align-items: center;
+}
+.left {
+  text-align: left;
+}
+.right {
+  text-align: right;
+}
+.vertical-center {
+  vertical-align: middle;
+}
+.special {
+  color: var(--red-light);
+}
+.correct {
+  border: 2px solid #1aff1a;
+}
+.warning {
+  border: 2px solid var(--red-light);
+}
+.invisible {
+  visibility: hidden;
+}
+/* end of utility classes */

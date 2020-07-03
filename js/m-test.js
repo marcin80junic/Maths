@@ -128,8 +128,8 @@ maths.test = (function() {
 
   maths.accordeon = {
 
-    container: $('<div class="accordeon-container"></div>'),
-    content: $('<div class="accordeon-content"></div>'),
+    container: $('<div class="test-accordeon"></div>'),
+    content: $('<div class="test-accordeon-content"></div>'),
     dimmer: $('<div class="dim"></div>'),
     closeBtn: null,
     headers: [],
@@ -152,21 +152,22 @@ maths.test = (function() {
       parent.append(this.container);
       this.container.append(this.content).show();
       this.dimmer.appendTo("body");
-      $('.accordeon-section-content').eq(0).show();
-      $('.accordeon-section-header').css("border-top", "none"); // nxt...
+      this.headers[0].addClass("selected");
+      $('.test-accordeon-section-content').eq(0).show();
+      $('.test-accordeon-section-header').css("border-top", "none");
     },
     createTitleBar: function(title) {
-      let bar = $('<div class="accordeon-titlebar"></div>'),
-          foo = $('<div class="accordeon-titlebar-foo"></div>');
-          barTitle = $('<h4 class="accordeon-titlebar-title">' + title + '</h4>');
-      this.closeBtn = $('<button class="accordeon-titlebar-close">&times;</button>');
+      let bar = $('<div class="test-accordeon-titlebar"></div>'),
+          foo = $('<div class="test-accordeon-titlebar-foo"></div>');
+          barTitle = $('<h4 class="test-accordeon-titlebar-title">' + title + '</h4>');
+      this.closeBtn = $('<button class="test-accordeon-titlebar-close">&times;</button>');
       this.closeBtn.on("click", () => this.dispose());
       return bar.append(barTitle, foo, this.closeBtn);
     },
     createSection: function(head, cont) {
-      let section = $('<div class="accordeon-section"></div>'),
-          header = $('<h3 class="accordeon-section-header">' + head + '</h3>'),
-          sectionContent = $('<div class="accordeon-section-content">' + cont + '</div>');
+      let section = $('<div class="test-accordeon-section"></div>'),
+          header = $('<button class="test-accordeon-section-header">' + head + '</button>'),
+          sectionContent = $('<div class="test-accordeon-section-content">' + cont + '</div>');
       sectionContent.hide();
       this.headers.push(header);
       this.contents.push(sectionContent);
@@ -179,18 +180,22 @@ maths.test = (function() {
       this.headers = [];
     },
     attachListeners: function () {
-      $('.accordeon-section-header').on("click", function() {
+      $('.test-accordeon-section-header').on("click", function() {
         if (!$(this).is(maths.accordeon.last())) {
           maths.accordeon.show(this);
         }
       });
     },
-    show: function(header) {
-      let content = header.next();
-      if (content.is(':hidden')) {
-        $('.accordeon-section-content').filter(':visible').slideUp();
-        content.slideDown();
-        header[0].scrollIntoView();
+    show: function(header, index) {
+      let $header = $(header),
+          $content = $header.next();
+      if ($content.is(':hidden')) {
+        this.headers.forEach(val=> val.removeClass("selected"));
+        $('.test-accordeon-section-content:visible').slideUp();
+        $content.slideDown();
+        $header.addClass("selected");
+        if (index > this.headers.length / 2) this.content.scrollTop(99)
+        else this.content.scrollTop(0);
       }
     },
     unfold: function() {
@@ -202,6 +207,8 @@ maths.test = (function() {
       if (!index) {
         throw new Error("couldn't find the header");
       }
+      this.headers.forEach(val=> val.removeClass("selected"));
+      this.headers[index].addClass("selected");
       this.headers[index][0].scrollIntoView();
     }
   };

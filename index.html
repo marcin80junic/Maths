@@ -133,6 +133,7 @@
 
     <div id="test">
       <div class="intro">
+        <h2 class="center">Test</h2>
         <p>
           So its time to test your skills, if you feel confident don't hesitate any longer
           and follow the path to excellence!!
@@ -140,13 +141,13 @@
         <p class="center">
           Dear <span class="special">Paulina</span>, please choose difficulty level:
         </p>
-        <div>
+        <div class="button-ladder">
           <button class="test-level-choice" value="0">Fair</button>
           <button class="test-level-choice" value="1" disabled="true">Advanced</button>
           <button class="test-level-choice" value="2" disabled="true">Super Hard</button>
         </div>
-      </div>
-      <div class="content">
+        </div>
+        <div class="content">
     
       </div>
     </div>
@@ -184,11 +185,11 @@
               <div class="settings-group-line">
                 <label>Randomized answer fields:</label>
                 <div>
-                  <label class="container">Yes
+                  <label class="custom-radio">Yes
                     <input type="radio" name="isRandomized" value="true" checked="true">
                     <span class="checkmark"></span>
                   </label>
-                  <label class="container">No
+                  <label class="custom-radio">No
                     <input type="radio" name="isRandomized" value="false">
                     <span class="checkmark"></span>
                   </label>
@@ -197,11 +198,11 @@
               <div class="settings-group-line">
                 <label>Show tooltips:</label>
                 <div>
-                  <label class="container">Yes
+                  <label class="custom-radio">Yes
                     <input type="radio" name="showTooltips" value="true" checked="true">
                     <span class="checkmark"></span>
                   </label>
-                  <label class="container">No
+                  <label class="custom-radio">No
                     <input type="radio" name="showTooltips" value="false">
                     <span class="checkmark"></span>
                   </label>
@@ -214,7 +215,7 @@
               <legend>Test</legend>
             </fieldset>
             
-            <div class="control">
+            <div class="interface-control">
               <input id="settings-default" type="reset" value="Default" />
               <input id="settings-apply" type="submit" value="Apply" disabled />
             </div>

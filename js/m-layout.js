@@ -37,7 +37,7 @@ maths.layout = {
         html += this.main(module, num); //add main content and assign results to module's results property
 
         //bottom button group
-        html += '<div class="control">';
+        html += '<div class="interface-control">';
         html += '<input type="reset" class="reset">';
         html += '<input type="submit" value="Reload" class="reload">';
         html += '<input type="submit" value="Check All" class="check-all">';
@@ -149,8 +149,8 @@ maths.layout = {
     testNavigation: function (isFirst, isLast) {
         let first = isFirst ? "Start" : "Prev",
             last = isLast ? "Finish" : "Next",
-            firstClass = isFirst ? "accordeon-button-start" : "accordeon-button-prev"
-        lastClass = isLast ? "accordeon-button-finish" : "accordeon-button-next",
+            firstClass = isFirst ? "button-start" : "button-prev"
+        lastClass = isLast ? "button-finish" : "button-next",
             html = '<div class="test-navigation">';
         html += '<button class="' + firstClass + '">' + first + '</button>';
         html += isFirst ? ""
@@ -291,13 +291,13 @@ maths.layout = {
         },
 
         test: function (module) {
-            let rows = module.container.find(".flex-row"),
+            let rows = module.container.find(".exercises-operation"),
                 answerFields = module.container.find(".answer"),
-                prevBtn = module.container.find('.accordeon-button-prev'),
-                nextBtn = module.container.find('.accordeon-button-next'),
-                startBtn = module.container.find('.accordeon-button-start'),
-                finishBtn = module.container.find('.accordeon-button-finish'),
-                headers = module.container.find('.accordeon-section-header'),
+                prevBtn = module.container.find('.button-prev'),
+                nextBtn = module.container.find('.button-next'),
+                startBtn = module.container.find('.button-start'),
+                finishBtn = module.container.find('.button-finish'),
+                headers = module.container.find('.test-accordeon-section-header'),
                 closeBtn = maths.accordeon.closeBtn;
             closeBtn2 = $("#test-close");
             lastFocusableElements = $(startBtn).add(nextBtn).add(finishBtn).add(closeBtn).add(closeBtn2);
@@ -331,19 +331,19 @@ maths.layout = {
             startBtn.on("click", function () {
                 if ($(this).text() === "Start") {
                     let ns = maths.test;
-                    maths.timer.init($('.accordeon-titlebar-foo'), ns.time[ns.level], ns.summary);
+                    maths.timer.init($('.test-accordeon-titlebar-foo'), ns.time[ns.level], ns.summary);
                     maths.accordeon.attachListeners();
                     $(this).text("Next");
                 }
-                maths.accordeon.show(headers.eq(1));
+                maths.accordeon.show(headers.eq(1), 1);
             });
             prevBtn.on("click", function () {
                 let index = prevBtn.index(this);
-                maths.accordeon.show(headers.eq(index));
+                maths.accordeon.show(headers.eq(index), index);
             });
             nextBtn.on("click", function () {
                 let index = nextBtn.index(this);
-                maths.accordeon.show(headers.eq(index + 2));
+                maths.accordeon.show(headers.eq(index + 2), index + 2);
             });
             finishBtn.on("click", function () {
                 let scores = processTest();
@@ -352,8 +352,8 @@ maths.layout = {
                 maths.test.displayResults(scores, maths.timer.stop());
             });
             closeBtn2.on("click", () => maths.accordeon.dispose());
-            lastFocusableElements.on("keydown", function (e) { // keep focus inside the dialog container
-                if (e.which === 9) {
+            lastFocusableElements.on("keydown", function (e) { 
+                if (e.which === 9) {    // keep focus traversing inside the dialog container
                     if (e.shiftKey) {
                         if ($(this).is(closeBtn)) {
                             lastFocusableElements.filter(":visible").focus();
