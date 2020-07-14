@@ -36,17 +36,17 @@ body {
   overflow: hidden;
 }
 body::-webkit-scrollbar, 
-.navigation-menu::-webkit-scrollbar, 
+.navigation::-webkit-scrollbar, 
 .test-accordeon-content::-webkit-scrollbar {
   width: 1em;
 }
 body::-webkit-scrollbar-track, 
-.navigation-menu::-webkit-scrollbar-track, 
+.navigation::-webkit-scrollbar-track, 
 .test-accordeon-content::-webkit-scrollbar-track {
   background: var(--green-dark);
 }
 body::-webkit-scrollbar-thumb, 
-.navigation-menu::-webkit-scrollbar-thumb, 
+.navigation::-webkit-scrollbar-thumb, 
 .test-accordeon-content::-webkit-scrollbar-thumb {
   background-color: var(--red-light);
   border-radius: .3em;
@@ -82,6 +82,9 @@ button:hover, input:hover, select:hover {
   background-color: var(--green-light);
   cursor: pointer;
 }
+button:focus, input:focus, select:focus {
+  background-color: var(--green-light);
+}
 input:active {
   background-color: var(--green);
 }
@@ -107,23 +110,26 @@ input[type="text"] {
 /* navigation module */
 
 .navigation {
-  position: relative;
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 5px;
+  bottom: 5px;
+  left: 5px;
+  width: 14%;
+  background-color: var(--green-dark);
+  border-radius: 10px;
+  overflow: auto;
+  z-index: 1;
 }
 .navigation-menu {
   display: flex;
   flex-direction: column;
-  position: fixed;
-  top: 0;
-  bottom: 5px;
-  left: .5%;
-  width: 13%;
-  height: 92%;
+  height: 100%;
+  margin: 0;
   padding: 1em .2em;
   text-align: center;
   word-wrap: break-word;
-  background-color: var(--green-dark);
-  border-radius: 10px;
-  overflow: auto;
 }
 .navigation-menu li {
   list-style-type: none;
@@ -153,9 +159,16 @@ input[type="text"] {
 .navigation-menu .selected {
   background-color: var(--red-dark);
 }
-.menu-toggle {
+.mobile-toggle-button {
   display: none;
 }
+.mobile-title {
+  display: none;
+  font-size: 2em;
+  margin: .5em 0;
+  text-align: center;
+}
+
 /* end of navigation module */
 
 
@@ -163,7 +176,29 @@ input[type="text"] {
 /* menu-toggle module */
 
 @media (max-width: 664px) {
-  .menu-toggle {
+  .navigation {
+    position: relative;
+    top: 0;
+    left: 0;
+    height: 6em;
+    width: 6em;
+    float: right;
+    background-color: transparent;
+    z-index: 1;
+  }
+  .navigation.is-open {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--green-dark);
+    border-radius: 0;
+  }
+  .mobile-title.is-open {
+    display: block;
+  }
+  .mobile-toggle-button {
     display: inline-block;
     position: absolute;
     top: .37em;
@@ -175,9 +210,8 @@ input[type="text"] {
     text-indent: 10em;
     white-space: nowrap;
     overflow: hidden;
-    z-index: 2;
   }
-  .menu-toggle::after {
+  .mobile-toggle-button::after {
     display: block;
     position: absolute;
     top: .2em;
@@ -187,12 +221,7 @@ input[type="text"] {
   }
   .navigation-menu {
     display: none;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    margin-top: 0;
     padding: 1em .5em;
-    z-index: 1;
   }
   .navigation-menu.is-open {
     display: flex;
@@ -203,6 +232,9 @@ input[type="text"] {
   main {
     width: 100%;
     margin: 0;
+  }
+  body {
+    overflow: auto;
   }
 }
 /* end of menu-toggle module */
@@ -478,6 +510,44 @@ input[type="text"] {
 
 
 
+/* settings-group module */
+
+.settings-group {
+  display: flex;
+}
+.settings-group div + div {
+  margin-top: .3em;
+}
+.settings-group-line {
+  display: flex;
+}
+.settings-group-line > :first-child {
+  min-width: 10em;
+}
+.settings-group-line > :last-child {
+  margin-left: auto;
+}
+/* end of settings-group module */
+
+
+
+/* checkbox-group module */
+.checkbox-group {
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+}
+.checkbox-group input {
+  width: 1em;
+  height: 1em;
+}
+.checkbox-group > div {
+  min-width: 9em;
+}
+/* end of checkbox-group module */
+
+
+
 /* custom-radio module */
 
 .custom-radio {    /* Customize the label (the container) */
@@ -524,24 +594,6 @@ input[type="text"] {
   background: white;
 }
 /* end of custom-radio module */
-
-
-
-/* settings-group module */
-
-.settings-group {
-  display: flex;
-}
-.settings-group div + div {
-  margin-top: .3em;
-}
-.settings-group-line {
-  display: flex;
-}
-.settings-group-line :last-child {
-  margin-left: auto;
-}
-/* end of settings-group module */
 
 
 

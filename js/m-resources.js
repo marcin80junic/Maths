@@ -80,8 +80,10 @@ var maths = {
       }
       if (i < nums.length - 1) {
         drawSign(sign);
+        c.translate(57, 0);
       } else {
         drawSign("=");
+        c.translate(50, 0);
         drawIcon(maths.icons.questMark);
       }
     }
@@ -169,8 +171,7 @@ var maths = {
     function drawSign(sign) {
       c.fillStyle = "black";
       c.translate(40, 0);
-      c.fillText(sign, 0, 9);
-      c.translate(50, 0);
+      c.fillText(sign, 0, 11);
       c.fillStyle = "red";
     }
     function drawIcon(path) {

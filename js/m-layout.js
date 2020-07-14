@@ -233,6 +233,7 @@ maths.layout = {
                 let index = checkButtons.index(this),
                     isCorrect = processOperation(index);
                 maths.playSound(isCorrect);
+                $(this).blur();
             });
             resetButton.on("click", () => {    //reset button
                 score = 0;
@@ -240,6 +241,7 @@ maths.layout = {
                 answerFields.show().removeClass("warning").next().remove();
                 icons.prop("src", maths.icons.questMark);
                 checkButtons.removeClass("invisible");
+                resetButton.blur();
             });
             reloadButton.on("click", (e) => {   //reload button
                 e.preventDefault();
@@ -252,6 +254,7 @@ maths.layout = {
                         processOperation(index);
                     }
                 });
+                checkAllButton.blur();
             });
             this.textInputs(rows, answerFields, processOperation);  //add input fields filtering
         },

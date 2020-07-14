@@ -10,7 +10,8 @@
 <body>
 
   <nav class="navigation">
-    <button class="menu-toggle">toggle menu</button>
+    <h1 class="mobile-title">Menu</h1>
+    <button class="mobile-toggle-button">toggle menu</button>
     <ul id="main-menu" class="navigation-menu">
       <li><a href="#home" class="selected" draggable="false">Home</a></li>
       <li><a href="#addition" draggable="false">Addition +</a></li>
@@ -213,6 +214,32 @@
             
             <fieldset>
               <legend>Test</legend>
+
+              <div class="settings-group-line">
+                <label>Choose test modules:</label>
+                <div class="checkbox-group">
+                  <div>
+                    <input type="checkbox" name="modules" checked="checked" id="add">
+                    <label for="add">Addition</label>
+                  </div>
+                  <div>
+                    <input type="checkbox" name="modules" checked="checked" id="sub">
+                    <label for="sub">Subtraction</label>
+                  </div>
+                  <div>
+                    <input type="checkbox" name="modules" checked="checked" id="mul">
+                    <label for="mul">Multiplication</label>
+                  </div>
+                  <div>
+                    <input type="checkbox" name="modules" checked="checked" id="div">
+                    <label for="div">Division</label>
+                  </div>
+                  <div>
+                    <input type="checkbox" name="modules" checked="checked" id="fra">
+                    <label for="fra">Fractions</label>
+                  </div>
+                </div>
+              </div>
             </fieldset>
             
             <div class="interface-control">

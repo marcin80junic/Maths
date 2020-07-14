@@ -25,7 +25,6 @@ maths.settings = {
     changed: {
         system: {},
         general: {},
-        fractions: {},
         test: {}
     },
 
@@ -35,7 +34,6 @@ maths.settings = {
             all = {
                 system: this.system,
                 general: this.general,
-                fractions: this.fractions,
                 test: this.test
             },
             enableApplyButton = enable => ns.fields.applyButton.prop('disabled', !enable),
