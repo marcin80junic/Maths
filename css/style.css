@@ -247,14 +247,13 @@ input[type="text"] {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  margin: 1.5em 0;
 }
 .interface > *:not(:last-child) {
-  margin-bottom: 1em;
   margin-right: 1em;
 }
 .interface-item {
   display: flex;
+  padding: .5em 0;
 }
 .interface-item > label {
   margin-right: .5em;
@@ -264,6 +263,7 @@ input[type="text"] {
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr;
   grid-gap: .5em;
+  padding: .5em 0;
 }
 .interface-item-score > * > * {
   display: inline-block;
@@ -520,6 +520,10 @@ input[type="text"] {
 }
 .settings-group-line {
   display: flex;
+  margin: .8em 0;
+  padding: .2em;
+  border: 2px groove #ffffcc;
+  border-radius: .3em;
 }
 .settings-group-line > :first-child {
   min-width: 10em;
@@ -542,7 +546,11 @@ input[type="text"] {
   height: 1em;
 }
 .checkbox-group > div {
-  min-width: 9em;
+  min-width: 10em;
+}
+.checkbox-group > .right {
+  margin-left: 1em;
+  text-align: right;
 }
 /* end of checkbox-group module */
 

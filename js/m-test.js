@@ -5,30 +5,31 @@ maths.test = (function() {
     test.container = $("#test");
     test.tooltips = false;
     test.loaded = false;
-    test.modules = [];
+    test.modules = [],
     test.time = [10, 6, 5];  //#
-    test.unlocked = 0;  //#
     test.init = function() {
+      this.modules = maths.settings.test.modules.split(",");
+      this.exerciseNum = maths.settings.test.exerciseNum;
+      this.unlocked = parseInt(maths.settings.test.unlocked);
+      let choiceButtons = $(".test-level-choice");
+      choiceButtons.each(function (index) {
+        if (index <= maths.test.unlocked) {
+          $(this).prop("disabled", false);
+        }
+      });
       if (!this.loaded) {
-        this.loadSettings();
-        this.loaded = true;
-        let choiceButtons = $(".test-level-choice");
-        choiceButtons.each(function (index) {
-          if (index <= test.unlocked) {
-            $(this).prop("disabled", false);
-          }
-        });
         choiceButtons.on("click", function (e) {
-          test.level = choiceButtons.index(this);
+          maths.test.level = choiceButtons.index(this);
           test.createTest();
         });
+        this.loaded = true;
       }
     };
     test.createTest = function() {
       let module,
+          max = this.modules.length,
           content = {},
           html = "",
-          max = this.modules.length,
           i;
       content["test info"] = this.info();
       this.results = [];   // reset results array
@@ -94,6 +95,7 @@ maths.test = (function() {
           unlockMessage = 'Congratulations, You have unlocked next level!';
           this.unlocked = this.level + 1;
           $(".test-level-choice").eq(this.unlocked).prop("disabled", false);
+          maths.settings.accessStorage({unlocked: this.level + 1}, "maths.settings.test.", true);
         } else {
           unlockMessage = 'To unlock next level you need to score at least 75%.. Try again';
         }

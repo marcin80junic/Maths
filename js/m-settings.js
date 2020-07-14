@@ -6,6 +6,7 @@ maths.settings = {
         volume: $('#volume'),
         isRandomized: $('#settings input[name="isRandomized"]'),
         showTooltips: $('#settings input[name="showTooltips"]'),
+        testModules: $('#settings input[name="modules"]'),
         applyButton: $('#settings-apply'),
         settingsForm: $('#settings-form')
     },
@@ -20,7 +21,10 @@ maths.settings = {
 
     },
     test: {
-        timerTime: 6
+        exerciseNum: 2,
+        modules: "addition,subtraction,multiplication,division,fractions",
+        timerTime: 6,
+        unlocked: 0
     },
     changed: {
         system: {},
@@ -44,14 +48,25 @@ maths.settings = {
                 else if (value < 70) $('#speaker').prop('src', 'pics/speaker-medium-volume.png');
                 else $('#speaker').prop('src', 'pics/speaker-high-volume.png');
             };
+        // read settings from local storage and update all settings fields
         this.accessStorage(all, namespace, false);
-        this.areLoaded = true;
-        this.fields.volume.val(this.system.volume * 100);
-        updateVolumeLabel(this.system.volume * 100);
+        this.areLoaded = true;                      
+        this.fields.volume.val(this.system.volume * 100);  
+        updateVolumeLabel(this.system.volume * 100);    
         this.fields.isRandomized.filter('[value="' + this.general.isRandomized + '"]').prop('checked', true);
         this.fields.showTooltips.filter('[value="' + this.general.showTooltips + '"]').prop('checked', true);
+        this.fields.testModules.each((_i, el) => {
+            let checked = false;
+            this.test.modules.split(",").forEach((val) => {
+                if ($(el).is('[value="' + val + '"]')) {
+                    checked = true;
+                }
+            });
+            $(el).prop('checked', checked);
+        });
         
-        this.fields.volume.on('input', function() {
+        // attach listeners to all settings fields
+        this.fields.volume.on('input change', function() {
             updateVolumeLabel($(this).val());
         });
         this.fields.volume.on('change', function() {
@@ -68,6 +83,14 @@ maths.settings = {
             ns.changed.general.showTooltips = $(this).val();
             enableApplyButton(true);
         });
+        this.fields.testModules.on('change', function() {
+            let mods = [];
+            ns.fields.testModules.each((i, el) => {
+                if ($(el).is(':checked')) mods.push($(el).val())
+            })
+            ns.changed.test.modules = mods.join(",");
+            enableApplyButton(true);
+        });
         this.fields.settingsForm.on('submit', function(e) {
             e.preventDefault();
             ns.accessStorage(ns.changed, namespace, true);
@@ -76,7 +99,8 @@ maths.settings = {
             enableApplyButton(false);
         });
         this.fields.settingsForm.on('reset', ()=>{
-            setTimeout(() => this.fields.volume.trigger('change'), 100);
+            setTimeout(() => this.fields.volume.trigger('input'), 100);
+            enableApplyButton(true);
         });
     },
     accessStorage: function(object, namespace, write) {
@@ -88,8 +112,10 @@ maths.settings = {
                             this.accessStorage(object[field], namespace + field + ".", write);
                         } else if(write) {
                             localStorage.setItem(namespace + field, object[field]);
+                            console.log("saving: " + namespace + field + ": " + object[field]); /** */
                         } else {
                             let loaded = localStorage.getItem(namespace + field);
+                            console.log("loading: " + namespace + field + ": " + loaded);   //** */
                             if (loaded !== null) object[field] = loaded;
                         }
                     }
@@ -121,7 +147,6 @@ maths.settings = {
                     }
                 }
                 if (!isEmpty && object === "general") resetModules();
-                if (!isEmpty && object === "test") maths.test; // *****
             }
         }   
     },

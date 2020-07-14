@@ -58,21 +58,6 @@ function Operation() { };
         let namespace = "maths." + this.name + ".";
         this.level = parseInt((localStorage.getItem(namespace + "level")), 10) || 0;
         this.exerciseNum = parseInt((localStorage.getItem(namespace + "exerciseNum")), 10) || 6;
-        if (this.modules) { //check for existence of modules property which only exists in a test module
-          let str;
-          this.unlocked = parseInt(localStorage.getItem(namespace + "unlocked"), 10) || 0;
-          str = localStorage.getItem(namespace + "modules");
-          this.modules =  str? str.split(",")
-            : ["addition", "subtraction", "multiplication", "division", "fractions"];
-          str = localStorage.getItem(namespace + "time");
-          if (str) {
-            this.time = str.split(", ").map(function(value) {
-              return parseInt(value, 10);
-            });
-          } else {
-            this.time = [10, 6, 5];
-          }
-        }
       }
     } catch (error) {
       alert("can't access the local storage\nall settings will be restored to its default values");
