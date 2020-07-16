@@ -5,11 +5,15 @@ maths.test = (function() {
     test.container = $("#test");
     test.tooltips = false;
     test.loaded = false;
+    /* following properties will be initialized during module init */
     test.modules = [],
-    test.time = [10, 6, 5];  //#
+    test.exerciseNum = 0,
+    test.unlocked = 0,
+    test.times = [];
     test.init = function() {
       this.modules = maths.settings.test.modules.split(",");
-      this.exerciseNum = maths.settings.test.exerciseNum;
+      this.exerciseNum = parseInt(maths.settings.test.exerciseNum);
+      this.times = maths.settings.test.times.split(",");
       this.unlocked = parseInt(maths.settings.test.unlocked);
       let choiceButtons = $(".test-level-choice");
       choiceButtons.each(function (index) {
@@ -63,7 +67,7 @@ maths.test = (function() {
         html += maths[module].name + ", ";
       });
       html = html.replace(/,\s$/, "") + '</h3>';
-      html += '<h3 class="center">Time to complete: ' + this.time[this.level] + ' minutes</h3>';
+      html += '<h3 class="center">Time to complete: ' + this.times[this.level] + ' minutes</h3>';
       html += '<h2 class="center">GOOD LUCK!</h2>';
       html += maths.layout.testNavigation(true, false);
       html += '</div>';

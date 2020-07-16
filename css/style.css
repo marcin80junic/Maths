@@ -2,9 +2,11 @@
 /* general settings */
 
 :root {
+  --yellow-pale: #ffffcc;
   --yellow-light: #ffff99;
   --yellow: #ffff66;
   --yellow-dark: #ffff00;
+  --green-pale: #80ff80;
   --green-light: #1aff1a;
   --green: #00b300;
   --green-dark: #1f7a1f;
@@ -17,9 +19,6 @@
 }
 *, ::before, ::after {
   box-sizing: inherit;
-}
-*:focus {
-  outline: none;
 }
 body {
   -webkit-user-select: none; /* Safari */
@@ -73,14 +72,14 @@ fieldset {
 input, select, button {
   font: inherit;
   font-size: .9em;
-  background-color: #80ff80;
+  background-color: var(--green-pale);
   border: 2px solid rgba(0, 0, 0, .3);
   border-radius: 5px;
   box-shadow: 3px 3px 3px rgba(55,55,55,.5);
-}
-button:hover, input:hover, select:hover {
-  background-color: var(--green-light);
   cursor: pointer;
+}
+button:hover:not(:disabled), input:hover:not(:disabled), select:hover:not(:disabled) {
+  background-color: var(--green-light);
 }
 button:focus, input:focus, select:focus {
   background-color: var(--green-light);
@@ -92,7 +91,7 @@ input[type="text"] {
   font-size: .9em;
   text-align: center;
   width: 2.3em;
-  background-color: #ffffcc;
+  background-color: var(--yellow-pale);
 }
 /* end of general settings */
 
@@ -478,8 +477,8 @@ input[type="text"] {
   color: var(--yellow-light);
   background-color: var(--red-light);
 }
-.test-accordeon-section-header:hover,
-.test-accordeon-section-header:focus {
+.test-accordeon-section-header:hover:not(:disabled),
+.test-accordeon-section-header:focus:not(:disabled) {
   background-color: var(--red);
 }
 .test-accordeon-section-header:active {
@@ -566,7 +565,7 @@ input[type="text"] {
   cursor: pointer;
 }
 .custom-radio input {    /* Hide the browser's default radio button */
-  display: none;
+  opacity: 0;
 }
 .checkmark {    /* Create a custom radio button */
   position: absolute;
@@ -591,6 +590,10 @@ input[type="text"] {
 }
 .custom-radio input:checked ~ .checkmark:after {   /* Show the indicator (dot/circle) when checked */
   display: block;
+}
+.custom-radio input:focus ~ .checkmark,
+.custom-radio input:focus ~ .checkmark:after {
+  border: 1px groove black;
 }
 .custom-radio .checkmark:after {   /* Style the indicator (dot/circle) */
   top: .28em;

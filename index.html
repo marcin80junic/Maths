@@ -245,37 +245,37 @@
                 <div class="checkbox-group">
                   <div class="right">
                     <label>Fair:</label>
-                    <select>
-                      <option>5</option>
-                      <option>6</option>
-                      <option>7</option>
-                      <option selected="selected">8</option>
-                      <option>9</option>
-                      <option>10</option>
+                    <select name="times">
+                      <option value="5">5</option>
+                      <option value="6">6</option>
+                      <option value="7">7</option>
+                      <option value="8" selected="selected">8</option>
+                      <option value="9">9</option>
+                      <option value="10">10</option>
                     </select>
                     <label>min</label>
                   </div>
                   <div class="right">
                     <label>Advanced:</label>
-                    <select>
-                      <option>3</option>
-                      <option>4</option>
-                      <option>5</option>
-                      <option selected="selected">6</option>
-                      <option>7</option>
-                      <option>8</option>
+                    <select name="times">
+                      <option value="3">3</option>
+                      <option value="4">4</option>
+                      <option value="5">5</option>
+                      <option value="6" selected="selected">6</option>
+                      <option value="7">7</option>
+                      <option value="8">8</option>
                     </select>
                     <label>min</label>
                   </div>
                   <div class="right">
                     <label>Super Hard:</label>
-                    <select>
-                      <option>1</option>
-                      <option>2</option>
-                      <option>3</option>
-                      <option selected="selected">4</option>
-                      <option>5</option>
-                      <option>6</option>
+                    <select name="times">
+                      <option value="1">1</option>
+                      <option value="2">2</option>
+                      <option value="3">3</option>
+                      <option value="4" selected="selected">4</option>
+                      <option value="5">5</option>
+                      <option value="6">6</option>
                     </select>
                     <label>min</label>
                   </div>
@@ -284,13 +284,13 @@
               <div class="settings-group-line">
                 <label>Questions per module:</label>
                 <div>
-                  <select>
-                    <option>4</option>
-                    <option>5</option>
-                    <option selected="selected">6</option>
-                    <option>7</option>
-                    <option>8</option>
-                    <option>10</option>
+                  <select name="numOfQuest">
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6" selected="selected">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="10">10</option>
                   </select>
                   <label>questions</label>
                 </div>
@@ -298,8 +298,9 @@
             </fieldset>
             
             <div class="interface-control">
-              <input id="settings-default" type="reset" value="Default" />
-              <input id="settings-apply" type="submit" value="Apply" disabled />
+              <input id="settings-default" type="Reset" value="Default" />
+              <button id="settings-clear">Clear</button>
+              <input id="settings-apply" type="Submit" value="Apply" disabled />
             </div>
           </fieldset>
         </form>

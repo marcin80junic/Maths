@@ -334,7 +334,7 @@ maths.layout = {
             startBtn.on("click", function () {
                 if ($(this).text() === "Start") {
                     let ns = maths.test;
-                    maths.timer.init($('.test-accordeon-titlebar-foo'), ns.time[ns.level], ns.summary);
+                    maths.timer.init($('.test-accordeon-titlebar-foo'), ns.times[ns.level], ns.summary);
                     maths.accordeon.attachListeners();
                     $(this).text("Next");
                 }
