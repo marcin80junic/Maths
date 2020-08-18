@@ -1,0 +1,24 @@
+{
+  "name": "maths",
+  "version": "1.0.0",
+  "description": "One Page Maths exercise online application",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "sass": "node-sass css/sass/index.scss css/style.css"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/marcin80junic/Maths.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/marcin80junic/Maths/issues"
+  },
+  "homepage": "https://github.com/marcin80junic/Maths#readme",
+  "devDependencies": {
+    "node-sass": "^4.14.1"
+  }
+}

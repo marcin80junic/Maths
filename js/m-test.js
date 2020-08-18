@@ -5,11 +5,12 @@ maths.test = (function() {
     test.container = $("#test");
     test.tooltips = false;
     test.loaded = false;
-    /* following properties will be initialized during module init */
+    /* following properties will be initialized during module init below */
     test.modules = [],
     test.exerciseNum = 0,
     test.unlocked = 0,
     test.times = [];
+
     test.init = function() {
       this.modules = maths.settings.test.modules.split(",");
       this.exerciseNum = parseInt(maths.settings.test.exerciseNum);
@@ -17,9 +18,8 @@ maths.test = (function() {
       this.unlocked = parseInt(maths.settings.test.unlocked);
       let choiceButtons = $(".test-level-choice");
       choiceButtons.each(function (index) {
-        if (index <= maths.test.unlocked) {
-          $(this).prop("disabled", false);
-        }
+        if (index <= maths.test.unlocked) $(this).prop("disabled", false);
+        else $(this).prop("disabled", true);
       });
       if (!this.loaded) {
         choiceButtons.on("click", function (e) {

@@ -1,0 +1,38 @@
+
+/* tooltip module */
+
+.tooltip {    /* Tooltip container */
+    position: relative;
+  }
+  .tiptext {
+    visibility: hidden;
+    background-color: var(--yellow-light);
+    border: 1px solid grey;
+    border-radius: 6px;
+    position: absolute;   /* Position the tooltip text */
+    z-index: 1;
+    bottom: 100%;
+    left: 50%;
+    margin-left: -80px;
+    opacity: 0;       /* Fade in tooltip */
+    transition: opacity 0.3s;
+  }
+  .tooltip .tiptext::after {    /* Tooltip arrow */
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #555 transparent transparent transparent;
+  }
+  .showtip {
+    visibility: visible;
+    opacity: 1;
+  }
+  .canvas {
+    width: 100%;
+  }
+  /* end of tooltip module */
+  

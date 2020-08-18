@@ -1,0 +1,32 @@
+/* fraction module */
+
+.fraction {
+    display: flex;
+    align-items: center;
+  }
+  .fraction-unit {
+    display: inline-block;
+    position: relative;
+    vertical-align: middle;
+    font-size: .95em;
+    letter-spacing: 0.001em;
+    text-align: center;
+  }
+  .fraction-unit div.bottom {
+    border-top: 2px solid black;
+  }
+  .fraction-unit div.dash {
+    display: none;
+  }
+  .fraction input {
+    width: 1.7em;
+    box-shadow: none;
+  }
+  .fraction input.close {
+    width: .9em;
+  }
+  .fraction .close {
+    font-size: 1.4em;
+    margin-left: 0;
+  }
+  /* end of fraction module */

@@ -43,7 +43,13 @@ maths.settings = {
                 general: this.general,
                 test: this.test
             };
-        const enableApplyButton = enable => ns.fields.applyButton.prop('disabled', !enable);
+        const enableApplyButton = () => {
+            if ($.isEmptyObject(ns.changed.system)
+                && $.isEmptyObject(ns.changed.general)
+                && $.isEmptyObject(ns.changed.test))
+                ns.fields.applyButton.prop('disabled', true)
+            else  ns.fields.applyButton.prop('disabled', false)
+        }
             
         // read settings from local storage and update all settings fields
         this.accessStorage(all, namespace, false);
@@ -54,53 +60,64 @@ maths.settings = {
         this.fields.volume.on('input change', () => this.updateVolumeLabel(this.fields.volume.val()) );
         this.fields.volume.on('change', function() {
             let volume = $(this).val() / 100;
-            ns.changed.system.volume = volume;
+            if (ns.system.volume == volume) delete ns.changed.system.volume
+            else ns.changed.system.volume = volume
             maths.playSound(true, volume);
-            enableApplyButton(true);
+            enableApplyButton();
         });
         this.fields.isRandomized.on('change', function() {
-            ns.changed.general.isRandomized = $(this).val();
-            enableApplyButton(true);
+            let isRand = $(this).val();
+            if (isRand === ns.general.isRandomized) delete ns.changed.general.isRandomized
+            else ns.changed.general.isRandomized = isRand
+            enableApplyButton();
         });
-        this.fields.showTooltips.on('change', function() {
-            ns.changed.general.showTooltips = $(this).val();
-            enableApplyButton(true);
+        this.fields.showTooltips.on('change reset', function() {
+            let isTooltip = $(this).val();
+            if (isTooltip === ns.general.showTooltips) delete ns.changed.general.showTooltips
+            else ns.changed.general.showTooltips = isTooltip
+            enableApplyButton();
         });
         this.fields.testModules.on('change', function() {
             let mods = [];
             ns.fields.testModules.each((i, el) => {
                 if ($(el).is(':checked')) mods.push($(el).val())
-            })
-            ns.changed.test.modules = mods.join(",");
-            enableApplyButton(true);
+            });
+            if (mods.join(",") === ns.test.modules) delete ns.changed.test.modules
+            else ns.changed.test.modules = mods.join(",");
+            enableApplyButton();
         });
         this.fields.testTimes.on('change', function() {
             let times = [];
             ns.fields.testTimes.each( (i, el) => times[i] = $(el).val() );
-            ns.changed.test.times = times.join(",");
-            enableApplyButton(true);
+            if (times.join(",") === ns.test.times) delete ns.changed.test.times
+            else ns.changed.test.times = times.join(",")
+            enableApplyButton();
         });
         this.fields.testNumOfQuest.on('change', () => {
-            ns.changed.test.exerciseNum = this.fields.testNumOfQuest.val();
-            enableApplyButton(true);
+            let num = this.fields.testNumOfQuest.val();
+            if (num == ns.test.exerciseNum) delete ns.changed.test.exerciseNum
+            else ns.changed.test.exerciseNum = num;
+            enableApplyButton();
         });
         this.fields.clearButton.on('click', () => {
             this.clearChanges();
             this.restoreSettings();
             this.fields.clearButton.blur();
-            enableApplyButton(false);
+            enableApplyButton();
         });
         this.fields.settingsForm.on('submit', function(e) {
             e.preventDefault();
-            ns.accessStorage(ns.changed, namespace, true);
-            ns.applyChanges();
-            ns.clearChanges();
-            enableApplyButton(false);
+            if (ns.confirmChanges()) {  // check whether changes will reset any modules and display..
+                ns.applyChanges();      // ..confirmation dialog
+                ns.accessStorage(ns.changed, namespace, true);
+                ns.clearChanges();
+                enableApplyButton();
+            }   // do nothing if changes are refused
         });
         this.fields.settingsForm.on('reset', ()=>{
             setTimeout(() => this.fields.volume.trigger('input'), 100);
             $('#settings-default').blur();
-            enableApplyButton(true);
+            enableApplyButton();
         });
     },
     accessStorage: function(object, namespace, write) {
@@ -127,6 +144,7 @@ maths.settings = {
     },
     applyChanges: function() {
         let changed = this.changed,
+            apply = false,
             object, temp, field, isEmpty,
             resetModules = () => {  // resets levelDisplayed property of Operation modules, this will cause
                 for (object in maths) {  // the program to reload modules next time they will be displayed
@@ -136,6 +154,11 @@ maths.settings = {
                     }
                 }
             }
+            resetTest = () => {
+                maths.settings.test.unlocked = "0";
+                this.accessStorage({"unlocked": "0"}, "maths.settings.test.", true);
+            }
+
         for (object in changed) {   // assign temporary changes to actual settings
             if (changed.hasOwnProperty(object)) {
                 temp = changed[object];
@@ -146,14 +169,17 @@ maths.settings = {
                         isEmpty = false;
                     }
                 }
-                if (!isEmpty && object === "general") resetModules();
+                if (!isEmpty) {
+                    if (object === "general") resetModules();
+                    if (object === "test") resetTest();
+                }
             }
         }   
     },
     restoreSettings: function() {
         let testModules = this.test.modules.split(","), 
             testTimes = this.test.times.split(","); 
-        
+
         this.fields.volume.val(this.system.volume * 100);  
         this.updateVolumeLabel(this.system.volume * 100);    
         this.fields.isRandomized.filter('[value="' + this.general.isRandomized + '"]').prop('checked', true);
@@ -176,6 +202,21 @@ maths.settings = {
                 this.changed[field] = {};
             }
         }
+    },
+    confirmChanges: function() {
+        let conf = true,
+            general = !$.isEmptyObject(this.changed.general),
+            test = !$.isEmptyObject(this.changed.test);
+        if (general && test) {
+            conf = confirm("changing these options will void any progress throughout all modules and test");
+        }
+        else if (general) {
+            conf = confirm("changing these options will void any progress throughout all modules (not test)");
+        }
+        else if (test) {
+            conf = confirm("changing these options will void any progress in the test module");
+        }
+        return conf;
     },
     updateVolumeLabel: function(value) {
         $('#volume-label').html(value + "%");

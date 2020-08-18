@@ -1,0 +1,139 @@
+/* general settings */
+:root {
+    --yellow-pale: #ffffcc;
+    --yellow-light: #ffff99;
+    --yellow: #ffff66;
+    --yellow-dark: #ffff00;
+    --green-pale: #80ff80;
+    --green-light: #1aff1a;
+    --green: #00b300;
+    --green-dark: #1f7a1f;
+    --red-light: #ff0000;
+    --red: #e60000;
+    --red-dark: #b30000;
+    --main-bg: #ccffb3;
+    font-size: calc(0.5em + 1vw);
+    box-sizing: border-box;
+  }
+  *, ::before, ::after {
+    box-sizing: inherit;
+  }
+  body {
+    display: flex;
+    -webkit-user-select: none; /* Safari */
+    -khtml-user-select: none; /* Konqueror HTML */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none;
+    margin: 0;
+    overflow: overlay;
+    font-family: "Comic Sans MS", "Monotype Corsiva", cursive;
+    background-color: var(--main-bg);
+  }
+  .body-hidden-overflow {
+    overflow: hidden;
+  }
+  body::-webkit-scrollbar, 
+  .sidenav::-webkit-scrollbar, 
+  .test-accordeon-content::-webkit-scrollbar {
+    width: 1em;
+  }
+  body::-webkit-scrollbar-track, 
+  .sidenav::-webkit-scrollbar-track, 
+  .test-accordeon-content::-webkit-scrollbar-track {
+    background: var(--green-dark);
+  }
+  body::-webkit-scrollbar-thumb, 
+  .sidenav::-webkit-scrollbar-thumb, 
+  .test-accordeon-content::-webkit-scrollbar-thumb {
+    background-color: var(--red-light);
+    border-radius: .3em;
+    border: .2em solid var(--red-dark);
+  }
+  main {
+    width: 85%;
+    padding: 2em;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    margin-top: 0;
+  }
+  p {
+    text-align: justify;
+    line-height: 2em;
+  }
+  fieldset {
+    padding: 1em;
+    margin: 1.5em auto;
+    border-radius: 10px;
+    border-width: medium;
+  }
+  input, select, button {
+    font: inherit;
+    font-size: .9em;
+    background-color: var(--green-pale);
+    border: 2px solid rgba(0, 0, 0, .3);
+    border-radius: 5px;
+    box-shadow: 3px 3px 3px rgba(55,55,55,.5);
+    cursor: pointer;
+    outline: none;
+  }
+  button:hover:not(:disabled), input:hover:not(:disabled), select:hover:not(:disabled) {
+    background-color: var(--green-light);
+  }
+  button:disabled {
+    cursor: initial;
+  }
+  button:focus, input:focus, select:focus {
+    background-color: var(--green-light);
+  }
+  input:active {
+    background-color: var(--green);
+  }
+  input[type="text"] {
+    font-size: .9em;
+    text-align: center;
+    width: 2.3em;
+    background-color: var(--yellow-pale);
+  }
+  img {
+    vertical-align: text-bottom;
+  }
+  /* end of general settings */
+  
+  #home .content {
+    height: 12em;
+    background-image: url("../pics/mathKids.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+  }
+
+  
+/* utility classes */
+
+.center {
+  text-align: center;
+  align-items: center;
+}
+.left {
+  text-align: left;
+}
+.right {
+  text-align: right;
+}
+.vertical-center {
+  vertical-align: middle;
+}
+.special {
+  color: var(--red-light);
+}
+.correct {
+  border: 2px solid #1aff1a;
+}
+.warning {
+  border: 2px solid var(--red-light);
+}
+.invisible {
+  visibility: hidden;
+}
+/* end of utility classes */

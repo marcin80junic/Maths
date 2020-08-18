@@ -1,0 +1,57 @@
+/* interface module */
+
+.interface {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+  .interface > *:not(:last-child) {
+    margin-right: 1em;
+  }
+  .interface-item {
+    display: flex;
+    padding: .5em 0;
+  }
+  .interface-item > label {
+    margin-right: .5em;
+  }
+  .interface-item-score {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr;
+    grid-gap: .5em;
+    padding: .5em 0;
+  }
+  .interface-item-score > * > * {
+    display: inline-block;
+  }
+  .interface-control {
+    display: flex;
+    justify-content: space-between;
+  }
+  /* end of interface module */
+  
+  
+  
+  /* exercises module */
+  
+  .exercises {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(30%, 12em));
+    grid-auto-rows: 1fr;
+    grid-row-gap: 1em;
+    grid-column-gap: 6em;
+    justify-content: center;
+    margin: 1em 0 2em;
+  }
+  .exercises-operation {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  }
+  .exercises-operation > * + * {
+    margin-left: .2em;
+  }
+  /* end of exercises module */
+  
+  
