@@ -1,32 +1,51 @@
-/* fraction module */
+
+/* 
+Fraction
+
+Displays numbers as a fraction.
+
+Add class `fraction` to a wrapper *div* element, class `numerator` to the first child *div* element 
+and `denominator to second one.
+
+Markup:
+<div style="text-align:center">
+    <div class="fraction">
+        <div class="whole">2</div>      // optional
+        <div class="fraction-unit">
+            <div class="numerator">13</div>
+            <div class="denominator">132</div>
+        </div>
+    </div>
+</div>
+
+Styleguide Fraction
+*/
 
 .fraction {
     display: flex;
+    height: 100%;
+}
+.fraction .whole {
+    display: flex;
     align-items: center;
-  }
-  .fraction-unit {
+}
+.fraction .whole:not(:only-of-type) {
+    margin-right: 0.1em;
+}
+.fraction .whole input {
+    align-self: center;
+    width: 1.2em;
+    height: 75%;
+}
+.fraction .fraction-unit {
     display: inline-block;
-    position: relative;
-    vertical-align: middle;
-    font-size: .95em;
-    letter-spacing: 0.001em;
     text-align: center;
-  }
-  .fraction-unit div.bottom {
+    vertical-align: middle;
+    font-size: .75em;
+}
+.fraction .fraction-unit input {
+    width: 1.9em;
+}
+.fraction .denominator {
     border-top: 2px solid black;
-  }
-  .fraction-unit div.dash {
-    display: none;
-  }
-  .fraction input {
-    width: 1.7em;
-    box-shadow: none;
-  }
-  .fraction input.close {
-    width: .9em;
-  }
-  .fraction .close {
-    font-size: 1.4em;
-    margin-left: 0;
-  }
-  /* end of fraction module */
+}

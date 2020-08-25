@@ -1,0 +1,66 @@
+/*
+Columns
+
+Independent lines of elements aligned to right, laid out in roughly centered columns.
+Javascript takes care of adjusting right padding when window is being resized. This keeps
+the columns centered.
+
+Add class `columns` to a wrapper container and class `columns-line` to any number of individual
+children lines. `columns-line` direct children must not be text nodes - those need to be wrapped into
+element nodes.
+
+Markup:
+<div class="columns">
+    <div class="columns-line">
+        <div>20 +</div> 
+        <button>butt</button>
+        <div>= 6</div>
+        <button>dupp</button>
+    </div>
+    <div class="columns-line">
+        <div>20 +</div> 
+        <button>butt</button>
+        <div>= 6</div>
+    </div>
+    <div class="columns-line">
+        <div>20 +</div> 
+        <button>butt</button>
+        <div>= 6</div>
+    </div>
+    <div class="columns-line">
+        <div>20 +</div> 
+        <button>butt</button>
+        <div>= 6</div>
+    </div>
+    <div class="columns-line">
+        <div>20 +</div> 
+        <button>butt</button>
+        <div>= 6</div>
+    </div>
+    <div class="columns-line">
+        <div>20 +</div> 
+        <button>butt</button>
+        <div>= 6</div>
+    </div>
+</div>
+
+Styleguide Layout.Columns
+*/
+
+.columns {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(10em, 20em));
+    grid-auto-rows: 1fr;
+    grid-row-gap: 1em;
+    grid-column-gap: 6em;
+    justify-content: center;
+}
+.columns-line {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: flex-end;
+    align-items: center;
+}
+.columns-line > * + * {
+      margin-left: 0.3em;
+}

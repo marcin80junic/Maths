@@ -1,17 +1,5 @@
 /* general settings */
 :root {
-  --yellow-pale: #ffffcc;
-  --yellow-light: #ffff99;
-  --yellow: #ffff66;
-  --yellow-dark: #ffff00;
-  --green-pale: #80ff80;
-  --green-light: #1aff1a;
-  --green: #00b300;
-  --green-dark: #1f7a1f;
-  --red-light: #ff0000;
-  --red: #e60000;
-  --red-dark: #b30000;
-  --main-bg: #ccffb3;
   font-size: calc(0.5em + 1vw);
   box-sizing: border-box; }
 
@@ -32,7 +20,7 @@ body {
   margin: 0;
   overflow: overlay;
   font-family: "Comic Sans MS", "Monotype Corsiva", cursive;
-  background-color: var(--main-bg); }
+  background-color: #9efa9e; }
 
 .body-hidden-overflow {
   overflow: hidden; }
@@ -45,14 +33,14 @@ body::-webkit-scrollbar,
 body::-webkit-scrollbar-track,
 .sidenav::-webkit-scrollbar-track,
 .test-accordeon-content::-webkit-scrollbar-track {
-  background: var(--green-dark); }
+  background: #1f7a1f; }
 
 body::-webkit-scrollbar-thumb,
 .sidenav::-webkit-scrollbar-thumb,
 .test-accordeon-content::-webkit-scrollbar-thumb {
-  background-color: var(--red-light);
+  background-color: red;
   border-radius: .3em;
-  border: 0.2em solid var(--red-dark); }
+  border: 0.2em solid #b30000; }
 
 main {
   width: 85%;
@@ -74,7 +62,7 @@ fieldset {
 input, select, button {
   font: inherit;
   font-size: .9em;
-  background-color: var(--green-pale);
+  background-color: #4dff4d;
   border: 2px solid rgba(0, 0, 0, 0.3);
   border-radius: 5px;
   box-shadow: 3px 3px 3px rgba(55, 55, 55, 0.5);
@@ -82,22 +70,22 @@ input, select, button {
   outline: none; }
 
 button:hover:not(:disabled), input:hover:not(:disabled), select:hover:not(:disabled) {
-  background-color: var(--green-light); }
+  background-color: #00e600; }
 
 button:disabled {
   cursor: initial; }
 
 button:focus, input:focus, select:focus {
-  background-color: var(--green-light); }
+  background-color: #00e600; }
 
 input:active {
-  background-color: var(--green); }
+  background-color: #00b300; }
 
 input[type="text"] {
   font-size: .9em;
   text-align: center;
   width: 2.3em;
-  background-color: var(--yellow-pale); }
+  background-color: #ffffcc; }
 
 img {
   vertical-align: text-bottom; }
@@ -125,13 +113,13 @@ img {
   vertical-align: middle; }
 
 .special {
-  color: var(--red-light); }
+  color: red; }
 
 .correct {
   border: 2px solid #1aff1a; }
 
 .warning {
-  border: 2px solid var(--red-light); }
+  border: 2px solid red; }
 
 .invisible {
   visibility: hidden; }
@@ -139,12 +127,6 @@ img {
 /* end of utility classes */
 /* navigation module */
 .sidenav {
-  --main-background: #00b300;
-  --link-background-light: #ff0000;
-  --link-background-dark: #f70606;
-  --link-selected-light: rgb(207, 22, 22);
-  --link-selected-dark: #b30000;
-  --link-text: #ffff66;
   display: flex;
   flex-direction: column;
   position: sticky;
@@ -153,7 +135,7 @@ img {
   height: 100vh;
   padding: 1em .5em;
   border-radius: .5em;
-  background-color: var(--main-background); }
+  background-image: linear-gradient(to bottom, #00b300, #009900); }
 
 .sidenav a {
   display: block;
@@ -161,7 +143,7 @@ img {
   text-decoration: none;
   text-align: center;
   color: var(--link-text);
-  background-image: linear-gradient(var(--link-background-dark), var(--link-background-light), var(--link-background-dark));
+  background-image: linear-gradient(#ef0606, red, #ef0606);
   border: 1px solid rgba(0, 0, 0, 0.5);
   border-radius: .5em;
   box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.5);
@@ -178,16 +160,20 @@ img {
   margin-top: auto; }
 
 .sidenav a:hover {
-  background-image: linear-gradient(var(--link-selected-dark), var(--link-selected-light), var(--link-selected-dark)); }
+  background-image: linear-gradient(#c61515, #e71818, #c61515); }
 
 .sidenav a:focus {
   border: 1px dotted rgba(0, 0, 0, 0.5); }
 
 .sidenav a:active, .sidenav .selected {
   border: 1px solid rgba(0, 0, 0, 0.5);
-  background-image: linear-gradient(var(--link-selected-dark), var(--link-selected-light), var(--link-selected-dark));
+  background-image: linear-gradient(#c61515, #e71818, #c61515);
+  transform: translateY(2px);
+  box-shadow: inset 0 0 0.3em #c61515, inset 0 0.3em 0.7em rgba(0, 0, 0, 0.5); }
+
+.sidenav .selected:not(:active) {
   transform: translateY(1px);
-  box-shadow: inset 0 0 0.3em var(--link-selected-dark), inset 0 0.3em 0.7em rgba(0, 0, 0, 0.3); }
+  box-shadow: inset 0 0 0.3em #c61515, inset 0 0.3em 0.7em rgba(0, 0, 0, 0.3); }
 
 .sidenav .mobile-nav {
   display: none; }
@@ -210,7 +196,7 @@ img {
     right: 0;
     width: 100%;
     height: 100%;
-    background-color: var(--green-dark);
+    background-color: #1f7a1f;
     border-radius: 0; }
   .sidenav .mobile-nav {
     display: block; }
@@ -238,6 +224,14 @@ img {
     left: .17em;
     content: "\2261";
     text-indent: 0; }
+  .mobile-toggle-button:hover {
+    background-color: #009900; }
+  .sidenav.is-open .mobile-toggle-button {
+    transform: translateY(1px);
+    box-shadow: inset 0 0 2px #c61515, inset 0 2px 0.7em rgba(0, 0, 0, 0.3); }
+  .sidenav .mobile-toggle-button:active {
+    transform: translateY(2px);
+    box-shadow: inset 1px 1px 2px #c61515, inset 1px 1px 0.7em rgba(0, 0, 0, 0.3); }
   .sidenav a {
     display: none;
     padding: .8em 1em; }
@@ -276,10 +270,6 @@ img {
 .interface-item-score > * > * {
   display: inline-block; }
 
-.interface-control {
-  display: flex;
-  justify-content: space-between; }
-
 /* end of interface module */
 /* exercises module */
 .exercises {
@@ -300,53 +290,166 @@ img {
   margin-left: .2em; }
 
 /* end of exercises module */
-/* fraction module */
+/*
+Columns
+
+Independent lines of elements aligned to right, laid out in roughly centered columns.
+Javascript takes care of adjusting right padding when window is being resized. This keeps
+the columns centered.
+
+Add class `columns` to a wrapper container and class `columns-line` to any number of individual
+children lines. `columns-line` direct children must not be text nodes - those need to be wrapped into
+element nodes.
+
+Markup:
+<div class="columns">
+    <div class="columns-line">
+        <div>20 +</div> 
+        <button>butt</button>
+        <div>= 6</div>
+        <button>dupp</button>
+    </div>
+    <div class="columns-line">
+        <div>20 +</div> 
+        <button>butt</button>
+        <div>= 6</div>
+    </div>
+    <div class="columns-line">
+        <div>20 +</div> 
+        <button>butt</button>
+        <div>= 6</div>
+    </div>
+    <div class="columns-line">
+        <div>20 +</div> 
+        <button>butt</button>
+        <div>= 6</div>
+    </div>
+    <div class="columns-line">
+        <div>20 +</div> 
+        <button>butt</button>
+        <div>= 6</div>
+    </div>
+    <div class="columns-line">
+        <div>20 +</div> 
+        <button>butt</button>
+        <div>= 6</div>
+    </div>
+</div>
+
+Styleguide Layout.Columns
+*/
+.columns {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(10em, 20em));
+  grid-auto-rows: 1fr;
+  grid-row-gap: 1em;
+  grid-column-gap: 6em;
+  justify-content: center; }
+
+.columns-line {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: flex-end;
+  align-items: center; }
+
+.columns-line > * + * {
+  margin-left: 0.3em; }
+
+/* 
+Fraction
+
+Displays numbers as a fraction.
+
+Add class `fraction` to a wrapper *div* element, class `numerator` to the first child *div* element 
+and `denominator to second one.
+
+Markup:
+<div style="text-align:center">
+    <div class="fraction">
+        <div class="whole">2</div>      // optional
+        <div class="fraction-unit">
+            <div class="numerator">13</div>
+            <div class="denominator">132</div>
+        </div>
+    </div>
+</div>
+
+Styleguide Fraction
+*/
 .fraction {
+  display: flex;
+  height: 100%; }
+
+.fraction .whole {
   display: flex;
   align-items: center; }
 
-.fraction-unit {
-  display: inline-block;
-  position: relative;
-  vertical-align: middle;
-  font-size: .95em;
-  letter-spacing: 0.001em;
-  text-align: center; }
+.fraction .whole:not(:only-of-type) {
+  margin-right: 0.1em; }
 
-.fraction-unit div.bottom {
+.fraction .whole input {
+  align-self: center;
+  width: 1.2em;
+  height: 75%; }
+
+.fraction .fraction-unit {
+  display: inline-block;
+  text-align: center;
+  vertical-align: middle;
+  font-size: .75em; }
+
+.fraction .fraction-unit input {
+  width: 1.9em; }
+
+.fraction .denominator {
   border-top: 2px solid black; }
 
-.fraction-unit div.dash {
-  display: none; }
+/*
+Tooltip
 
-.fraction input {
-  width: 1.7em;
-  box-shadow: none; }
+Tooltip module requires some javascript in order to work. To make it visible the class `showtip`
+needs to be added to the `.tiptext` *span* element.
 
-.fraction input.close {
-  width: .9em; }
+To center tooltip horizontally its *marginLeft* property needs to be assigned at runtime.
+The formula to find the margin would be:
+*tooltip-target center - tiptext center + 1 + "px"*.
 
-.fraction .close {
-  font-size: 1.4em;
-  margin-left: 0; }
+Markup:
+<div style="display:flex;justify-content:space-around;">
+    <span class="tooltip">
+        <button class="tooltip-target">Hover over me</button>
+        <span class="tiptext">This is some text to demonstrate the tooltip module</span>
+    </span>
+    <span class="tooltip">
+        <button class="tooltip-target">Hov</button>
+        <span class="tiptext">This is some text to demonstrate that tooltip module works with short elements</span>
+    </span>
+    <span class="tooltip">
+        <button class="tooltip-target">Hover over me button, a bit longer just for demonstration</button>
+        <span class="tiptext">This is some text to demonstrate that tooltip module works with long elements</span>
+    </span>
+</div>
 
-/* end of fraction module */
-/* tooltip module */
+Styleguide Tooltip 
+*/
 .tooltip {
   /* Tooltip container */
-  position: relative; }
+  position: relative;
+  height: 100%; }
 
 .tiptext {
   visibility: hidden;
-  background-color: var(--yellow-light);
-  border: 1px solid grey;
-  border-radius: 6px;
+  min-width: 10em;
   position: absolute;
   /* Position the tooltip text */
-  z-index: 1;
   bottom: 100%;
-  left: 50%;
-  margin-left: -80px;
+  left: 0;
+  margin-bottom: .5em;
+  padding: .5em;
+  text-align: justify;
+  background-color: beige;
+  border: 1px solid grey;
+  border-radius: .5em;
   opacity: 0;
   /* Fade in tooltip */
   transition: opacity 0.3s; }
@@ -366,10 +469,6 @@ img {
   visibility: visible;
   opacity: 1; }
 
-.canvas {
-  width: 100%; }
-
-/* end of tooltip module */
 /* button-ladder module */
 .button-ladder {
   display: flex;

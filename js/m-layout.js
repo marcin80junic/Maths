@@ -37,7 +37,7 @@ maths.layout = {
         html += this.main(module, num); //add main content and assign results to module's results property
 
         //bottom button group
-        html += '<div class="interface-control">';
+        html += '<div class="interface">';
         html += '<input type="reset" class="reset">';
         html += '<input type="submit" value="Reload" class="reload">';
         html += '<input type="submit" value="Check All" class="check-all">';
@@ -108,40 +108,50 @@ maths.layout = {
     },
 
     fraction: function (array, isAnswer, results) {
-        let number = array[0] / array[1],
-            isInteger = Number.isInteger(number),
-            modulus = [array[0], array[1]],
+        let number = array[0] / array[1],   // decimal representation of fraction
+            wholeNum = Math.floor(number),  // whole part of a fraction
+            isInteger = Number.isInteger(number),   // is fraction an integer?
+            tempArray = [],
             html = '';
-        number = Math.floor(number);
-        if (number >= 1) {
-            html += isAnswer ?
-                '<div class="tooltip fraction">' +
-                    '<input type="text" maxlength="1" class="answer close">' +
-                    '<span class="tiptext"></span>'
-                : '<div class="fraction"><span class="close">' + number + '</span></div>';
-            if (isInteger) {
-                if (isAnswer) {
-                    html += "</div>";
-                    results.push(array);
-                }
-                return html;
+
+        html += isAnswer? '<span class="tooltip">': ''; // if it's an answer wrap fraction in a tooltip module
+        html += '<div class="fraction">';   // opening fraction tag
+
+        html += (wholeNum >= 1)?  // is there a whole number before a fraction part?
+            isAnswer?
+                '<div class="whole"><input type="text" maxlength="1" class="answer"></div>'
+                : '<div class="whole">' + wholeNum + '</div>'
+                : ''
+
+        if (isInteger) {    // if fraction is an integer add closing tags and return
+            html += '</div>';
+            html += '<span class="tiptext"></span>';
+            if (isAnswer) {
+                html += '</span>';
+                results.push(array);
             }
-            modulus = [array[0] - number * array[1], array[1]];
+            return html;
         }
+
+        // calculate what is left after taking the whole number
+        tempArray = [array[0] - (wholeNum * array[1]), array[1]];
+        
+        html += '<div class="fraction-unit">';
+        html += '<div class="numerator">';
+        html += isAnswer?
+            '<input type="text" class="answer" size="1">'
+            : tempArray[0]
+        html += '</div>';   // closing 'numerator' tag
+        html += '<div class="denominator">';
+        html += isAnswer?
+            '<input type="text" class="answer" size="1">'
+            : tempArray[1]
+        html += '</div></div></div>'; // closing 'denominator', 'fraction-unit' and 'fraction' tags
+
         if (isAnswer) {
-            html += (number >= 1)?
-                '<div class="fraction-unit">'
-                : '<div class="fraction fraction-unit tooltip">';
-            html += '<div><input type="text" maxlength="3" class="answer"></div>';
-            html += '<div class="dash">/</div>';
-            html += '<div class="bottom"><input type="text" maxlength="3" class="answer"></div>';
-            html += (number >= 1)? '</div></div>': '<span class="tiptext"></span></div>';
+            html += '<span class="tiptext"></span>';
+            html += '</span>';  // closing tooltip module tag
             results.push(array);
-        } else {
-            html += '<div class="fraction-unit">';
-            html += '<div>' + modulus[0] + '</div>';
-            html += '<div class="dash">/</div>';
-            html += '<div class="bottom">' + modulus[1] + '</div></div>';
         }
         return html;
     },
@@ -213,10 +223,14 @@ maths.layout = {
                 if (showTooltips) {       
                     let tip = $(this).find(".tiptext"),
                         idx = tooltips.index(this);
-                    if (e.type === "mouseover") {
+                    if (e.type === "mouseover") {   // position tooltip by setting its margin-left property
+                        let el_center = $(this).width() / 2,    // find 'tooltip' wrapper center
+                            tip_center;
                         timeout = setTimeout(function () {
                             if (tip.children().length === 0) {
-                                maths.createAndAppendCanvas(tip, module, idx);
+                                maths.createAndAppendCanvas(tip, module, idx);  // create tiptext content
+                                tip_center = tip.width() / 2,   // find tiptext center
+                                tip.css('marginLeft', el_center - (tip_center + 11) + "px");
                             }
                             tip.addClass("showtip");
                         }, 1200);
