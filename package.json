@@ -4,7 +4,7 @@
   "description": "One Page Maths exercise online application",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "index.html",
     "sass": "node-sass css/sass/index.scss css/style.css"
   },
   "repository": {

@@ -54,7 +54,7 @@ maths.layout = {
             isTest = module.name === "test",
             isRandomized = maths.settings.general.isRandomized === "true",
             results = module.results,
-            html = '<div class="exercises">';
+            html = '<div class="columns">';
             
         for (i = 0; i < length; i += 1) {
             numbers = allNumbers[i];  // numbers for single operation
@@ -68,7 +68,7 @@ maths.layout = {
             }
     
             // single operation
-            html += '<div class="exercises-operation">';
+            html += '<div class="columns-line">';
             for (j = 0; j < len; j += 1) {
                 isFraction = (numbers[j].length > 1);
                 isAnswer = (j === index);
@@ -125,9 +125,8 @@ maths.layout = {
 
         if (isInteger) {    // if fraction is an integer add closing tags and return
             html += '</div>';
-            html += '<span class="tiptext"></span>';
             if (isAnswer) {
-                html += '</span>';
+                html += '<span class="tiptext"></span></span>';
                 results.push(array);
             }
             return html;
@@ -177,7 +176,7 @@ maths.layout = {
                 exerciseNumChoice = module.container.find(".exerciseNum"),
                 scoreField = module.container.find(".score"),
                 score = 0,
-                rows = module.container.find(".exercises-operation"),
+                rows = module.container.find(".columns-line"),
                 answerFields = rows.find(".answer"),
                 tooltips = rows.find(".tooltip"),
                 showTooltips = maths.settings.general.showTooltips === "true",
@@ -211,14 +210,19 @@ maths.layout = {
                     let isCorrect = maths.handlers.validateOperation(answerField, result, answers);
                     return isCorrect ? goodAnswer() : wrongAnswer();
                 };
+
+            $(document).ready(()=> this.adjustLinesPadding(rows));    //adjust padding
+
             levelChoice.on("change", function () {    //options change
                 let name = $(this).find("option:selected").text();
                 module.setLevel(maths.difficulties.indexOf(name));
             });
+
             exerciseNumChoice.on("change", function () {
                 let number = $(this).find("option:selected").text();
                 module.setExerciseNum(parseInt(number, 10));
             });
+
             tooltips.on("mouseover mouseout", function (e) {
                 if (showTooltips) {       
                     let tip = $(this).find(".tiptext"),
@@ -242,6 +246,7 @@ maths.layout = {
                     }
                 }
             });
+
             checkButtons.on("click", function (e) {   //listeners for all check buttons on page
                 e.preventDefault();
                 let index = checkButtons.index(this),
@@ -249,6 +254,7 @@ maths.layout = {
                 maths.playSound(isCorrect);
                 $(this).blur();
             });
+
             resetButton.on("click", () => {    //reset button
                 score = 0;
                 scoreField.text(score);
@@ -257,10 +263,12 @@ maths.layout = {
                 checkButtons.removeClass("invisible");
                 resetButton.blur();
             });
+
             reloadButton.on("click", (e) => {   //reload button
                 e.preventDefault();
                 module.init();
             });
+
             checkAllButton.on("click", (e) => {
                 e.preventDefault();
                 checkButtons.each(function (index, btn) {
@@ -270,12 +278,100 @@ maths.layout = {
                 });
                 checkAllButton.blur();
             });
+
             this.textInputs(rows, answerFields, processOperation);  //add input fields filtering
+        },
+
+        test: function (module) {
+            let rows = module.container.find(".columns-line"),
+                answerFields = module.container.find(".answer"),
+                prevBtn = module.container.find('.button-prev'),
+                nextBtn = module.container.find('.button-next'),
+                startBtn = module.container.find('.button-start'),
+                finishBtn = module.container.find('.button-finish'),
+                headers = module.container.find('.test-accordeon-section-header'),
+                closeBtn = maths.accordeon.closeBtn,
+                closeBtn2 = $("#test-close"),
+                lastFocusableElements = $(startBtn).add(nextBtn).add(finishBtn).add(closeBtn).add(closeBtn2);
+            const processTest = function () {
+                let scores = []
+                icons = module.container.find(".icon"),
+                    results = module.results;
+                const wrongAnswer = function (index) {
+                    scores[index] = 0;
+                    rows.eq(index).find(".answer").addClass("warning");
+                    icons.eq(index).prop("src", maths.icons.cross);
+                };
+                const correctAnswer = function (index) {
+                    scores[index] = 1;
+                    rows.eq(index).find(".answer").addClass("correct");
+                    icons.eq(index).prop("src", maths.icons.tick);
+                };
+                rows.each(function (idx, row) {
+                    let fields = $(row).find(".answer"),
+                        result = module.results[idx];
+                    isCorrect = maths.handlers.validateOperation(fields, result);
+                    if (isCorrect) {
+                        correctAnswer(idx);
+                    } else {
+                        wrongAnswer(idx);
+                    }
+                });
+                return scores;
+            };
+
+            $(document).ready(()=> this.adjustLinesPadding(rows));    //adjust padding
+
+            startBtn.on("click", function () {
+                if ($(this).text() === "Start") {
+                    let ns = maths.test;
+                    maths.timer.init($('.test-accordeon-titlebar-foo'), ns.times[ns.level], ns.summary);
+                    maths.accordeon.attachListeners();
+                    $(this).text("Next");
+                }
+                maths.accordeon.show(headers.eq(1), 1);
+            });
+
+            prevBtn.on("click", function () {
+                let index = prevBtn.index(this);
+                maths.accordeon.show(headers.eq(index), index);
+            });
+
+            nextBtn.on("click", function () {
+                let index = nextBtn.index(this);
+                maths.accordeon.show(headers.eq(index + 2), index + 2);
+            });
+
+            finishBtn.on("click", function () {
+                let scores = processTest();
+                answerFields.prop("disabled", "true");
+                $(startBtn).add(prevBtn).add(nextBtn).add(finishBtn).hide();
+                maths.test.displayResults(scores, maths.timer.stop());
+            });
+
+            closeBtn2.on("click", () => maths.accordeon.dispose());
+
+            lastFocusableElements.on("keydown", function (e) { 
+                if (e.which === 9) {    // keep focus traversing inside the dialog container
+                    if (e.shiftKey) {
+                        if ($(this).is(closeBtn)) {
+                            lastFocusableElements.filter(":visible").focus();
+                            e.preventDefault();
+                        }
+                    } else if (!$(this).is(closeBtn)) {
+                        closeBtn.focus();
+                        e.preventDefault();
+                    }
+                }
+            });
+
+            this.textInputs(rows, answerFields);  // add input fields filtering
         },
 
         validateOperation: function (answerFields, result, answers) {   //validates single operation
             let fraction = [],
                 input;
+                
             answers = answers || [];
             answerFields.each(function (idx) {  //collect answer(s) and check if they're not empty
                 input = $(this).val();
@@ -307,90 +403,12 @@ maths.layout = {
             }
         },
 
-        test: function (module) {
-            let rows = module.container.find(".exercises-operation"),
-                answerFields = module.container.find(".answer"),
-                prevBtn = module.container.find('.button-prev'),
-                nextBtn = module.container.find('.button-next'),
-                startBtn = module.container.find('.button-start'),
-                finishBtn = module.container.find('.button-finish'),
-                headers = module.container.find('.test-accordeon-section-header'),
-                closeBtn = maths.accordeon.closeBtn;
-            closeBtn2 = $("#test-close");
-            lastFocusableElements = $(startBtn).add(nextBtn).add(finishBtn).add(closeBtn).add(closeBtn2);
-
-            const processTest = function () {
-                let scores = []
-                icons = module.container.find(".icon"),
-                    results = module.results;
-                const wrongAnswer = function (index) {
-                    scores[index] = 0;
-                    rows.eq(index).find(".answer").addClass("warning");
-                    icons.eq(index).prop("src", maths.icons.cross);
-                };
-                const correctAnswer = function (index) {
-                    scores[index] = 1;
-                    rows.eq(index).find(".answer").addClass("correct");
-                    icons.eq(index).prop("src", maths.icons.tick);
-                };
-                rows.each(function (idx, row) {
-                    let fields = $(row).find(".answer"),
-                        result = module.results[idx];
-                    isCorrect = maths.handlers.validateOperation(fields, result);
-                    if (isCorrect) {
-                        correctAnswer(idx);
-                    } else {
-                        wrongAnswer(idx);
-                    }
-                });
-                return scores;
-            };
-            startBtn.on("click", function () {
-                if ($(this).text() === "Start") {
-                    let ns = maths.test;
-                    maths.timer.init($('.test-accordeon-titlebar-foo'), ns.times[ns.level], ns.summary);
-                    maths.accordeon.attachListeners();
-                    $(this).text("Next");
-                }
-                maths.accordeon.show(headers.eq(1), 1);
-            });
-            prevBtn.on("click", function () {
-                let index = prevBtn.index(this);
-                maths.accordeon.show(headers.eq(index), index);
-            });
-            nextBtn.on("click", function () {
-                let index = nextBtn.index(this);
-                maths.accordeon.show(headers.eq(index + 2), index + 2);
-            });
-            finishBtn.on("click", function () {
-                let scores = processTest();
-                answerFields.prop("disabled", "true");
-                $(startBtn).add(prevBtn).add(nextBtn).add(finishBtn).hide();
-                maths.test.displayResults(scores, maths.timer.stop());
-            });
-            closeBtn2.on("click", () => maths.accordeon.dispose());
-            lastFocusableElements.on("keydown", function (e) { 
-                if (e.which === 9) {    // keep focus traversing inside the dialog container
-                    if (e.shiftKey) {
-                        if ($(this).is(closeBtn)) {
-                            lastFocusableElements.filter(":visible").focus();
-                            e.preventDefault();
-                        }
-                    } else if (!$(this).is(closeBtn)) {
-                        closeBtn.focus();
-                        e.preventDefault();
-                    }
-                }
-            });
-            this.textInputs(rows, answerFields);  // add input fields filtering
-        },
-
         textInputs: function (rows, answerFields, callback) { //input filtering for answer fields
             answerFields.on("paste", () => false);
             answerFields.on("blur", function () {
                 field = $(this);
                 if (field.val() === "") {
-                    let parent = field.removeClass("warning").parents(".exercises-operation");
+                    let parent = field.removeClass("warning").parents(".columns-line");
                     let fields = parent.find(".answer");
                     if (fields.length > 1) {  // only if a fraction
                         if (fields.not(field).val() !== "") {
@@ -401,7 +419,7 @@ maths.layout = {
                 }
             });
             answerFields.on("keydown", function (e) {
-                let row = $(this).parents(".exercises-operation"),
+                let row = $(this).parents(".columns-line"),
                     index = rows.index(row),
                     isFraction = row.find(".answer").length > 1;
                 char = String.fromCharCode(e.which),
@@ -429,7 +447,35 @@ maths.layout = {
                     return false;
                 }
             });
+        },
+
+        adjustLinesPadding: function($lines) {
+            let width = $lines[0].getBoundingClientRect().width,     // line's width (equal for all lines)
+                max = 0,    // the longest line
+                min = width,    // the shortest line
+                padding;
+            
+            Array.prototype.forEach.call($lines, function (line) {
+                let children = line.children,
+                    sum = 0,   // length of all child elements in pixels
+                    style, margin;
+            
+                Array.prototype.forEach.call(children, function (child) {
+                    style = window.getComputedStyle(child) || child.currentStyle;
+                    margin = style.marginLeft;
+                    sum += parseInt(margin.substring(0, margin.indexOf('px')), 10) + 2;
+                    sum += child.getBoundingClientRect().width;
+                });
+                min = (sum < min) ? sum : min;
+                max = (sum > max) ? sum : max;
+            });
+            padding = (width - ((max + min) / 2)) / 2;  // padding based on average line width
+            padding = (padding > (width - max)) ? (width - max) / 2 : padding;  // adjust it if max is too long
+            Array.prototype.forEach.call($lines, function (line) {
+                line.style.paddingRight = padding + 'px';
+            });
         }
+
     };
 
 

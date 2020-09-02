@@ -19,7 +19,7 @@ var maths = {
   range: (min, max) => Math.floor(Math.random() * (max - min + 1) + min),
   active: $("#home"),
   switch: function (id) { // id argument comes from href property of clicked navigation menu link
-    this.active = $(id);  // it matches the id of maths modules (divs)
+    this.active = $(id);  // matches the id of maths modules (divs)
     let moduleName = id.replace("#", "");
     let module = this[moduleName];  // obtaining actual object which is a property of maths
     if (!this.settings.areLoaded) this.settings.init(); //initialize settings module if needed

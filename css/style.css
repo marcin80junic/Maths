@@ -142,6 +142,7 @@ img {
   padding: .2em .5em;
   text-decoration: none;
   text-align: center;
+  word-wrap: break-word;
   color: var(--link-text);
   background-image: linear-gradient(#ef0606, red, #ef0606);
   border: 1px solid rgba(0, 0, 0, 0.5);
@@ -187,7 +188,7 @@ img {
     right: 0;
     height: 6em;
     width: 6em;
-    background-color: transparent;
+    background-image: none;
     z-index: 1;
     overflow: auto; }
   .sidenav.is-open {
@@ -343,8 +344,9 @@ Styleguide Layout.Columns
   grid-template-columns: repeat(auto-fill, minmax(10em, 20em));
   grid-auto-rows: 1fr;
   grid-row-gap: 1em;
-  grid-column-gap: 6em;
-  justify-content: center; }
+  grid-column-gap: 1em;
+  justify-content: center;
+  margin: 2em 0; }
 
 .columns-line {
   display: flex;
