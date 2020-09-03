@@ -21,13 +21,9 @@ $main-bg: hsla(120, 90%, 80%, 1);
   }
   body {
     display: flex;
-    -webkit-user-select: none; /* Safari */
-    -khtml-user-select: none; /* Konqueror HTML */
-    -moz-user-select: none; /* Firefox */
-    -ms-user-select: none; /* Internet Explorer/Edge */
     user-select: none;
     margin: 0;
-    overflow: overlay;
+    overflow-y: scroll;
     font-family: "Comic Sans MS", "Monotype Corsiva", cursive;
     background-color: $main-bg;
   }
@@ -95,6 +91,9 @@ $main-bg: hsla(120, 90%, 80%, 1);
     text-align: center;
     width: 2.3em;
     background-color: $yellow-pale;
+  }
+  input[type="range"] {
+    vertical-align: text-top;
   }
   img {
     vertical-align: text-bottom;

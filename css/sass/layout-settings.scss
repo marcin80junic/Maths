@@ -2,12 +2,14 @@
 
 .settings-group {
     display: flex;
+    flex-wrap: wrap;
   }
   .settings-group div + div {
     margin-top: .3em;
   }
   .settings-group-line {
     display: flex;
+    width: 100%;
     margin: .8em 0;
     padding: .2em;
     border: 2px groove #ffffcc;
