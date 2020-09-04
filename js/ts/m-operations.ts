@@ -1,11 +1,15 @@
 
 maths.addition = (function() {
-    let addition = objectCreator(Operation.prototype);
-    addition.name = "addition";
-    addition.sign = "+";
+
+    let addition: Operation = objectCreator(Operation.prototype);
+
     addition.container = $("#addition-exercises");
-    addition.reducer = (accumulator, number) => accumulator + number;
-    addition.getNumbers = function(level) {
+
+    addition.name = "addition";
+
+    addition.sign = "+";
+
+    addition.getNumbers = function(level: number) {
       const rand = maths.range;
       let numbers = [];
       switch (level) {
@@ -30,7 +34,11 @@ maths.addition = (function() {
       numbers.push(numbers.reduce(this.reducer)); //add result as the last number in array
       return numbers;
     };
+
+    addition.reducer = (accumulator: number, number: number) => accumulator + number;
+
     return addition;
+
   }());
   
   maths.subtraction = (function() {
@@ -139,30 +147,21 @@ maths.addition = (function() {
   }());
   
   maths.fractions = (function () {
-    let fractions = objectCreator(Operation.prototype);
-    fractions.name = "fractions";
-    fractions.sign = "+";
+
+    let fractions: Operation = objectCreator(Operation.prototype);
+
     fractions.container = $("#fractions-exercises");
-    fractions.simpleReducer = (accArray, array) => {
-      let num = accArray[0] + array[0], // add two fractions assuming denominators are equal
-          den = accArray[1]; 
-      return [num, den];
-    };
-    fractions.reducer = (accArray, array) => {
-      let num = accArray[0] * array[1] + array[0] * accArray[1],
-          den = accArray[1] * array[1],  // add two fractions using common denominator
-          x = num, y = den;
-      while (y) {  // find greatest common divisor
-        var temp = y;
-        y = x % y;
-        x = temp;
-      }
-      return [num / x, den / x]; // return reduced fraction
-    };
-    fractions.getNumbers = function (level) {
+
+    fractions.name = "fractions";
+
+    fractions.sign = "+";
+
+    fractions.getNumbers = function (level: number) {
       const rand = maths.range,
-            fraction = (base, max) => [rand(1, max), base];
-      let numbers = [], base1, base2;
+            fraction = (base: number, max: number) => [rand(1, max), base];
+      let numbers = [],
+          base1: number,
+          base2: number;
       switch(level) {
         case 0:
           base1 = rand(2, 6);
@@ -187,5 +186,25 @@ maths.addition = (function() {
       else numbers.push(numbers.reduce(this.reducer));
       return numbers;
     };
+
+    fractions.reducer = (accArray: Array<number>, array: Array<number>) => {
+      let num = accArray[0] * array[1] + array[0] * accArray[1],
+          den = accArray[1] * array[1],  // add two fractions using common denominator
+          x = num, y = den;
+      while (y) {  // find greatest common divisor
+        var temp = y;
+        y = x % y;
+        x = temp;
+      }
+      return [num / x, den / x]; // return reduced fraction
+    };
+
+    fractions.simpleReducer = (accArray: Array<number>, array: Array<number>) => {
+      let num = accArray[0] + array[0], // add two fractions assuming denominators are equal
+          den = accArray[1]; 
+      return [num, den];
+    };
+
     return fractions;
+
   }());

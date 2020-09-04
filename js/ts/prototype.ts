@@ -1,20 +1,29 @@
+
 //define Operation class, a backbone of all mathematical operations
 function Operation() { };
+
 (function () {
+
   Operation.prototype.levelDisplayed = null;
+
   Operation.prototype.numbers = [];
+
   Operation.prototype.results = [];
+
   Operation.prototype.answersIdxs = [];
-  Operation.prototype.setLevel = function(newLevel) {
+
+  Operation.prototype.setLevel = function(newLevel: number) {
     this.level = newLevel;
     this.saveSettings({level: newLevel});
     this.init();
   };
-  Operation.prototype.setExerciseNum = function(newNum) {
+
+  Operation.prototype.setExerciseNum = function(newNum: number) {
     this.exerciseNum = newNum;
     this.saveSettings({exerciseNum: newNum});
     this.init();
   };
+
   Operation.prototype.init = function () {
     if (!this.levelDisplayed) this.loadSettings(); //true only when loading module first time
     this.numbers = this.numbersCreator();
@@ -23,25 +32,27 @@ function Operation() { };
     maths.layout.exercises(this); //  create layout and assign results property value
     maths.handlers.exercises(this); // attaching handlers to layout elements
   };
-  Operation.prototype.numbersCreator = function(num, level) {
+
+  Operation.prototype.numbersCreator = function(num: number, level: number) {
     num = num || this.exerciseNum;
     if (typeof level === "undefined") {
       level = this.level;
     } 
-    let operation = [],
-        numbers = [],
-        i;
+    let operation: Array<number> = [],
+        numbers: Array<Array<number>> = [],
+        i: number;
     for (i = 0; i < num; i += 1) {
       while (true) {
         operation = this.getNumbers(level);
-        if (areNumsUnique(operation, numbers)) {
+        if (areNumsUnique({ nums: operation, array: numbers })) {
           numbers.push(operation);
           break;
         }
       }
     }
-    function areNumsUnique(nums, array) {
-      let max = array.length, i;
+    function areNumsUnique({ nums, array }: { nums: Array<number>; array: Array<Array<number>>; }) {
+      let max: number = array.length,
+          i: number;
       for (i = 0; i < max; i += 1) {
         if (JSON.stringify(nums) === JSON.stringify(array[i])) {
           return false;
@@ -51,6 +62,7 @@ function Operation() { };
     }
     return numbers;
   };
+
   Operation.prototype.loadSettings = function () {
     try {
       if (typeof (Storage) !== "undefined") {
@@ -62,11 +74,12 @@ function Operation() { };
       alert("can't access the local storage\nall settings will be restored to its default values");
     }
   };
-  Operation.prototype.saveSettings = function (object) {
+
+  Operation.prototype.saveSettings = function (object: object) {
     try {
       if (typeof (Storage) !== "undefined") {
-        let namespace = "maths." + this.name + ".",
-            name;
+        let namespace: string = "maths." + this.name + ".",
+            name: string;
         for (name in object) {
           if (object.hasOwnProperty(name)) {
             localStorage.setItem(namespace + name, object[name]);
@@ -79,7 +92,7 @@ function Operation() { };
 
 
 //utility function for creating objects which inherit from "obj"
-function objectCreator(obj) {
+function objectCreator(obj: any) {
   function F() { }
   F.prototype = obj;
   return new F();

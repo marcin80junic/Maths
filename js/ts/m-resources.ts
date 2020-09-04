@@ -2,22 +2,76 @@
   *define global application object which contains:
   ...
 */
+interface Operation {
+  container: JQuery,
+  name: string,
+  sign: string,
+  level: number,
+  exercisesNum: number,
+  levelDisplayed: number,
 
-var maths = {
+  init: any,  //prototype
+  numbersCreator: any,  //prototype
+  getNumbers?: any,   //not in test
+  reducer?: any,    //not in test
+  simpleReducer?: any,  //only in fractions
+  numbers: Array<number> | Array<Array<number>>,
+  results: Array<number> | Array<Array<number>>,
+  answersIdxs: Array<number> | Array<Array<number>>,
+
+  loadSettings: any,  //prototype
+  setLevel: any,  //prototype
+  setExerciseNum: any,  //prototype
+  saveSettings: any   //prototype
+}
+
+interface mainObject {
+  icons: any,
+  sounds: any,
+  difficulties: Array<string>,
+  numOfExercises: Array<string>,
+
+  active: JQuery,
+
+  switch: any,
+  playSound: any,
+  createAndAppendCanvas: any,
+  range: any,
+
+  home: unknown,
+  addition?: Operation,
+  subtraction?: Operation,
+  multiplication?: Operation,
+  division?: Operation,
+  fractions?: Operation,
+  test: any,
+
+  layout: any,
+  handlers: any,
+  settings: any
+}
+
+
+let maths: mainObject = {
+
     icons: {
       tick: "pics/correct.png",
       cross: "pics/wrong.png",
       questMark: "pics/question.png"
     },
+
     sounds: {
       cheer: new Audio("sounds/cheering.wav"),
       wrong: new Audio("sounds/fart.wav")
     },
+
     difficulties: ["Fair", "Advanced", "Super Hard"],
+
     numOfExercises: ["6", "8", "10", "12", "16", "20", "24"],
-    range: (min, max) => Math.floor(Math.random() * (max - min + 1) + min),
+
     active: $("#home"),
-    switch: function (id) { // id argument comes from href property of clicked navigation menu link
+
+    switch: function (id: string) { // id argument comes from href property of clicked navigation menu link
       this.active = $(id);  // matches the id of maths modules (divs)
       let moduleName = id.replace("#", "");
       let module = this[moduleName];  // obtaining actual object which is a property of maths
@@ -29,7 +83,10 @@ var maths = {
       }   //..the levelDisplayed is null and will not match the module's level property
       this.active.scrollTop(0);
     },
-    playSound: function (isCorrect, volume) {
+
+    range: (min: number, max: number) => Math.floor(Math.random() * (max - min + 1) + min),
+
+    playSound: function (isCorrect: boolean, volume: number) {
       let cheer = this.sounds.cheer,
           wrong = this.sounds.wrong;
       if (volume !== 0) { // if called while adjusting settings the volume arg will have a value otherwise..
@@ -47,19 +104,22 @@ var maths = {
         wrong.play();
       }
     },
-    createAndAppendCanvas: function(parent, module, index) {
+
+    createAndAppendCanvas: function(parent: JQuery, module: any, index: number) {
       let numbers = module.numbers[index],
           answerIdx = module.answersIdxs[index], 
           sign = module.sign,
-          i, temp = [], scd,
+          i: number,
+          temp = [],
+          scd: number,
           nums = (answerIdx !== numbers.length - 1)?  
             transform()                             // transform the pattern if answer index is not last
             : numbers.slice(0, numbers.length - 1),       // otherwise only cut off the answer
           factor = $('body').width() / ($('body').width() / 80), // calculate width factor
           width = calculateWidth(factor),               // calculate width according to the window width
-          canvas = $('<canvas class="canvas" width="'+ width + 'px" height="80px"></canvas>')[0],
-          c = canvas.getContext("2d");
-      const rads = (x) => Math.PI * x / 180;
+          canvas = <HTMLCanvasElement> $('<canvas class="canvas" width="'+ width + 'px" height="80px"></canvas>')[0],
+          c: CanvasRenderingContext2D = canvas.getContext("2d");
+      const rads = (x: number) => Math.PI * x / 180;
   
       if (nums[0].length === 2) {   // find common denominator for fractions
         scd = findSCD(nums[0][1], nums[1][1]); 
@@ -87,9 +147,11 @@ var maths = {
         }
       }
   
-      function calculateWidth(factor) {   // # needs to be changed so it considers integers as well
-        let sum = 1,
-            whole, i, j;
+      function calculateWidth(factor: number) {   // # needs to be changed so it considers integers as well
+        let sum: number = 1,
+            whole: number,
+            i: number,
+            j: number;
         for (i = 0; i < nums.length; i += 1) {
           if (nums[i].length === 2) {
             whole = nums[i][0] / nums[i][1];
@@ -112,8 +174,9 @@ var maths = {
         return temp;
       }
   
-      function findSCD(den1, den2) { // find smallest common denominator
-        let i, temp,
+      function findSCD(den1: number, den2: number) { // find smallest common denominator
+        let i: number,
+            temp: number,
             smaller = (den1 < den2)? den1: den2,
             greater = (den1 > den2)? den1: den2;
         if (den2 === den1) return den1;
@@ -128,8 +191,10 @@ var maths = {
         }
       }
   
-      function drawFraction(c, nums) {
-        let whole, leftOver, i;
+      function drawFraction(c: CanvasRenderingContext2D, nums: Array<number>) {
+        let whole: number, 
+            leftOver: number, 
+            i: number;
         if (nums[0] >= nums[1]) {
           whole = Math.floor(nums[0] / nums[1]);
           leftOver = nums[0] % nums[1];
@@ -144,10 +209,11 @@ var maths = {
         } else {
           drawCircle(c, nums[0], nums[1]);
         }
-        function drawCircle(c, numerator, denominator) {
-          let advance = 360 / denominator,
-              startAngle = endAngle = -90,
-              i;
+        function drawCircle(c: CanvasRenderingContext2D, numerator: number, denominator: number) {
+          let advance: number = 360 / denominator,
+              startAngle: number = -90,
+              endAngle: number = -90,
+              i: number;
           for (i = 1; i <= denominator; i += 1) {
             endAngle += advance;
             c.beginPath();
@@ -163,17 +229,17 @@ var maths = {
         }
       }
   
-      function drawInteger(num) {
+      function drawInteger(num: number) {
   
       }
       
-      function drawSign(sign) {
+      function drawSign(sign: string) {
         c.fillStyle = "black";
         c.translate(40, 0);
         c.fillText(sign, 0, 11);
         c.fillStyle = "red";
       }
-      function drawIcon(path) {
+      function drawIcon(path: string) {
         c.translate(-25, -15);
         var img = document.createElement("img");
         img.src = path;
@@ -183,8 +249,12 @@ var maths = {
       return parent.append(canvas);
     },
   
-    home: {
-  
-    }
+
+    home: {},
+    test: {},
+
+    layout: {},
+    handlers: {},
+    settings: {}
   
   };
