@@ -1,20 +1,26 @@
 
 maths.handlers = {
-    exercises: function (module) {
+
+    exercises: function (module: Operation) {
         let levelChoice = module.container.find(".level"),
             exerciseNumChoice = module.container.find(".exerciseNum"),
             scoreField = module.container.find(".score"),
             score = 0,
             rows = module.container.find(".columns-line"),
-            answerFields = rows.find(".answer"),
             tooltips = rows.find(".tooltip"),
-            showTooltips = maths.settings.general.showTooltips === "true",
+            showTooltips = (maths.settings.general.showTooltips === "true"),
+            answerFields = rows.find(".answer"),
             icons = rows.find(".icon"),
             checkButtons = rows.find(".check"),
             resetButton = module.container.find(".reset"),
             reloadButton = module.container.find(".reload"),
             checkAllButton = module.container.find(".check-all"),
-            answerField, result, icon, checkBtn, answers, timeout = null;
+            answerField: JQuery,
+            icon: JQuery,
+            checkBtn: JQuery,
+            result: number | Array<number>, // result of a single operation
+            answers: Array<number>,     // user's answers
+            timeout: number = null;   // tooltip display delay
         const goodAnswer = function () {
             scoreField.text(++score);
             answerField.each(function (idx) {
@@ -24,13 +30,13 @@ maths.handlers = {
             icon.prop("src", maths.icons.tick);
             checkBtn.addClass("invisible");
             return true;
-        },
+            },
             wrongAnswer = function () {
                 icon.prop("src", maths.icons.cross);
                 answerField.addClass("warning");
                 return false;
             },
-            processOperation = function (index) {
+            processOperation = function (index: number) {
                 answerField = rows.eq(index).find(".answer");
                 icon = icons.eq(index);
                 checkBtn = checkButtons.eq(index);
@@ -46,7 +52,6 @@ maths.handlers = {
             let name = $(this).find("option:selected").text();
             module.setLevel(maths.difficulties.indexOf(name));
         });
-
         exerciseNumChoice.on("change", function () {
             let number = $(this).find("option:selected").text();
             module.setExerciseNum(parseInt(number, 10));
@@ -58,7 +63,7 @@ maths.handlers = {
                     idx = tooltips.index(this);
                 if (e.type === "mouseover") {   // position tooltip by setting its margin-left property
                     let el_center = $(this).width() / 2,    // find 'tooltip' wrapper center
-                        tip_center;
+                        tip_center: number;
                     timeout = setTimeout(function () {
                         if (tip.children().length === 0) {
                             maths.createAndAppendCanvas(tip, module, idx);  // create tiptext content
@@ -111,7 +116,7 @@ maths.handlers = {
         this.textInputs(rows, answerFields, processOperation);  //add input fields filtering
     },
 
-    test: function (module) {
+    test: function (module: Operation) {
         let rows = module.container.find(".columns-line"),
             answerFields = module.container.find(".answer"),
             prevBtn = module.container.find('.button-prev'),
@@ -119,27 +124,27 @@ maths.handlers = {
             startBtn = module.container.find('.button-start'),
             finishBtn = module.container.find('.button-finish'),
             headers = module.container.find('.test-accordeon-section-header'),
-            closeBtn = maths.accordeon.closeBtn,
+            closeBtn = maths.accordion.closeBtn,
             closeBtn2 = $("#test-close"),
             lastFocusableElements = $(startBtn).add(nextBtn).add(finishBtn).add(closeBtn).add(closeBtn2);
         const processTest = function () {
-            let scores = []
-            icons = module.container.find(".icon"),
+            let scores: Array<number> = [],
+                icons = module.container.find(".icon"),
                 results = module.results;
-            const wrongAnswer = function (index) {
+            const wrongAnswer = function (index: number) {
                 scores[index] = 0;
                 rows.eq(index).find(".answer").addClass("warning");
                 icons.eq(index).prop("src", maths.icons.cross);
             };
-            const correctAnswer = function (index) {
+            const correctAnswer = function (index: number) {
                 scores[index] = 1;
                 rows.eq(index).find(".answer").addClass("correct");
                 icons.eq(index).prop("src", maths.icons.tick);
             };
             rows.each(function (idx, row) {
                 let fields = $(row).find(".answer"),
-                    result = module.results[idx];
-                isCorrect = maths.handlers.validateOperation(fields, result);
+                    result = module.results[idx],
+                    isCorrect = maths.handlers.validateOperation(fields, result);
                 if (isCorrect) {
                     correctAnswer(idx);
                 } else {
@@ -155,20 +160,20 @@ maths.handlers = {
             if ($(this).text() === "Start") {
                 let ns = maths.test;
                 maths.timer.init($('.test-accordeon-titlebar-foo'), ns.times[ns.level], ns.summary);
-                maths.accordeon.attachListeners();
+                maths.accordion.attachListeners();
                 $(this).text("Next");
             }
-            maths.accordeon.show(headers.eq(1), 1);
+            maths.accordion.show(headers.eq(1), 1);
         });
 
         prevBtn.on("click", function () {
             let index = prevBtn.index(this);
-            maths.accordeon.show(headers.eq(index), index);
+            maths.accordion.show(headers.eq(index), index);
         });
 
         nextBtn.on("click", function () {
             let index = nextBtn.index(this);
-            maths.accordeon.show(headers.eq(index + 2), index + 2);
+            maths.accordion.show(headers.eq(index + 2), index + 2);
         });
 
         finishBtn.on("click", function () {
@@ -178,7 +183,7 @@ maths.handlers = {
             maths.test.displayResults(scores, maths.timer.stop());
         });
 
-        closeBtn2.on("click", () => maths.accordeon.dispose());
+        closeBtn2.on("click", () => maths.accordion.dispose());
 
         lastFocusableElements.on("keydown", function (e) { 
             if (e.which === 9) {    // keep focus traversing inside the dialog container
@@ -197,13 +202,13 @@ maths.handlers = {
         this.textInputs(rows, answerFields);  // add input fields filtering
     },
 
-    validateOperation: function (answerFields, result, answers) {   //validates single operation
+    validateOperation: function (answerFields: JQuery, result: any, answers: any) {   //validates single operation
         let fraction = [],
-            input;
+            input: string;
             
         answers = answers || [];
         answerFields.each(function (idx) {  //collect answer(s) and check if they're not empty
-            input = $(this).val();
+            input = <string>$(this).val();
             if (input === "") {
                 if (result.length && idx === 0 && result[0] > result[1]) {
                     input = "0";     // if no input in "whole" part of fraction assume zero
@@ -232,10 +237,10 @@ maths.handlers = {
         }
     },
 
-    textInputs: function (rows, answerFields, callback) { //input filtering for answer fields
+    textInputs: function (rows: JQuery, answerFields: JQuery, callback: any) { //input filtering for answer fields
         answerFields.on("paste", () => false);
         answerFields.on("blur", function () {
-            field = $(this);
+            let field = $(this);
             if (field.val() === "") {
                 let parent = field.removeClass("warning").parents(".columns-line");
                 let fields = parent.find(".answer");
@@ -248,12 +253,13 @@ maths.handlers = {
             }
         });
         answerFields.on("keydown", function (e) {
-            let row = $(this).parents(".columns-line"),
+            let field = $(this),
+                row = field.parents(".columns-line"),
                 index = rows.index(row),
-                isFraction = row.find(".answer").length > 1;
-            char = String.fromCharCode(e.which),
-                length = $(this).val().length;
-            limit = 3;
+                isFraction = row.find(".answer").length > 1,
+                char = String.fromCharCode(e.which),
+                length = (<string>field.val()).length,
+                limit = 3;
             if (isFraction) { // adjust variables if fraction
                 limit = 2;
             }
@@ -278,18 +284,19 @@ maths.handlers = {
         });
     },
 
-    adjustLinesPadding: function($lines) {
+    adjustLinesPadding: function($lines: JQuery) {
         let width = $lines[0].getBoundingClientRect().width,     // line's width (equal for all lines)
             max = 0,    // the longest line
             min = width,    // the shortest line
-            padding;
+            padding: number;
         
-        Array.prototype.forEach.call($lines, function (line) {
+        Array.prototype.forEach.call($lines, function (line: HTMLElement) {
             let children = line.children,
                 sum = 0,   // length of all child elements in pixels
-                style, margin;
+                style,
+                margin: string;
         
-            Array.prototype.forEach.call(children, function (child) {
+            Array.prototype.forEach.call(children, function (child: any) {
                 style = window.getComputedStyle(child) || child.currentStyle;
                 margin = style.marginLeft;
                 sum += parseInt(margin.substring(0, margin.indexOf('px')), 10) + 2;
@@ -300,7 +307,7 @@ maths.handlers = {
         });
         padding = (width - ((max + min) / 2)) / 2;  // padding based on average line width
         padding = (padding > (width - max)) ? (width - max) / 2 : padding;  // adjust it if max is too long
-        Array.prototype.forEach.call($lines, function (line) {
+        Array.prototype.forEach.call($lines, function (line: HTMLElement) {
             line.style.paddingRight = padding + 'px';
         });
     }

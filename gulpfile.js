@@ -27,7 +27,9 @@ function javascript() {
     return gulp.src('js/ts/*.ts')
         .pipe(ts({
             noImplicitAny: true,
-            outFile: 'scripts.js'
+            outFile: 'scripts.js',
+            lib: ["es2017", "dom"],
+            target: "es2017"
         }))
         .pipe(gulp.dest('js/'));
 }
@@ -42,7 +44,7 @@ function watch() {
     });
     gulp.watch('css/sass/*.scss', style);
     gulp.watch('js/ts/*.ts', javascript);
-    gulp.watch('./*.html').on('change', browserSync.reload);
+    gulp.watch(['*.html', 'css/*.css', 'js/*.js']).on('change', browserSync.reload);
  }
 
  task('watch', watch);

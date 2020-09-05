@@ -2,55 +2,6 @@
   *define global application object which contains:
   ...
 */
-interface Operation {
-  container: JQuery,
-  name: string,
-  sign: string,
-  level: number,
-  exercisesNum: number,
-  levelDisplayed: number,
-
-  init: any,  //prototype
-  numbersCreator: any,  //prototype
-  getNumbers?: any,   //not in test
-  reducer?: any,    //not in test
-  simpleReducer?: any,  //only in fractions
-  numbers: Array<number> | Array<Array<number>>,
-  results: Array<number> | Array<Array<number>>,
-  answersIdxs: Array<number> | Array<Array<number>>,
-
-  loadSettings: any,  //prototype
-  setLevel: any,  //prototype
-  setExerciseNum: any,  //prototype
-  saveSettings: any   //prototype
-}
-
-interface mainObject {
-  icons: any,
-  sounds: any,
-  difficulties: Array<string>,
-  numOfExercises: Array<string>,
-
-  active: JQuery,
-
-  switch: any,
-  playSound: any,
-  createAndAppendCanvas: any,
-  range: any,
-
-  home: unknown,
-  addition?: Operation,
-  subtraction?: Operation,
-  multiplication?: Operation,
-  division?: Operation,
-  fractions?: Operation,
-  test: any,
-
-  layout: any,
-  handlers: any,
-  settings: any
-}
-
 
 let maths: mainObject = {
 
@@ -72,15 +23,15 @@ let maths: mainObject = {
     active: $("#home"),
 
     switch: function (id: string) { // id argument comes from href property of clicked navigation menu link
+      let moduleName: string = id.replace("#", ""),
+          module = this[moduleName];  // obtaining actual object which is a property of maths
       this.active = $(id);  // matches the id of maths modules (divs)
-      let moduleName = id.replace("#", "");
-      let module = this[moduleName];  // obtaining actual object which is a property of maths
       if (!this.settings.areLoaded) this.settings.init(); //initialize settings module if needed
       if (Operation.prototype === Object.getPrototypeOf(module)) {
         if (module.level !== module.levelDisplayed) {
           module.init();  // initialize module if it's an instance of..
         }    //..Operation class(excludes settings and home). Only when loaded first time..       
-      }   //..the levelDisplayed is null and will not match the module's level property
+      }   //..the levelDisplayed is -1 and will not match the module's level property
       this.active.scrollTop(0);
     },
 
@@ -105,12 +56,12 @@ let maths: mainObject = {
       }
     },
 
-    createAndAppendCanvas: function(parent: JQuery, module: any, index: number) {
-      let numbers = module.numbers[index],
+    createAndAppendCanvas: function(parent: JQuery, module: Operation, index: number) {
+      let numbers: any = module.numbers[index],
           answerIdx = module.answersIdxs[index], 
           sign = module.sign,
           i: number,
-          temp = [],
+          temp: Array<number> = [],
           scd: number,
           nums = (answerIdx !== numbers.length - 1)?  
             transform()                             // transform the pattern if answer index is not last
@@ -252,7 +203,8 @@ let maths: mainObject = {
 
     home: {},
     test: {},
-
+    accordion: {},
+    timer: {},
     layout: {},
     handlers: {},
     settings: {}

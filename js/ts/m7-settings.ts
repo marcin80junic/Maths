@@ -57,9 +57,9 @@ maths.settings = {
         this.restoreSettings();
 
         // define handlers for all settings input fields
-        this.fields.volume.on('input change', () => this.updateVolumeLabel(this.fields.volume.val()) );
+        this.fields.volume.on('input change', () => this.updateVolumeLabel(this.fields.volume.val()));
         this.fields.volume.on('change', function() {
-            let volume = $(this).val() / 100;
+            let volume = <number>$(this).val() / 100;
             if (ns.system.volume == volume) delete ns.changed.system.volume
             else ns.changed.system.volume = volume
             maths.playSound(true, volume);
@@ -78,19 +78,26 @@ maths.settings = {
             enableApplyButton();
         });
         this.fields.testModules.on('change', function() {
-            let mods = [];
-            ns.fields.testModules.each((i, el) => {
-                if ($(el).is(':checked')) mods.push($(el).val())
+            let mods: Array<string> = [];
+            ns.fields.testModules.each((i: number, el: HTMLElement) => {
+                if ($(el).is(':checked')) {
+                    mods.push(<string>$(el).val())
+                } 
             });
             if (mods.join(",") === ns.test.modules) delete ns.changed.test.modules
             else ns.changed.test.modules = mods.join(",");
             enableApplyButton();
         });
         this.fields.testTimes.on('change', function() {
-            let times = [];
-            ns.fields.testTimes.each( (i, el) => times[i] = $(el).val() );
-            if (times.join(",") === ns.test.times) delete ns.changed.test.times
-            else ns.changed.test.times = times.join(",")
+            let times: Array<string> = [];
+            ns.fields.testTimes.each( (i: number, el: HTMLElement) => {
+                times[i] = <string>$(el).val();
+            });
+            if (times.join(",") === ns.test.times) {
+                delete ns.changed.test.times;
+            } else {
+                ns.changed.test.times = times.join(",");
+            }
             enableApplyButton();
         });
         this.fields.testNumOfQuest.on('change', () => {
@@ -105,7 +112,7 @@ maths.settings = {
             this.fields.clearButton.blur();
             enableApplyButton();
         });
-        this.fields.settingsForm.on('submit', function(e) {
+        this.fields.settingsForm.on('submit', function(e: Event) {
             e.preventDefault();
             if (ns.confirmChanges()) {  // check whether changes will reset any modules and display..
                 ns.applyChanges();      // ..confirmation dialog
@@ -120,7 +127,7 @@ maths.settings = {
             enableApplyButton();
         });
     },
-    accessStorage: function(object, namespace, write) {
+    accessStorage: function(object: any, namespace: string, write: boolean) {
         try {
             if (typeof (Storage) !== "undefined") {
                 for (let field in object) {
@@ -145,25 +152,26 @@ maths.settings = {
     applyChanges: function() {
         let changed = this.changed,
             apply = false,
-            object, temp, field, isEmpty,
+            temp: any,
+            isEmpty: boolean,
             resetModules = () => {  // resets levelDisplayed property of Operation modules, this will cause
-                for (object in maths) {  // the program to reload modules next time they will be displayed
+                for (const object in maths) {  // the program to reload modules next time they will be displayed
                     if (maths.hasOwnProperty(object) &&  
-                        Object.getPrototypeOf(maths[object]) === Operation.prototype) {
-                        maths[object]["levelDisplayed"] = null; // actual reset
+                        Object.getPrototypeOf(maths[object as keyof mainObject]) === Operation.prototype) {
+                        maths[object as keyof mainObject]["levelDisplayed"] = -1; // actual reset
                     }
                 }
-            }
+            },
             resetTest = () => {
                 maths.settings.test.unlocked = "0";
                 this.accessStorage({"unlocked": "0"}, "maths.settings.test.", true);
             }
 
-        for (object in changed) {   // assign temporary changes to actual settings
+        for (const object in changed) {   // assign temporary changes to actual settings
             if (changed.hasOwnProperty(object)) {
                 temp = changed[object];
                 isEmpty = true;
-                for (field in temp) {
+                for (const field in temp) {
                     if (temp.hasOwnProperty(field)) {
                         this[object][field] = temp[field];
                         isEmpty = false;
@@ -184,16 +192,18 @@ maths.settings = {
         this.updateVolumeLabel(this.system.volume * 100);    
         this.fields.isRandomized.filter('[value="' + this.general.isRandomized + '"]').prop('checked', true);
         this.fields.showTooltips.filter('[value="' + this.general.showTooltips + '"]').prop('checked', true);
-        this.fields.testModules.each((_i, el) => {
+        this.fields.testModules.each((i: number, el: HTMLElement) => {
             let checked = false;
-            testModules.forEach((val) => {
+            testModules.forEach((val: string) => {
                 if ($(el).is('[value="' + val + '"]')) {
                     checked = true;
                 }
             });
             $(el).prop('checked', checked);
         });
-        this.fields.testTimes.each( (i, el) => $(el).val(testTimes[i]) );
+        this.fields.testTimes.each((i: number, el: HTMLElement) => {
+            $(el).val(testTimes[i]);
+        });
         this.fields.testNumOfQuest.val(this.test.exerciseNum);
     },
     clearChanges: function() {
@@ -218,7 +228,7 @@ maths.settings = {
         }
         return conf;
     },
-    updateVolumeLabel: function(value) {
+    updateVolumeLabel: function(value: number) {
         $('#volume-label').html(value + "%");
         if (value < 1) $('#speaker').prop('src', 'pics/speaker-muted.png');
         else if (value < 30) $('#speaker').prop('src', 'pics/speaker-low-volume.png');

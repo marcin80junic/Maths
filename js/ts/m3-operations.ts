@@ -11,7 +11,7 @@ maths.addition = (function() {
 
     addition.getNumbers = function(level: number) {
       const rand = maths.range;
-      let numbers = [];
+      let numbers: Array<number> = [];
       switch (level) {
         case 0:
           numbers = [rand(2, 9), rand(2, 9)];
@@ -41,15 +41,20 @@ maths.addition = (function() {
 
   }());
   
+
   maths.subtraction = (function() {
-    let subtraction = objectCreator(Operation.prototype);
-    subtraction.name = "subtraction";
-    subtraction.sign = "-";
+
+    let subtraction: Operation = objectCreator(Operation.prototype);
+
     subtraction.container = $("#subtraction-exercises");
-    subtraction.reducer = (accumulator, number) => accumulator - number;
-    subtraction.getNumbers = function(level) {
+
+    subtraction.name = "subtraction";
+
+    subtraction.sign = "-";
+    
+    subtraction.getNumbers = function(level: number) {
       const rand = maths.range;
-      let numbers = [];
+      let numbers: Array<number> = [];
       switch (level) {
         case 0:
           numbers = [rand(3, 9), rand(2, 8)];
@@ -75,18 +80,27 @@ maths.addition = (function() {
       }
       return numbers;
     };
+
+    subtraction.reducer = (accumulator: number, number: number) => accumulator - number;
+
     return subtraction;
+
   }());
 
+
   maths.multiplication = (function() {
-    let multiplication = objectCreator(Operation.prototype);
-    multiplication.name = "multiplication";
-    multiplication.sign = "\u00D7";
+
+    let multiplication: Operation = objectCreator(Operation.prototype);
+
     multiplication.container = $("#multiplication-exercises");
-    multiplication.reducer = (accumulator, number) => accumulator * number;
-    multiplication.getNumbers = function (level) {
+
+    multiplication.name = "multiplication";
+
+    multiplication.sign = "\u00D7";
+   
+    multiplication.getNumbers = function (level: number) {
       const rand = maths.range;
-      let numbers = [];
+      let numbers: Array<number> = [];
       switch (level) {
         case 0:
           numbers = 
@@ -109,18 +123,27 @@ maths.addition = (function() {
       numbers.push(numbers.reduce(this.reducer)); //add result as the last number in an array
       return numbers;
     };
+
+    multiplication.reducer = (accumulator: number, number: number) => accumulator * number;
+
     return multiplication;
+
   }());
 
+
   maths.division = (function() {
-    let division = objectCreator(Operation.prototype);
-    division.name = "division";
-    division.sign = "\u00F7";
+
+    let division: Operation = objectCreator(Operation.prototype);
+
     division.container = $("#division-exercises");
-    division.reducer = (accumulator, number) => accumulator / number;
-    division.getNumbers = function (level) {
+
+    division.name = "division";
+
+    division.sign = "\u00F7";
+    
+    division.getNumbers = function (level: number) {
       const rand = maths.range;
-      let numbers = [];
+      let numbers: Array<number> = [];
       switch (level) {
         case 0:
           numbers = [rand(4, 20), rand(2, 9)];
@@ -143,8 +166,15 @@ maths.addition = (function() {
       }
       return numbers;
     };
+
+    division.reducer = (accumulator: number, number: number) => {
+      return accumulator / number;
+    };
+
     return division;
+
   }());
+  
   
   maths.fractions = (function () {
 
@@ -159,7 +189,7 @@ maths.addition = (function() {
     fractions.getNumbers = function (level: number) {
       const rand = maths.range,
             fraction = (base: number, max: number) => [rand(1, max), base];
-      let numbers = [],
+      let numbers: Array<Array<number>> = [],
           base1: number,
           base2: number;
       switch(level) {

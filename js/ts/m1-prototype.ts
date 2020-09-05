@@ -4,7 +4,7 @@ function Operation() { };
 
 (function () {
 
-  Operation.prototype.levelDisplayed = null;
+  Operation.prototype.levelDisplayed = -1;
 
   Operation.prototype.numbers = [];
 
@@ -24,8 +24,8 @@ function Operation() { };
     this.init();
   };
 
-  Operation.prototype.init = function () {
-    if (!this.levelDisplayed) this.loadSettings(); //true only when loading module first time
+  Operation.prototype.init = function() {
+    if (this.levelDisplayed === -1) this.loadSettings(); //true only when loading module first time
     this.numbers = this.numbersCreator();
     this.results = []; // reset results array
     this.answersIdxs = [] // and indexes of answers
@@ -75,14 +75,14 @@ function Operation() { };
     }
   };
 
-  Operation.prototype.saveSettings = function (object: object) {
+  Operation.prototype.saveSettings = function (object: content) {
     try {
       if (typeof (Storage) !== "undefined") {
         let namespace: string = "maths." + this.name + ".",
             name: string;
         for (name in object) {
           if (object.hasOwnProperty(name)) {
-            localStorage.setItem(namespace + name, object[name]);
+            localStorage.setItem(namespace + name, object[name as keyof content]);
           }
         }
       }
@@ -93,7 +93,7 @@ function Operation() { };
 
 //utility function for creating objects which inherit from "obj"
 function objectCreator(obj: any) {
-  function F() { }
+  function F(this: any) { }
   F.prototype = obj;
-  return new F();
+  return new (F as any)();
 }

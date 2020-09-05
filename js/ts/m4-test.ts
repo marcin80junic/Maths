@@ -1,45 +1,52 @@
 
 maths.test = (function() {
-    let test = objectCreator(Operation.prototype);
-    test.name = "test";
-    test.container = $("#test");
-    test.tooltips = false;
-    test.loaded = false;
-    /* following properties will be initialized during module init below */
-    test.modules = [],
-    test.exerciseNum = 0,
-    test.unlocked = 0,
-    test.times = [];
 
-    test.init = function() {
-      this.modules = maths.settings.test.modules.split(",");
-      this.exerciseNum = parseInt(maths.settings.test.exerciseNum);
-      this.times = maths.settings.test.times.split(",");
-      this.unlocked = parseInt(maths.settings.test.unlocked);
+    let test: Operation = objectCreator(Operation.prototype);
+
+    test.container = $("#test");
+
+    test.name = "test";
+
+    /* following properties will be initialized during module init below */
+    test.modules = [];
+    test.times = [];
+    test.exerciseNum = 0;
+    test.unlocked = 0;
+
+    test.init = function() {  // override prototype's init property
       let choiceButtons = $(".test-level-choice");
-      choiceButtons.each(function (index) {
+
+      this.modules = maths.settings.test.modules.split(",");
+      this.times = maths.settings.test.times.split(",");
+      this.exerciseNum = parseInt(maths.settings.test.exerciseNum);
+      this.unlocked = parseInt(maths.settings.test.unlocked);
+      
+      choiceButtons.each(function (index) {   // initialize level choice buttons
         if (index <= maths.test.unlocked) $(this).prop("disabled", false);
         else $(this).prop("disabled", true);
       });
-      if (!this.loaded) {
+
+      if (this.levelDisplayed === -1) {
         choiceButtons.on("click", function (e) {
           maths.test.level = choiceButtons.index(this);
           test.createTest();
-        });
-        this.loaded = true;
+          });
+        this.levelDisplayed = this.level;
       }
     };
+
     test.createTest = function() {
-      let module,
+      let module: Operation,
           max = this.modules.length,
-          content = {},
-          html = "",
-          i;
-      content["test info"] = this.info();
+          content: content = {
+            info: this.info()
+          },
+          html = "";
+
       this.results = [];   // reset results array
       this.answersIdxs = [];  // and indexes of answers
-      for (i = 0; i < max; i += 1) {
-        module = maths[this.modules[i]];
+      for (let i = 0; i < max; i += 1) {
+        module = maths[this.modules[i].name as keyof mainObject];
         if (module) {
           this.numbers = module.numbersCreator(this.exerciseNum, this.level);
           this.sign = module.sign;  // sign and numbers properties to be used by layout object
@@ -49,90 +56,100 @@ maths.test = (function() {
           } else {
             html += maths.layout.testNavigation(false, false);
           }
-          content[module.name] = html; // create property of content object and assign it the markup
+          content[module.name as keyof content] = html; // create property of content object and assign it the markup
         }
       }
-      content["summary"] = this.summary;
-      maths.accordeon.init($("#test .content"), this.name, content);
+      content["summary" as keyof content] = this.summary;
+      maths.accordion.init($("#test .content"), this.name, content);
       maths.handlers.test(this);
     };
 
     test.info = function () {
-      let html = '<div class="test-interface">';
-      html += '<h3 class="center">Level: ' + maths.difficulties[this.level] + '</h3>';
-      html += '<h3 class="center">Number of questions: ' + this.modules.length * this.exerciseNum + '</h3>';
-      html += '<h3 class="center">Questions per module: ' + this.exerciseNum + '</h3>';
-      html += '<h3 class="center">Modules: ';
-      this.modules.forEach(function(module) {
-        html += maths[module].name + ", ";
+      let html = `<div class="test-interface">';
+                    <h3 class="center">Level: ${maths.difficulties[this.level]}</h3>
+                    <h3 class="center">Number of questions: ${this.modules.length * this.exerciseNum}</h3>
+                    <h3 class="center">Questions per module: ${this.exerciseNum}</h3>
+                    <h3 class="center">Modules: `;
+      this.modules.forEach(function(module: Operation) {
+        html += module.name + ", ";
       });
-      html = html.replace(/,\s$/, "") + '</h3>';
-      html += '<h3 class="center">Time to complete: ' + this.times[this.level] + ' minutes</h3>';
-      html += '<h2 class="center">GOOD LUCK!</h2>';
-      html += maths.layout.testNavigation(true, false);
-      html += '</div>';
+      html = html.replace(/,\s$/, "") + '</h3>';  // remove last coma
+      html += `<h3 class="center">Time to complete: ${this.times[this.level]} minutes</h3>
+               <h2 class="center">GOOD LUCK!</h2>
+               ${maths.layout.testNavigation(true, false)}
+              </div>`;
       return html;
-    }
-
+    };
     test.summary = '<div id="test-summary" class="test-interface">' +
       '<div class="test-navigation"><button id="test-close">Close</button></div></div>';
 
-    test.processResults = function(scores, secs) {
-      let mods = this.modules, exNums = this.exerciseNum,
-          results = [], percs = [],
-          sum = points = score = 0,
-          minutes, seconds, minutesStr, secondsStr, i,
-          unlockMessage = html = '';  
-      scores.forEach(function(value, idx) { //calculate results and percentages for each module
-        i = (idx + 1) / exNums;
-        sum += value;
-        if (Number.isInteger(i)) {
-          percs[i - 1] = Math.round(sum / exNums * 100);
-          results[i - 1] = sum;
-          points += sum;
-          sum = 0;
-        }
-      });
-      score = Math.round(points / (exNums * mods.length) * 100);
-      if (score > 59 && this.unlocked < 2 && this.unlocked === this.level) {
-        if (score > 74) {
-          unlockMessage = 'Congratulations, You have unlocked next level!';
-          this.unlocked = this.level + 1;
-          $(".test-level-choice").eq(this.unlocked).prop("disabled", false);
-          maths.settings.accessStorage({unlocked: this.level + 1}, "maths.settings.test.", true);
-        } else {
-          unlockMessage = 'To unlock next level you need to score at least 75%.. Try again';
-        }
-      }
-      seconds = secs % 60;
-      minutes = Math.floor(secs / 60);
-      minutesStr = (minutes < 1)? "": (minutes === 1)? minutes + ' minute': minutes + ' minutes';
-      secondsStr = (seconds === 1)? seconds + ' second': seconds + ' seconds';
-      html += (score > 59)?
-        '<h2 class="center">Congratulations You Passed!</h2>'
-        : '<h2 class="center">You need to practice a bit more!</h2>';
-      html += '<h3 class="center">Your score: ' + score + '%</h3>';
-      html += '<h3 class="center">Your time: ' + minutesStr + ' ' + secondsStr + '</h3>';
-      for (i = 0; i < mods.length; i += 1) {
-        html += '<h3 class="center">' + mods[i] + ' score: ' + results[i] + '/' + exNums;
-        html += ' (' + percs[i] + '%)</h3>';
-      }
-      html += '<h3 class="center">Total points: ' + points + '/' + exNums * mods.length + '</h3>';
-      html += '<h3 class="center">' + unlockMessage + '</h3>';
-      $("#test-summary").prepend(html).css("height", "73vh");;
-      maths.playSound(score > 59);
+    test.displayResults = function(scores: Array<number>, secs: number) {
+      let mods = this.modules,
+          exNums: number = this.exerciseNum,
+          results: Array<number> = [],
+          percs: Array<number> = [],
+          sum = 0,
+          points = 0,
+          score = 0,
+          minutes: number,
+          seconds: number,
+          minutesStr: string,
+          secondsStr: string,
+          i: number,
+          unlockMessage = '',
+          html = '';
+
+      const processResults = ()=> {
+          scores.forEach(function(value: number, idx: number) { //calculate results and percentages for each module
+            i = (idx + 1) / exNums;
+            sum += value;
+            if (Number.isInteger(i)) {
+              percs[i - 1] = Math.round(sum / exNums * 100);
+              results[i - 1] = sum;
+              points += sum;
+              sum = 0;
+            }
+          });
+          score = Math.round(points / (exNums * mods.length) * 100);
+          if (score > 59 && this.unlocked < 2 && this.unlocked === this.level) {
+            if (score > 74) {
+              unlockMessage = 'Congratulations, You have unlocked next level!';
+              this.unlocked = this.level + 1;
+              $(".test-level-choice").eq(this.unlocked).prop("disabled", false);
+              maths.settings.accessStorage({unlocked: this.level + 1}, "maths.settings.test.", true);
+            } else {
+              unlockMessage = 'To unlock next level you need to score at least 75%.. Try again';
+            }
+          }
+          seconds = secs % 60;
+          minutes = Math.floor(secs / 60);
+          minutesStr = (minutes < 1)? "": (minutes === 1)? minutes + ' minute': minutes + ' minutes';
+          secondsStr = (seconds === 1)? seconds + ' second': seconds + ' seconds';
+          html += (score > 59)?
+            '<h2 class="center">Congratulations You Passed!</h2>'
+            : '<h2 class="center">You need to practice a bit more!</h2>';
+          html += `<h3 class="center">Your score: ${score}%</h3>
+                   <h3 class="center">Your time: ${minutesStr} ${secondsStr}</h3>`;
+          for (i = 0; i < mods.length; i += 1) {
+            html += `<h3 class="center">${mods[i]} score: ${results[i]}/${exNums} (${percs[i]}%)</h3>`;
+          }
+          html += `<h3 class="center">Total points: ${points}/${exNums * mods.length}</h3>
+                   <h3 class="center">${unlockMessage}</h3>`;
+          $("#test-summary").prepend(html).css("height", "73vh");;
+          maths.playSound(score > 59);
+        };
+
+      processResults();
+      maths.accordion.unfold();
+      maths.accordion.scrollTo(this.modules.length + 1);
     };
 
-    test.displayResults = function(scores, secs) {
-      this.processResults(scores, secs);
-      maths.accordeon.unfold();
-      maths.accordeon.scrollTo(this.modules.length + 1);
-    };
     return test;
+
   }());
 
 
-  maths.accordeon = {
+  maths.accordion = {
 
     container: $('<div class="test-accordeon"></div>'),
     content: $('<div class="test-accordeon-content"></div>'),
@@ -147,12 +164,11 @@ maths.test = (function() {
       return this.headers[this.headers.length - 1];
     },
 
-    init: function(parent, title, contentObj) {
-      let name;
+    init: function(parent: JQuery, title: string, contentObj: content) {
       this.container.append(this.createTitleBar(title));
-      for (name in contentObj) {
+      for (const name in contentObj) {
         if (contentObj.hasOwnProperty(name)) {
-          this.content.append(this.createSection(name, contentObj[name]));
+          this.content.append(this.createSection(name, contentObj[name as keyof content]));
         }
       }
       parent.append(this.container);
@@ -162,15 +178,15 @@ maths.test = (function() {
       $('.test-accordeon-section-content').eq(0).show();
       $('.test-accordeon-section-header').css("border-top", "none");
     },
-    createTitleBar: function(title) {
+    createTitleBar: function(title: string) {
       let bar = $('<div class="test-accordeon-titlebar"></div>'),
-          foo = $('<div class="test-accordeon-titlebar-foo"></div>');
+          foo = $('<div class="test-accordeon-titlebar-foo"></div>'),
           barTitle = $('<h4 class="test-accordeon-titlebar-title">' + title + '</h4>');
       this.closeBtn = $('<button class="test-accordeon-titlebar-close">&times;</button>');
       this.closeBtn.on("click", () => this.dispose());
       return bar.append(barTitle, foo, this.closeBtn);
     },
-    createSection: function(head, cont) {
+    createSection: function(head: string, cont: string) {
       let section = $('<div class="test-accordeon-section"></div>'),
           header = $('<button class="test-accordeon-section-header">' + head + '</button>'),
           sectionContent = $('<div class="test-accordeon-section-content">' + cont + '</div>');
@@ -187,16 +203,16 @@ maths.test = (function() {
     },
     attachListeners: function () {
       $('.test-accordeon-section-header').on("click", function() {
-        if (!$(this).is(maths.accordeon.last())) {
-          maths.accordeon.show(this);
+        if (!$(this).is(maths.accordion.last())) {
+          maths.accordion.show(this);
         }
       });
     },
-    show: function(header, index) {
+    show: function(header: HTMLElement, index: number) {
       let $header = $(header),
           $content = $header.next();
       if ($content.is(':hidden')) {
-        this.headers.forEach(val=> val.removeClass("selected"));
+        this.headers.forEach((val: JQuery)=> val.removeClass("selected"));
         $('.test-accordeon-section-content:visible').slideUp();
         $content.slideDown();
         $header.addClass("selected");
@@ -205,15 +221,15 @@ maths.test = (function() {
       }
     },
     unfold: function() {
-      this.contents.forEach(function(content){
+      this.contents.forEach(function(content: JQuery){
         content.show();
       });
     },
-    scrollTo: function(index) {
+    scrollTo: function(index: number) {
       if (!index) {
         throw new Error("couldn't find the header");
       }
-      this.headers.forEach(val=> val.removeClass("selected"));
+      this.headers.forEach((val: JQuery) => val.removeClass("selected"));
       this.headers[index].addClass("selected");
       this.headers[index][0].scrollIntoView();
     }
@@ -225,7 +241,7 @@ maths.test = (function() {
     minutes: "00",
     seconds: "00",
     secondsElapsed: 0,
-    init: function (parent, time, callback) {
+    init: function (parent: JQuery, time: number, callback: Function) {
       parent.append(this.container);
       if (this.setTimer !== null) {
         this.stop();
@@ -239,10 +255,10 @@ maths.test = (function() {
       this.container.html(this.state());
     },
     setTimer: null,
-    start: function (minutes, callback) {
-      var count = minutes * 60;
-      var minutes = Math.floor(count / 60);
-      var seconds = count % 60;
+    start: function (minutes: number, callback: Function) {
+      let count = minutes * 60,
+          seconds = count % 60;
+      minutes = Math.floor(count / 60);
       this.minutes = (minutes < 10) ? "0" + minutes : "" + minutes;
       this.seconds = (seconds < 10) ? "0" + seconds : "" + seconds;
       this.show();
@@ -269,5 +285,4 @@ maths.test = (function() {
       clearInterval(this.setTimer);
       return this.secondsElapsed;
     }
-
   };

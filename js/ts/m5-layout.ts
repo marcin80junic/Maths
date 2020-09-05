@@ -1,14 +1,16 @@
 
 maths.layout = {
 
-    exercises: function (module) {
+    exercises: function (module: Operation) {
         let num = module.exerciseNum,
             html = "";
         // user interface on top
         html += '<div class="interface">';
 
         // choice of level
-        html += '<div class="interface-item"><label for="level">Difficulty:</label><select class="level">';
+        html += `<div class="interface-item">
+                    <label for="level">Difficulty:</label>
+                    <select class="level">`;
         maths.difficulties.forEach((item, index) => {
             html += (module.level === index) ?
                 '<option selected="selected">' + item + '</option>'
@@ -17,7 +19,9 @@ maths.layout = {
         html += '</select></div>';  // end of level
 
         // number of exercises choice
-        html += '<div class="interface-item"><label for="exerciseNum">How many exercises?</label><select class="exerciseNum">';
+        html += `<div class="interface-item">
+                    <label for="exerciseNum">How many exercises?</label>
+                    <select class="exerciseNum">`;
         maths.numOfExercises.forEach((item, index) => {
             html += (module.exerciseNum === parseInt(item, 10)) ?
                 '<option selected="selected">' + item + '</option>'
@@ -46,30 +50,36 @@ maths.layout = {
         module.container.html(html);
     },
 
-    main: function (module) {
-        let allNumbers = module.numbers, // numbers bank
-            length = allNumbers.length,
-            numbers, index, perc, len, random, i, j, isFraction, isAnswer,
-            sign = module.sign,
-            isTest = module.name === "test",
-            isRandomized = maths.settings.general.isRandomized === "true",
-            results = module.results,
-            html = '<div class="columns">';
+    main: function (module: Operation) {
+        let isTest = module.name === "test",
+            isRandomized = (maths.settings.general.isRandomized === "true"), 
+            isFraction: boolean,
+            isAnswer: boolean,
+            sign: string = module.sign,
+            allNumbers = module.numbers, // numbers bank
+            length = allNumbers.length,     // how many operations in a bank
+            numbers: any,   // numbers for single operation
+            len: number,    // number of numbers in operation
+            random: number,    // a random number used to randomize placement of answer field
+            perc: number,   // a chance for number to be an answer field
+            index: number,  // index of answer field
+            results = module.results,   // bank of answers
+            html = '<div class="columns">';     // markup
             
-        for (i = 0; i < length; i += 1) {
-            numbers = allNumbers[i];  // numbers for single operation
+        for (let i = 0; i < length; i += 1) {
+            numbers = allNumbers[i]; 
             len = numbers.length;
-            if (isRandomized) { // if true randomize placement of answer field
-                perc = 1 / len; // a chance for number to be an answer field
+            if (isRandomized) {     // check whether to randomize answer fields or not
+                perc = 1 / len;
                 random = Math.random();
-                index = Math.floor(random / perc); // index of answer field
-            } else {  // answer field on the right of equality sign
+                index = Math.floor(random / perc);
+            } else {  // if not then answer field is placed on the right of equality sign
                 index = len - 1; // index of answer field
             }
     
             // single operation
             html += '<div class="columns-line">';
-            for (j = 0; j < len; j += 1) {
+            for (let j = 0; j < len; j += 1) {
                 isFraction = (numbers[j].length > 1);
                 isAnswer = (j === index);
                 if (isAnswer) {
@@ -88,14 +98,15 @@ maths.layout = {
             html += '<img src="' + maths.icons.questMark + '" class="icon">';
             html += !isTest ?  // insert a check button if not a test
                 '<input type="submit" value="check" class="check">' : "";
-            html += '</div>';
-        }   // end of single operation
+            html += '</div>';   
+            // end of single operation
+        }   
 
         html += '</div>';
         return html;
     },
 
-    integer: function (number, isAnswer, results) {
+    integer: function (number: number, isAnswer: boolean, results: Array<number>) {
         let html = '';
         html += isAnswer ?
             '<div class="tooltip"><input type="text" maxlength="3" class="answer">' +
@@ -107,7 +118,7 @@ maths.layout = {
         return html;
     },
 
-    fraction: function (array, isAnswer, results) {
+    fraction: function (array: Array<number>, isAnswer: boolean, results: Array<Array<number>>) {
         let number = array[0] / array[1],   // decimal representation of fraction
             wholeNum = Math.floor(number),  // whole part of a fraction
             isInteger = Number.isInteger(number),   // is fraction an integer?
@@ -155,15 +166,17 @@ maths.layout = {
         return html;
     },
 
-    testNavigation: function (isFirst, isLast) {
+    testNavigation: function (isFirst: boolean, isLast: boolean) {
         let first = isFirst ? "Start" : "Prev",
             last = isLast ? "Finish" : "Next",
-            firstClass = isFirst ? "button-start" : "button-prev"
-        lastClass = isLast ? "button-finish" : "button-next",
+            firstClass = isFirst ? "button-start" : "button-prev",
+            lastClass = isLast ? "button-finish" : "button-next",
             html = '<div class="test-navigation">';
+
         html += '<button class="' + firstClass + '">' + first + '</button>';
         html += isFirst ? ""
             : '<button class="' + lastClass + '">' + last + '</button></div>';
+
         return html;
     }
 
