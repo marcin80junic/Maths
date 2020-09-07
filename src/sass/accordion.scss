@@ -1,0 +1,83 @@
+/*
+    Accordion
+
+    Add class `accordion` to the wrapper div container and add as many sections containing button
+    with class `accordeon-header` and div with class `accordeon-content` as needed.
+
+    If you need section to be initially visible add class `selected` to the corresponding button
+
+    Markup:
+    <div class="accordion">
+        <button class="accordion-header selected">header 1</button>
+        <div class="accordion-content">
+            <div>Some text to fill in the accordion content section 1</div>
+        </div>
+        <button class="accordion-header">header 2</button>
+        <div class="accordion-content">
+            <div>Some text to fill in the accordion content section 2</div>
+        </div>
+        <button class="accordion-header">header 3</button>
+        <div class="accordion-content">
+            <div>Some text to fill in the accordion content section 3</div>
+        </div>
+    </div>
+
+    Styleguide Accordion
+*/
+  
+  
+.accordion {
+  display: none;
+  max-height: 88vmin;
+  background-color: hsl(180, 50%, 90%);
+  overflow: auto;
+}
+.accordion.active {
+  display: block;
+}
+.accordion-header {
+  position: relative;
+  width: 100%;
+  font-size: 1.1em;
+  padding: .4rem 1rem;
+  text-align: left;
+  color: hsl(90, 100%, 55%);
+  background-color: hsl(0, 100%, 50%);
+  outline: none;
+  border: 1px solid hsl(0, 100%, 20%);
+  border-top: transparent;
+}
+.accordion-header::after {
+  position: absolute;
+  right: 1rem;
+  content: "\002B";
+}
+.accordion-header.selected::after {
+  content: "\2212";
+}
+.accordion > .accordion-header:first-of-type {
+  border-top: 1px solid hsl(0, 100%, 20%);
+}
+.accordion-header:hover,
+.accordion-header:focus {
+  background-color: hsl(0, 100%, 40%);
+}
+.accordion-header:active {
+  background-color: hsl(0, 100%, 30%);
+}
+.accordion-header.selected {
+  background-color: hsl(0, 100%, 30%);
+}
+.accordion-header + .accordion-content {
+  height: 0;
+  overflow: hidden;
+  transition: height 0.3s linear;
+}
+.accordion-header.selected + .accordion-content {
+  height: auto;
+  border: 1px solid hsl(0, 100%, 30%);
+  border-top: transparent;
+}
+.accordion-content > * {
+  margin: 1em .5em;
+}

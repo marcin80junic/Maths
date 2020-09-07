@@ -2,10 +2,10 @@
   "name": "maths",
   "version": "1.0.0",
   "description": "One Page Maths exercise online application",
-  "main": "index.js",
+  "main": "src/js/init.js",
   "scripts": {
     "test": "index.html",
-    "sass": "node-sass css/sass/index.scss css/style.css"
+    "sass": "node-sass src/sass/index.scss src/css/styles.css"
   },
   "repository": {
     "type": "git",
@@ -23,7 +23,8 @@
     "gulp": "^4.0.2",
     "gulp-autoprefixer": "^7.0.1",
     "gulp-sass": "^4.1.0",
-    "node-sass": "^4.14.1"
+    "node-sass": "^4.14.1",
+    "requirejs": "^2.3.6"
   },
   "dependencies": {
     "@types/jquery": "^3.5.1",

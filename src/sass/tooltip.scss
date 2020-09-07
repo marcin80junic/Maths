@@ -1,0 +1,64 @@
+/*
+Tooltip
+
+Tooltip module requires some javascript in order to work. To make it visible the class `showtip`
+needs to be added to the `.tiptext` *span* element.
+
+To center tooltip horizontally its *marginLeft* property needs to be assigned at runtime.
+The formula to find the margin would be:
+*tooltip-target center - tiptext center + 1 + "px"*.
+
+Markup:
+<div style="display:flex;justify-content:space-around;">
+    <span class="tooltip">
+        <button class="tooltip-target">Hover over me</button>
+        <span class="tiptext">This is some text to demonstrate the tooltip module</span>
+    </span>
+    <span class="tooltip">
+        <button class="tooltip-target">Hov</button>
+        <span class="tiptext">This is some text to demonstrate that tooltip module works with short elements</span>
+    </span>
+    <span class="tooltip">
+        <button class="tooltip-target">Hover over me button, a bit longer just for demonstration</button>
+        <span class="tiptext">This is some text to demonstrate that tooltip module works with long elements</span>
+    </span>
+</div>
+
+Styleguide Tooltip 
+*/
+
+
+.tooltip {    /* Tooltip container */
+    position: relative;
+    height: 100%
+}
+.tiptext {
+    visibility: hidden;
+    min-width: 10em;
+    position: absolute;   /* Position the tooltip text */
+    bottom: 100%;
+    left: 0;
+    margin-bottom: .5em;
+    padding: .5em;
+    text-align: justify;
+    background-color: beige;
+    border: 1px solid grey;
+    border-radius: .5em;
+    opacity: 0;       /* Fade in tooltip */
+    transition: opacity 0.3s;
+}
+.tooltip .tiptext::after {    /* Tooltip arrow */
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #555 transparent transparent transparent;
+}
+.showtip {
+    visibility: visible;
+    opacity: 1;
+}
+  

@@ -1,0 +1,152 @@
+/* general settings */
+$yellow-pale: hsla(60, 100%, 90%, 1);
+$yellow-light: hsla(60, 100%, 80%, 1);
+$yellow: hsla(60, 100%, 70%, 1);
+$yellow-dark: hsla(60, 100%, 50%, 1);
+$green-pale: hsla(120, 100%, 65%, 1);
+$green-light: hsla(120, 100%, 45%, 1);
+$green: hsla(120, 100%, 35%, 1);
+$green-dark: hsla(120, 59%, 30%, 1);
+$red-light: hsla(0, 100%, 50%, 1);
+$red: hsla(0, 100%, 45%, 1);
+$red-dark: hsla(0, 100%, 35%, 1);
+$main-bg: hsla(120, 90%, 80%, 1);
+
+$path: "../../public/";
+
+:root {
+    font-size: calc(0.5em + 1vw);
+    box-sizing: border-box;
+  }
+  *, ::before, ::after {
+    box-sizing: inherit;
+  }
+  body {
+    display: flex;
+    user-select: none;
+    margin: 0;
+    overflow-y: scroll;
+    font-family: "Comic Sans MS", "Monotype Corsiva", cursive;
+    background-color: $main-bg;
+  }
+  .body-hidden-overflow {
+    overflow: hidden;
+  }
+  body::-webkit-scrollbar, 
+  .sidenav::-webkit-scrollbar, 
+  .test-accordeon-content::-webkit-scrollbar {
+    width: 1em;
+  }
+  body::-webkit-scrollbar-track, 
+  .sidenav::-webkit-scrollbar-track, 
+  .test-accordeon-content::-webkit-scrollbar-track {
+    background: $green-dark;
+  }
+  body::-webkit-scrollbar-thumb, 
+  .sidenav::-webkit-scrollbar-thumb, 
+  .test-accordeon-content::-webkit-scrollbar-thumb {
+    background-color: $red-light;
+    border-radius: .3em;
+    border: .2em solid $red-dark;
+  }
+  main {
+    width: 85%;
+    padding: 2em;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    margin-top: 0;
+  }
+  p {
+    text-align: justify;
+    line-height: 2em;
+  }
+  fieldset {
+    padding: 1em;
+    margin: 1.5em auto;
+    border-radius: 10px;
+    border-width: medium;
+  }
+  input, select, button {
+    font: inherit;
+    font-size: .9em;
+    background-color: $green-pale;
+    border: 2px solid rgba(0, 0, 0, .3);
+    border-radius: 5px;
+    box-shadow: 3px 3px 3px rgba(55,55,55,.5);
+    cursor: pointer;
+    outline: none;
+  }
+  button:hover:not(:disabled), input:hover:not(:disabled), select:hover:not(:disabled) {
+    background-color: $green-light;
+  }
+  button:disabled {
+    cursor: initial;
+  }
+  button:focus, input:focus, select:focus {
+    background-color: $green-light;
+  }
+  input:active {
+    background-color: $green;
+  }
+  input[type="text"] {
+    font-size: .9em;
+    text-align: center;
+    width: 2.3em;
+    background-color: $yellow-pale;
+  }
+  input[type="range"] {
+    vertical-align: text-top;
+  }
+  img {
+    vertical-align: text-bottom;
+  }
+  /* end of general settings */
+  
+  #home .content {
+    height: 12em;
+    background-image: url($path + "pics/mathKids.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+  }
+
+  #dim {
+    display: none;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.3);
+    z-index: 999;
+  }
+  #dim.active {
+    display: block;
+  }
+
+  
+/* utility classes */
+
+.center {
+  text-align: center;
+  align-items: center;
+}
+.left {
+  text-align: left;
+}
+.right {
+  text-align: right;
+}
+.vertical-center {
+  vertical-align: middle;
+}
+.special {
+  color: $red-light;
+}
+.correct {
+  border: 2px solid #1aff1a;
+}
+.warning {
+  border: 2px solid $red-light;
+}
+.invisible {
+  visibility: hidden;
+}
+/* end of utility classes */

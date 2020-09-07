@@ -1,0 +1,45 @@
+/* settings-group module */
+
+.settings-group {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .settings-group div + div {
+    margin-top: .3em;
+  }
+  .settings-group-line {
+    display: flex;
+    width: 100%;
+    margin: .8em 0;
+    padding: .2em;
+    border: 2px groove #ffffcc;
+    border-radius: .3em;
+  }
+  .settings-group-line > :first-child {
+    min-width: 10em;
+  }
+  .settings-group-line > :last-child {
+    margin-left: auto;
+  }
+  /* end of settings-group module */
+  
+  
+  
+  /* checkbox-group module */
+  .checkbox-group {
+    display: flex;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+  }
+  .checkbox-group input {
+    width: 1em;
+    height: 1em;
+  }
+  .checkbox-group > div {
+    min-width: 10em;
+  }
+  .checkbox-group > .right {
+    margin-left: 1em;
+    text-align: right;
+  }
+  /* end of checkbox-group module */

@@ -9,7 +9,7 @@ const gulp = require('gulp'),
 
 // Process `scss` files to `css` and autoprefix them
 function style() {
-    return gulp.src('css/sass/styles.scss')
+    return gulp.src('src/sass/styles.scss')
         .pipe(sass()
             .on('error', (err) => {
                 console.log(`Error: ${err.message} on line: ${err.lineNumber} in: ${err.fileName}`)
@@ -18,20 +18,21 @@ function style() {
             .on('error', (err) => {
                 console.log(`Error: ${err.message} on line: ${err.lineNumber} in: ${err.fileName}`)
             }))
-        .pipe(gulp.dest('css'))
+        .pipe(gulp.dest('src/css/'))
         .pipe(browserSync.stream());
 }
  
 // Process `ts` files to `js`
 function javascript() {
-    return gulp.src('js/ts/*.ts')
+    return gulp.src('src/ts/*.ts')
         .pipe(ts({
             noImplicitAny: true,
-            outFile: 'scripts.js',
+            module: 'amd',
+        //    outFile: 'scripts.js',
             lib: ["es2017", "dom"],
             target: "es2017"
         }))
-        .pipe(gulp.dest('js/'));
+        .pipe(gulp.dest('src/js/'));
 }
 
 function watch() {
@@ -42,9 +43,9 @@ function watch() {
           baseDir: './'
        }
     });
-    gulp.watch('css/sass/*.scss', style);
-    gulp.watch('js/ts/*.ts', javascript);
-    gulp.watch(['*.html', 'css/*.css', 'js/*.js']).on('change', browserSync.reload);
+    gulp.watch('src/sass/*.scss', style);
+    gulp.watch('src/ts/*.ts', javascript);
+    gulp.watch(['*.html', 'src/css/*.css', 'src/js/*.js']).on('change', browserSync.reload);
  }
 
  task('watch', watch);
