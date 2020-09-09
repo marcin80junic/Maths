@@ -27,8 +27,6 @@ $('document').ready(function () {
         maths.active.fadeOut(() => {
           maths.switch(href);
           maths.active.fadeIn();
-          // assigns padding to all lines and defines handler for window resize
-       //   maths.handlers.centerColumns(maths.active.find('.columns-line')); 
         });
       }
       if ($('.mobile-toggle-button').is(':visible')) {
