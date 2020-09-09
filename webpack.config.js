@@ -3,6 +3,7 @@ const path = require('path');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
 
 const devMode = process.env.NODE_ENV === 'development'
 
@@ -29,7 +30,17 @@ module.exports = {
     },
 
     optimization: {
-        splitChunks: { chunks: "all" }
+        splitChunks: { chunks: "all" },
+        minimize: !devMode,
+        minimizer: [
+            new TerserPlugin({
+                terserOptions: { 
+                    output: { 
+                        ascii_only: true 
+                    } 
+                }
+            })
+        ],
     },
 
 
