@@ -1,4 +1,4 @@
-import * as $ from 'jquery';
+import $ from 'jquery';
 import { Operation } from './m1-prototype';
 import * as operations from './m3-operations';
 import * as test from './m4-test';
@@ -13,8 +13,8 @@ import volumeMuted from '../../public/pics/speaker-muted.png';
 import volumeLow from '../../public/pics/speaker-low-volume.png';
 import volumeMedium from '../../public/pics/speaker-medium-volume.png';
 import volumeHigh from '../../public/pics/speaker-high-volume.png';
-import cheer from '../../public/sounds/cheering.wav';
-import wrong from '../../public/sounds/fart.wav';
+import cheer from '../../public/sounds/cheering.mp3';
+import wrong from '../../public/sounds/fart.mp3';
 
 
 /*

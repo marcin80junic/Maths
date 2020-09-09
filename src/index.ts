@@ -1,6 +1,5 @@
-import html from './file.html';
 import './sass/index.scss';
-import * as $ from 'jquery';
+import $ from 'jquery';
 import { maths } from './ts/m2-resources';
 
 
