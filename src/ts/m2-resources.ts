@@ -1,33 +1,41 @@
+import * as $ from 'jquery';
 import { Operation } from './m1-prototype';
 import * as operations from './m3-operations';
 import * as test from './m4-test';
 import { layout } from './m5-layout';
 import { handlers } from './m6-handlers';
 import { settings } from './m7-settings';
-import type { mainObject } from './types';
-import type { mathOperation } from './types';
+import type { mainObject, mathOperation } from './types';
+import tick from '../../public/pics/correct.png';
+import cross from '../../public/pics/wrong.png';
+import questMark from '../../public/pics/question.png';
+import volumeMuted from '../../public/pics/speaker-muted.png';
+import volumeLow from '../../public/pics/speaker-low-volume.png';
+import volumeMedium from '../../public/pics/speaker-medium-volume.png';
+import volumeHigh from '../../public/pics/speaker-high-volume.png';
+import cheer from '../../public/sounds/cheering.wav';
+import wrong from '../../public/sounds/fart.wav';
 
-export { maths };
 
 /*
   *define global application object
 */
 
-const maths: mainObject = {
+export const maths: mainObject = {
 
     icons: {
-      tick: 'public/pics/correct.png',
-      cross: 'public/pics/wrong.png',
-      questMark: 'public/pics/question.png',
-      volumeMuted: 'public/pics/speaker-muted.png',
-      volumeLow: 'public/pics/speaker-low-volume.png',
-      volumeMedium: 'public/pics/speaker-medium-volume.png',
-      volumeHigh: 'public/pics/speaker-high-volume.png'
+      tick: tick,
+      cross: cross,
+      questMark: questMark,
+      volumeMuted: volumeMuted,
+      volumeLow: volumeLow,
+      volumeMedium: volumeMedium,
+      volumeHigh: volumeHigh
     },
 
     sounds: {
-      cheer: new Audio("public/sounds/cheering.wav"),
-      wrong: new Audio("public/sounds/fart.wav")
+      cheer: new Audio(cheer),
+      wrong: new Audio(wrong)
     },
 
     difficulties: ["Fair", "Advanced", "Super Hard"],

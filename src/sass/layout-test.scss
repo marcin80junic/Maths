@@ -13,13 +13,13 @@
     border-radius: 10px;
     color: var(--yellow);
     background-color: var(--red-light);
-    background-image: url($path + "pics/unlocked.png");
+    background-image: url("../../public/pics/unlocked.png");
     background-position: 5%, 50%;
     background-repeat: no-repeat;
   }
   .button-ladder button:disabled {
     opacity: .8;
-    background-image: url($path + "pics/locked.png");
+    background-image: url("../../public/pics/locked.png");
   }
   .button-ladder button:not(:disabled):hover,
   .button-ladder button:focus {

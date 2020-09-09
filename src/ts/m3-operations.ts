@@ -1,15 +1,10 @@
-import { objectCreator } from './m1-prototype';
-import { Operation } from './m1-prototype';
+import * as $ from 'jquery';
+import { Operation, objectCreator } from './m1-prototype';
 import { maths } from './m2-resources';
 import type { mathOperation } from './types';
 
-export { addition };
-export { subtraction };
-export { multiplication };
-export { division };
-export { fractions };
 
-const addition = (function() {
+export const addition = (function() {
   
     let addition: mathOperation = objectCreator(Operation.prototype);
 
@@ -52,7 +47,7 @@ const addition = (function() {
   }());
   
 
-  const subtraction = (function() {
+  export const subtraction = (function() {
 
     let subtraction: mathOperation = objectCreator(Operation.prototype);
 
@@ -98,7 +93,7 @@ const addition = (function() {
   }());
 
 
-  const multiplication = (function() {
+  export const multiplication = (function() {
 
     let multiplication: mathOperation = objectCreator(Operation.prototype);
 
@@ -141,7 +136,7 @@ const addition = (function() {
   }());
 
 
-  const division = (function() {
+  export const division = (function() {
 
     let division: mathOperation = objectCreator(Operation.prototype);
 
@@ -186,7 +181,7 @@ const addition = (function() {
   }());
   
   
-  const fractions = (function () {
+  export const fractions = (function () {
 
     let fractions: mathOperation = objectCreator(Operation.prototype);
 

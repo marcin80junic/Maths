@@ -1,10 +1,8 @@
 import { maths } from './m2-resources';
 import type { mathOperation } from './types';
 
-export { layout };
 
-
-const layout = {
+export const layout = {
 
     exercises: function (module: mathOperation) {
         let num = module.exerciseNum,

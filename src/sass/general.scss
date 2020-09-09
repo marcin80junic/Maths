@@ -12,8 +12,6 @@ $red: hsla(0, 100%, 45%, 1);
 $red-dark: hsla(0, 100%, 35%, 1);
 $main-bg: hsla(120, 90%, 80%, 1);
 
-$path: "../../public/";
-
 :root {
     font-size: calc(0.5em + 1vw);
     box-sizing: border-box;
@@ -104,7 +102,7 @@ $path: "../../public/";
   
   #home .content {
     height: 12em;
-    background-image: url($path + "pics/mathKids.png");
+    background-image: url("../../public/pics/mathKids.png");
     background-repeat: no-repeat;
     background-position: center;
     background-size: contain;

@@ -1,6 +1,7 @@
 import { maths } from './m2-resources';
 import type { content } from './types';
 
+
 // define Operation class, a backbone of all mathematical operations
 
 export function Operation() {

@@ -1,10 +1,10 @@
+import * as $ from 'jquery';
 import { Operation } from './m1-prototype';
 import { maths } from './m2-resources';
 import type { mainObject } from './types';
 
-export { settings }
 
-const settings = {
+export const settings = {
     name: "settings",
     areLoaded: false,
     fields: {

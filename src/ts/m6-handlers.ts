@@ -1,10 +1,9 @@
+import * as $ from 'jquery';
 import { maths } from './m2-resources';
 import type { mathOperation } from './types';
 
-export { handlers };
 
-
-const handlers = {
+export const handlers = {
 
     exercises: function (module: mathOperation) {
         let levelChoice = module.container.find(".level"),

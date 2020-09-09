@@ -1,7 +1,12 @@
-import { maths } from './m2-resources';
+import html from './file.html';
+import './sass/index.scss';
+import * as $ from 'jquery';
+import { maths } from './ts/m2-resources';
+
+
 
 $('document').ready(function () {
-    
+  
     //find and hide all modules except for #home
     $('#main-menu a').each((index, el) => {
       let link = $(el),

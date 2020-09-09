@@ -1,16 +1,10 @@
-import { objectCreator } from './m1-prototype';
-import { Operation } from './m1-prototype';
+import * as $ from 'jquery';
+import { Operation, objectCreator } from './m1-prototype';
 import { maths } from './m2-resources';
-import type { mainObject } from './types';
-import type { mathOperation } from './types';
-import type { content } from './types';
-
-export { test };
-export { accordion };
-export { timer };
+import type { mainObject, mathOperation, content } from './types';
 
 
-const test = (function() {
+export const test = (function() {
 
     let test: mathOperation = objectCreator(Operation.prototype);
 
@@ -160,7 +154,7 @@ const test = (function() {
   }());
 
 
-  const accordion = {
+  export const accordion = {
 
     container: $('.accordion'),
     content: $('<div class="test-accordeon-content"></div>'),
@@ -247,7 +241,7 @@ const test = (function() {
   };
 
 
-  const timer = {
+  export const timer = {
     container: $('<div class="timer"></div>'),
     minutes: "00",
     seconds: "00",
