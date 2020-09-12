@@ -1,25 +1,28 @@
 /*
     Accordion
 
-    Add class `accordion` to the wrapper div container and add as many sections containing button
-    with class `accordeon-header` and div with class `accordeon-content` as needed.
+    Add class `accordion` to the wrapper div container and add as many contents containing button
+    with class `accordeon-header` and div with class `accordeon-body` as needed.
 
-    If you need section to be initially visible add class `selected` to the corresponding button
+    If you need content to be initially visible add class `selected` to the corresponding button
 
     Markup:
     <div class="accordion">
-        <button class="accordion-header selected">header 1</button>
-        <div class="accordion-content">
-            <div>Some text to fill in the accordion content section 1</div>
+      <div class="accordion-head></div>
+      <div class="accordion-body>
+        <button class="accordion-body-header selected">header 1</button>
+        <div class="accordion-body-content">
+            <div>Some text to fill in the accordion body content 1</div>
         </div>
-        <button class="accordion-header">header 2</button>
-        <div class="accordion-content">
-            <div>Some text to fill in the accordion content section 2</div>
+        <button class="accordion-body-header">header 2</button>
+        <div class="accordion-body-content">
+            <div>Some text to fill in the accordion body content 2</div>
         </div>
-        <button class="accordion-header">header 3</button>
-        <div class="accordion-content">
-            <div>Some text to fill in the accordion content section 3</div>
+        <button class="accordion-body-header">header 3</button>
+        <div class="accordion-body-content">
+            <div>Some text to fill in the accordion body content 3</div>
         </div>
+      </div>
     </div>
 
     Styleguide Accordion
@@ -28,6 +31,7 @@
   
 .accordion {
   display: none;
+  position: relative;
   max-height: 88vmin;
   background-color: hsl(180, 50%, 90%);
   overflow: auto;
@@ -35,7 +39,16 @@
 .accordion.active {
   display: block;
 }
-.accordion-header {
+.accordion > .accordion-head {
+  position: absolute;
+  top: 0;
+  left: 0;
+  min-height: 1.5em;
+}
+.accordion > .accordion-body {
+  overflow: auto;
+}
+.accordion-body-header {
   position: relative;
   width: 100%;
   font-size: 1.1em;
@@ -47,37 +60,37 @@
   border: 1px solid hsl(0, 100%, 20%);
   border-top: transparent;
 }
-.accordion-header::after {
+.accordion-body-header::after {
   position: absolute;
   right: 1rem;
-  content: "\002B";
+  body: "\002B";
 }
-.accordion-header.selected::after {
-  content: "\2212";
+.accordion-body-header.selected::after {
+  body: "\2212";
 }
-.accordion > .accordion-header:first-of-type {
+.accordion-body > .accordion-header:first-of-type {
   border-top: 1px solid hsl(0, 100%, 20%);
 }
-.accordion-header:hover,
-.accordion-header:focus {
+.accordion-body-header:hover,
+.accordion-body-header:focus {
   background-color: hsl(0, 100%, 40%);
 }
-.accordion-header:active {
+.accordion-body-header:active {
   background-color: hsl(0, 100%, 30%);
 }
-.accordion-header.selected {
+.accordion-body-header.selected {
   background-color: hsl(0, 100%, 30%);
 }
-.accordion-header + .accordion-content {
+.accordion-body-header + .accordion-body-content {
   height: 0;
   overflow: hidden;
   transition: height 0.3s linear;
 }
-.accordion-header.selected + .accordion-content {
+.accordion-body-header.selected + .accordion-body-content {
   height: auto;
   border: 1px solid hsl(0, 100%, 30%);
   border-top: transparent;
 }
-.accordion-content > * {
+.accordion-body-content > * {
   margin: 1em .5em;
 }
