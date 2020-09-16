@@ -21,6 +21,9 @@ input[type="checkbox"].form-element {
     box-shadow: none;
     border-radius: 0.2em;
 }
+input[type="checkbox"].form-element:active {
+    background-color: $green-dark;
+}
 .form-element:hover:not(:disabled) {
     background-color: $green-light;
 }

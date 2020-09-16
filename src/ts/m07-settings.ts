@@ -169,6 +169,7 @@ export const settings = {
             },
             resetTest = () => {
                 maths.settings.test.unlocked = "0";
+                maths.test.isLoaded = false;
                 this.accessStorage({"unlocked": "0"}, "maths.settings.test.", true);
             }
 

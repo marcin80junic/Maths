@@ -17,8 +17,7 @@ export const test = {
   unlocked: 0,
   level: 0,
 
-  init: function () {  // override prototype's init property
-
+  init: function () { 
     let choiceButtons = $(".test-level-choice"),
         ns = maths.settings.test;
   
@@ -27,14 +26,15 @@ export const test = {
     this.numOfQuest = parseInt(ns.numOfQuest);
     this.unlocked = parseInt(ns.unlocked);
     
-    choiceButtons.each(function (index) {   // enable level choice buttons
-      $(this).prop("disabled", (index <= maths.test.unlocked)? false: true);
-    });
-    choiceButtons.on("click", function (e) {  // handler for level choice buttons
-      maths.test.level = choiceButtons.index(this);
-      maths.test.createTest();
-    });
-
+    choiceButtons
+      .each(function (index) {   // enable level choice buttons
+        $(this).prop("disabled", (index <= maths.test.unlocked)? false: true);
+      })
+      .off()
+      .on("click", function (e) {  // handler for level choice buttons
+        maths.test.level = choiceButtons.index(this);
+        maths.test.createTest();
+      });
     this.isLoaded = true;
   },
 
@@ -49,6 +49,7 @@ export const test = {
 
     this.results = [];      // reset results array
     this.answersIdxs = [];  // and indexes of answers
+
     for (let i = 0; i < max; i += 1) {
       module = maths[this.modules[i]];
       if (module) {
@@ -67,6 +68,7 @@ export const test = {
     testContainer = maths.accordion.init(testContent);
     maths.dialog.init(testContainer, {
       title: "test",
+      custom: maths.timer.getTimer(parseInt(this.times[this.level], 10)),
       callback: () => maths.accordion.dispose()
     });
     maths.handlers.test(testContainer);
@@ -91,25 +93,25 @@ export const test = {
 
   summary: `<div id="test-summary" class="test-interface">'
               <div class="test-navigation">
-                <button id="test-close">Close</button>
+                <button id="test-close" class="form-element button3d">Close</button>
               </div>
             </div>`,
 
   displayResults: function (scores: Array<number>, secs: number) {
     let mods = this.modules,
-      exNums: number = this.numOfQuest,
-      results: Array<number> = [],
-      percs: Array<number> = [],
-      sum = 0,
-      points = 0,
-      score = 0,
-      minutes: number,
-      seconds: number,
-      minutesStr: string,
-      secondsStr: string,
-      i: number,
-      unlockMessage = '',
-      html = '';
+        exNums: number = this.numOfQuest,
+        results: Array<number> = [],
+        percs: Array<number> = [],
+        sum = 0,
+        points = 0,
+        score = 0,
+        minutes: number,
+        seconds: number,
+        minutesStr: string,
+        secondsStr: string,
+        i: number,
+        unlockMessage = '',
+        html = '';
 
     const processResults = () => {
       scores.forEach(function (value: number, idx: number) { //calculate results and percentages for each module
@@ -141,12 +143,12 @@ export const test = {
         '<h2 class="center">Congratulations You Passed!</h2>'
         : '<h2 class="center">You need to practice a bit more!</h2>';
       html += `<h3 class="center">Your score: ${score}%</h3>
-                   <h3 class="center">Your time: ${minutesStr} ${secondsStr}</h3>`;
+               <h3 class="center">Your time: ${minutesStr} ${secondsStr}</h3>`;
       for (i = 0; i < mods.length; i += 1) {
         html += `<h3 class="center">${mods[i]} score: ${results[i]}/${exNums} (${percs[i]}%)</h3>`;
       }
       html += `<h3 class="center">Total points: ${points}/${exNums * mods.length}</h3>
-                   <h3 class="center">${unlockMessage}</h3>`;
+               <h3 class="center">${unlockMessage}</h3>`;
       $("#test-summary").prepend(html).css("height", "73vh");;
       maths.playSound(score > 59);
     };

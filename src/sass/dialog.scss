@@ -51,6 +51,13 @@
     text-transform: capitalize;
 }
 
+.dialog-head-custom {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
 .dialog-head-close {
     position: absolute;
     top: 0.1em;

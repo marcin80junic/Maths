@@ -30,7 +30,7 @@ export const handlers = {
                 scoreField.text(++score);           // adjust the score
                 answerField.each(function (idx) {   // each text field to be replaced by given correct answer
                     $(this).hide().after(`<div> ${ answers[idx] } </div>`); // hide text input and display answer
-                    icons.eq(idx).addClass("answered");                  // add some left margin to `tick` icon
+                    icon.addClass("answered");                  // add some left margin to `tick` icon
                 });
                 icon.prop("src", maths.icons.tick);
                 checkBtn.addClass("invisible");
@@ -51,7 +51,7 @@ export const handlers = {
                 return isCorrect ? goodAnswer() : wrongAnswer();
             };
         
-        this.adjustLinesLength(rows);
+        $(this.adjustLinesLength(rows));
 
         levelChoice.on("change", function () {    //options change
             let name = $(this).find("option:selected").text();
@@ -66,13 +66,13 @@ export const handlers = {
             if (showTooltips) {       
                 let tip = $(this).find(".tiptext"),
                     idx = tooltips.index(this);
-                if (e.type === "mouseover") {   // position tooltip by setting its margin-left property
+                if (e.type === "mouseover") {               // position tooltip by setting its margin-left property
                     let el_center = $(this).width() / 2,    // find 'tooltip' wrapper center
                         tip_center: number;
                     timeout = setTimeout(function () {
                         if (tip.children().length === 0) {
                             maths.createAndAppendCanvas(tip, module, idx);  // create tiptext content
-                            tip_center = tip.width() / 2,   // find tiptext center
+                            tip_center = tip.width() / 2,                   // find tiptext center
                             tip.css('marginLeft', el_center - (tip_center + 11) + "px");
                         }
                         tip.addClass("showtip");
@@ -122,6 +122,7 @@ export const handlers = {
         this.textInputs(rows, answerFields, processOperation);  //add input fields filtering
     },
 
+
     test: function (container: JQuery) {
         let rows = container.find(".columns-line-operation"),
             answerFields = container.find(".answer"),
@@ -161,12 +162,11 @@ export const handlers = {
         };
         
         startBtn.on("click", function () {
-            if ($(this).text() === "Start") {
-                let ns = maths.test;
-                maths.timer.init($('.test-accordeon-titlebar-foo'), ns.times[ns.level], ns.summary);
+            if (startBtn.text() === "Start") {
                 $(this).text("Next");                       // change button text
                 maths.accordion.start();                    // show first section
                 maths.handlers.adjustLinesLength(rows);
+                maths.timer.start(() => finishBtn.trigger('click'));
                 return;
             }
             maths.accordion.show(headers.eq(1), 1);     // nextBtn behavior
@@ -189,7 +189,7 @@ export const handlers = {
             maths.test.displayResults(scores, maths.timer.stop());
         });
 
-        closeBtn2.on("click", () => maths.accordion.dispose());
+        closeBtn2.on("click", () => maths.dialog.dispose(() => maths.accordion.dispose()));
 
         lastFocusableElements.on("keydown", function (e) { 
             if (e.which === 9) {    // keep focus traversing inside the dialog container

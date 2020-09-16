@@ -177,9 +177,9 @@ export const layout = {
             lastClass = isLast ? "button-finish" : "button-next",
             html = '<div class="test-navigation">';
 
-        html += `<button class="${firstClass} form-element button3d"> ${first} </button>`;
+        html += `<button class="${firstClass} form-element button3d">${first}</button>`;
         html += isFirst ? '</div>'
-            : `<button class="${lastClass} form-element button3d"> ${last} </button></div>`;
+            : `<button class="${lastClass} form-element button3d">${last}</button></div>`;
 
         return html;
     }

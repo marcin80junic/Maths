@@ -6,7 +6,7 @@ export const dialog = {
 
     container: $('.dialog'),
     title: $('.dialog-head-title'),
-    custom: $('dialog-head-custom'),
+    custom: $('.dialog-head-custom'),
     closeBtn: $('.dialog-head-close'),
     body: $('.dialog-body'),
     dimmer: $('#dim'),
