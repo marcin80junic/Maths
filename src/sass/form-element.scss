@@ -1,0 +1,39 @@
+
+/* collection of form elements */
+
+
+.form-element {
+    font-family: inherit;
+    font-size: .9em;
+    cursor: pointer;
+    outline: none;
+    background-color: $green-pale;
+    box-shadow: 2px 2px 2px rgba(0, 0, 0, .5);
+    border: 1px solid rgba(0, 0, 0, .3);
+    border-radius: 0.4em;
+}
+input[type="text"].form-element {
+    width: 2.3em;
+    text-align: center;
+    background-color: $yellow-pale;
+}
+input[type="checkbox"].form-element {
+    box-shadow: none;
+    border-radius: 0.2em;
+}
+.form-element:hover:not(:disabled) {
+    background-color: $green-light;
+}
+.form-element:active {
+    background-color: $green;
+}
+
+.form-element.correct {
+    border: 2px solid #1aff1a;
+}
+.form-element.warning {
+    border: 2px solid $red-light;
+}
+.form-element.invisible {
+    visibility: hidden;
+  }

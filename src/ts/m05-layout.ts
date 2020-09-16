@@ -1,4 +1,4 @@
-import { maths } from './m2-resources';
+import { maths } from './m02-maths';
 import type { mathOperation } from './types';
 
 
@@ -13,7 +13,7 @@ export const layout = {
         // choice of level
         html += `<div class="interface-item">
                     <label for="level">Difficulty:</label>
-                    <select class="level">`;
+                    <select class="level form-element">`;
         maths.difficulties.forEach((item, index) => {
             html += (module.level === index) ?
                 '<option selected="selected">' + item + '</option>'
@@ -24,7 +24,7 @@ export const layout = {
         // number of exercises choice
         html += `<div class="interface-item">
                     <label for="exerciseNum">How many exercises?</label>
-                    <select class="exerciseNum">`;
+                    <select class="exerciseNum form-element">`;
         maths.numOfExercises.forEach((item, index) => {
             html += (module.exerciseNum === parseInt(item, 10)) ?
                 '<option selected="selected">' + item + '</option>'
@@ -45,9 +45,9 @@ export const layout = {
 
         //bottom button group
         html += '<div class="interface">';
-        html += '<input type="reset" class="reset">';
-        html += '<input type="submit" value="Reload" class="reload">';
-        html += '<input type="submit" value="Check All" class="check-all">';
+        html += '<button type="reset" class="reset button3d form-element">Reset</button>';
+        html += '<button type="submit" class="reload button3d form-element">Reload</button>';
+        html += '<button type="submit" class="check-all button3d form-element">Check All</button>';
         html += '</div>';   // end of button group
         module.levelDisplayed = module.level;
         module.container.html(html);
@@ -59,15 +59,15 @@ export const layout = {
             isFraction: boolean,
             isAnswer: boolean,
             sign: string = module.sign,
-            allNumbers = module.numbers, // numbers bank
+            allNumbers = module.numbers,    // numbers bank
             length = allNumbers.length,     // how many operations in a bank
-            numbers: any,   // numbers for single operation
-            len: number,    // number of numbers in operation
-            random: number,    // a random number used to randomize placement of answer field
-            perc: number,   // a chance for number to be an answer field
-            index: number,  // index of answer field
-            results = module.results,   // bank of answers
-            html = '<div class="columns">';     // markup
+            numbers: any,       // numbers for single operation
+            len: number,        // number of numbers in operation
+            random: number,     // a random number used to randomize placement of answer field
+            perc: number,       // a chance for number to be an answer field
+            index: number,      // index of answer field
+            results = module.results,       // bank of answers
+            html = '<div class="columns">'; // markup
             
         for (let i = 0; i < length; i += 1) {
             numbers = allNumbers[i]; 
@@ -76,12 +76,13 @@ export const layout = {
                 perc = 1 / len;
                 random = Math.random();
                 index = Math.floor(random / perc);
-            } else {  // if not then answer field is placed on the right of equality sign
-                index = len - 1; // index of answer field
+            } else {                // if not then answer field is placed on the right of equality sign
+                index = len - 1;    // index of answer field
             }
     
-            // single operation
-            html += '<div class="columns-line">';
+            /* single operation */
+            html += `<div class="columns-line">
+                        <span class="columns-line-operation">`;
             for (let j = 0; j < len; j += 1) {
                 isFraction = (numbers[j].length > 1);
                 isAnswer = (j === index);
@@ -100,10 +101,10 @@ export const layout = {
             }
             html += '<img src="' + maths.icons.questMark + '" class="icon">';
             html += !isTest ?  // insert a check button if not a test
-                '<input type="submit" value="check" class="check">' : "";
-            html += '</div>';   
-            // end of single operation
-        }   
+                '<button type="submit" class="check button3d form-element">check</button>' : "";
+            html += '</span></div>';
+            /* end of single operation  */
+        }
 
         html += '</div>';
         return html;
@@ -112,9 +113,11 @@ export const layout = {
     integer: function (number: number, isAnswer: boolean, results: Array<number>) {
         let html = '';
         html += isAnswer ?
-            '<div class="tooltip"><input type="text" maxlength="3" class="answer">' +
-            '<span class="tiptext"></span></div>'
-            : '<div>' + number + '</div>';
+            `<div class="tooltip">
+                <input type="text" maxlength="3" class="answer form-element">
+                <span class="tiptext"></span>
+            </div>`
+            : `<div> ${number} </div>`;
         if (isAnswer) {
             results.push(number);
         }
@@ -133,8 +136,8 @@ export const layout = {
 
         html += (wholeNum >= 1)?  // is there a whole number before a fraction part?
             isAnswer?
-                '<div class="whole"><input type="text" maxlength="1" class="answer"></div>'
-                : '<div class="whole">' + wholeNum + '</div>'
+                '<div class="whole"><input type="text" maxlength="1" class="answer form-element"></div>'
+                : `<div class="whole"> ${wholeNum} </div>`
                 : ''
 
         if (isInteger) {    // if fraction is an integer add closing tags and return
@@ -146,24 +149,22 @@ export const layout = {
             return html;
         }
 
-        // calculate what is left after taking the whole number
+        // calculate what is left after taking the whole number and construct a fraction
         tempArray = [array[0] - (wholeNum * array[1]), array[1]];
         
-        html += '<div class="fraction-unit">';
-        html += '<div class="numerator">';
-        html += isAnswer?
-            '<input type="text" class="answer" size="1">'
-            : tempArray[0]
-        html += '</div>';   // closing 'numerator' tag
-        html += '<div class="denominator">';
-        html += isAnswer?
-            '<input type="text" class="answer" size="1">'
-            : tempArray[1]
-        html += '</div></div></div>'; // closing 'denominator', 'fraction-unit' and 'fraction' tags
+        html += `<div class="fraction-unit">    
+                    <div class="numerator">`;
+        html += isAnswer?                                                // insert text field if at answer index
+            '<input type="text" class="answer form-element" size="1">'
+            : tempArray[0]                                               // otherwise insert a number
+        html += '</div><div class="denominator">';    // closing 'numerator' tag, opening 'denominator' tag
+        html += isAnswer?                                                // insert text field if at answer index
+            '<input type="text" class="answer form-element" size="1">'
+            : tempArray[1]                                               // otherwise insert a number
+        html += '</div></div></div>';           // closing 'denominator', 'fraction-unit' and 'fraction' tags
 
         if (isAnswer) {
-            html += '<span class="tiptext"></span>';
-            html += '</span>';  // closing tooltip module tag
+            html += '<span class="tiptext"></span></span>';  // closing tooltip module tag
             results.push(array);
         }
         return html;
@@ -176,9 +177,9 @@ export const layout = {
             lastClass = isLast ? "button-finish" : "button-next",
             html = '<div class="test-navigation">';
 
-        html += '<button class="' + firstClass + '">' + first + '</button>';
-        html += isFirst ? ""
-            : '<button class="' + lastClass + '">' + last + '</button></div>';
+        html += `<button class="${firstClass} form-element button3d"> ${first} </button>`;
+        html += isFirst ? '</div>'
+            : `<button class="${lastClass} form-element button3d"> ${last} </button></div>`;
 
         return html;
     }

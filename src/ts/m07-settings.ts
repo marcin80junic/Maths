@@ -1,6 +1,6 @@
 import $ from 'jquery';
-import { Operation } from './m1-prototype';
-import { maths } from './m2-resources';
+import { Operation } from './m01-prototype';
+import { maths } from './m02-maths';
 import type { mainObject } from './types';
 
 
@@ -29,8 +29,8 @@ export const settings = {
 
     },
     test: {
-        exerciseNum: "4",
         modules: "addition,subtraction,multiplication,division,fractions",
+        numOfQuest: "4",
         times: "10,8,6",
         unlocked: "0"
     },
@@ -52,7 +52,7 @@ export const settings = {
             if ($.isEmptyObject(ns.changed.system)
                 && $.isEmptyObject(ns.changed.general)
                 && $.isEmptyObject(ns.changed.test))
-                ns.fields.applyButton.prop('disabled', true)
+                    ns.fields.applyButton.prop('disabled', true)
             else  ns.fields.applyButton.prop('disabled', false)
         }
             
@@ -107,8 +107,8 @@ export const settings = {
         });
         this.fields.testNumOfQuest.on('change', () => {
             let num = this.fields.testNumOfQuest.val();
-            if (num == ns.test.exerciseNum) delete ns.changed.test.exerciseNum
-            else ns.changed.test.exerciseNum = num;
+            if (num == ns.test.numOfQuest) delete ns.changed.test.numOfQuest
+            else ns.changed.test.numOfQuest = num;
             enableApplyButton();
         });
         this.fields.clearButton.on('click', () => {
@@ -209,7 +209,7 @@ export const settings = {
         this.fields.testTimes.each((i: number, el: HTMLElement) => {
             $(el).val(testTimes[i]);
         });
-        this.fields.testNumOfQuest.val(this.test.exerciseNum);
+        this.fields.testNumOfQuest.val(this.test.numOfQuest);
     },
     clearChanges: function() {
         for (let field in this.changed) {

@@ -1,14 +1,15 @@
+
 /* custom-radio module */
 
 .custom-radio {    /* Customize the label (the container) */
     display: inline;
     position: relative;
-    padding-left: 30px;
-    margin-right: 12px;
+    padding-left: 1.6em;
     cursor: pointer;
   }
   .custom-radio input {    /* Hide the browser's default radio button */
     opacity: 0;
+    width: 0;
   }
   .checkmark {    /* Create a custom radio button */
     position: absolute;
@@ -34,18 +35,21 @@
   .custom-radio input:checked ~ .checkmark:after {   /* Show the indicator (dot/circle) when checked */
     display: block;
   }
-  .custom-radio input:focus ~ .checkmark,
+  .custom-radio input:focus ~ .checkmark {
+    border: 1px groove rgba(0, 0, 0, 0.6);
+  }
   .custom-radio input:focus ~ .checkmark:after {
-    border: 1px groove black;
+    border: 1px groove rgba(0, 0, 0, 0.8);
   }
   .custom-radio .checkmark:after {   /* Style the indicator (dot/circle) */
     top: .28em;
     left: .28em;
     width: .56em;
     height: .56em;
-    border: 1px solid rgba(0, 0, 0, .6);
+    border: 1px groove rgba(0, 0, 0, 0.5);
     border-radius: 50%;
     background: white;
   }
+
   /* end of custom-radio module */
   

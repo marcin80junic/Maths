@@ -9,17 +9,17 @@
 
   <nav class="sidenav" id="main-menu">
     <div class="mobile-nav">
-      <button class="mobile-toggle-button">toggle menu</button>
+      <button class="mobile-toggle-button button3d">toggle menu</button>
       <h1 class="mobile-title">Menu</h1>
     </div>
-    <a href="#home" class="selected" draggable="false">Home</a>
-    <a href="#addition" draggable="false">Addition +</a>
-    <a href="#subtraction" draggable="false">Subtraction -</a>
-    <a href="#multiplication" draggable="false">Multiplication &times;</a>
-    <a href="#division" draggable="false">Division &divide;</a>
-    <a href="#fractions" draggable="false">Fractions &frac12;</a>
-    <a href="#test" draggable="false">*Test*</a>
-    <a href="#settings" draggable="false">Settings</a>
+    <a href="#home" class="button3d selected" draggable="false">Home</a>
+    <a href="#addition" class="button3d" draggable="false">Addition +</a>
+    <a href="#subtraction" class="button3d" draggable="false">Subtraction -</a>
+    <a href="#multiplication" class="button3d" draggable="false">Multiplication &times;</a>
+    <a href="#division" class="button3d" draggable="false">Division &divide;</a>
+    <a href="#fractions" class="button3d" draggable="false">Fractions &frac12;</a>
+    <a href="#test" class="button3d" draggable="false">*Test*</a>
+    <a href="#settings" class="button3d" draggable="false">Settings</a>
   </nav>
 
   <main>
@@ -138,19 +138,18 @@
           and step on the path to excellence!! To unlock the next level you need the score of
           at least 75%.
         </p>
+      </div>
+      <div class="content">
         <p class="center">
           Dear <span class="special"></span>, please choose difficulty level:
         </p>
         <div class="button-ladder">
-          <button class="test-level-choice" value="0">Fair</button>
-          <button class="test-level-choice" value="1" disabled="true">Advanced</button>
-          <button class="test-level-choice" value="2" disabled="true">Super Hard</button>
+          <button class="test-level-choice button3d" value="0">Fair</button>
+          <button class="test-level-choice button3d" value="1" disabled="true">Advanced</button>
+          <button class="test-level-choice button3d" value="2" disabled="true">Super Hard</button>
         </div>
-        </div>
-        <div class="content">
-    
       </div>
-      <div class="accordion"></div>
+
     </div>
 
     <div id="settings">
@@ -166,10 +165,10 @@
           <fieldset>
             <legend>Settings</legend>
             
-            <fieldset class="settings-group">
+            <fieldset>
               <legend>System</legend>
 
-              <div class="settings-group-line">
+              <div class="settings-line">
                 <label>Volume:</label>
                 <div>
                   <label id="volume-label"></label>
@@ -180,32 +179,32 @@
               
             </fieldset>
             
-            <fieldset class="settings-group">
+            <fieldset>
               <legend>General</legend>
             
-              <div class="settings-group-line">
+              <div class="settings-line">
                 <label>Randomized answer fields:</label>
                 <div>
                   <label class="custom-radio">Yes
                     <input type="radio" name="isRandomized" value="true" checked="true">
-                    <span class="checkmark"></span>
+                    <span class="checkmark form-element"></span>
                   </label>
                   <label class="custom-radio">No
                     <input type="radio" name="isRandomized" value="false">
-                    <span class="checkmark"></span>
+                    <span class="checkmark form-element"></span>
                   </label>
                 </div>
               </div>
-              <div class="settings-group-line">
+              <div class="settings-line">
                 <label>Show tooltips:</label>
                 <div>
                   <label class="custom-radio">Yes
                     <input type="radio" name="showTooltips" value="true" checked="true">
-                    <span class="checkmark"></span>
+                    <span class="checkmark form-element"></span>
                   </label>
                   <label class="custom-radio">No
                     <input type="radio" name="showTooltips" value="false">
-                    <span class="checkmark"></span>
+                    <span class="checkmark form-element"></span>
                   </label>
                 </div>
               </div>
@@ -215,37 +214,42 @@
             <fieldset>
               <legend>Test</legend>
 
-              <div class="settings-group-line">
+              <div class="settings-line">
                 <label>Choose test modules:</label>
                 <div class="checkbox-group">
                   <div>
-                    <input type="checkbox" name="modules" value="addition" id="add" checked="true">
                     <label for="add">Addition</label>
+                    <input type="checkbox" class="checkbox form-element" name="modules" value="addition"
+                           id="add" checked="true">                   
                   </div>
                   <div>
-                    <input type="checkbox" name="modules" value="subtraction" id="sub" checked="true">
                     <label for="sub">Subtraction</label>
+                    <input type="checkbox" class="checkbox form-element" name="modules" value="subtraction"
+                           id="sub" checked="true">                   
                   </div>
                   <div>
-                    <input type="checkbox" name="modules" value="multiplication" id="mul" checked="true">
                     <label for="mul">Multiplication</label>
+                    <input type="checkbox" class="checkbox form-element" name="modules" value="multiplication"
+                           id="mul" checked="true">                   
                   </div>
                   <div>
-                    <input type="checkbox" name="modules" value="division" id="div" checked="true">
                     <label for="div">Division</label>
+                    <input type="checkbox" class="checkbox form-element" name="modules" value="division"
+                           id="div" checked="true">         
                   </div>
                   <div>
-                    <input type="checkbox" name="modules" value="fractions" id="fra" checked="true">
                     <label for="fra">Fractions</label>
+                    <input type="checkbox" class="checkbox form-element" name="modules" value="fractions"
+                           id="fra" checked="true">                 
                   </div>
                 </div>
               </div>
-              <div class="settings-group-line">
+              <div class="settings-line">
                 <label>Timer for level:</label>
-                <div class="checkbox-group">
-                  <div class="right">
+                <div class="select-group">
+                  <div>
                     <label>Fair:</label>
-                    <select name="times">
+                    <select name="times" class="form-element">
                       <option value="5">5</option>
                       <option value="6">6</option>
                       <option value="7">7</option>
@@ -255,9 +259,9 @@
                     </select>
                     <label>min</label>
                   </div>
-                  <div class="right">
+                  <div>
                     <label>Advanced:</label>
-                    <select name="times">
+                    <select name="times" class="form-element">
                       <option value="3">3</option>
                       <option value="4">4</option>
                       <option value="5">5</option>
@@ -267,9 +271,9 @@
                     </select>
                     <label>min</label>
                   </div>
-                  <div class="right">
+                  <div>
                     <label>Super Hard:</label>
-                    <select name="times">
+                    <select name="times" class="form-element">
                       <option value="1">1</option>
                       <option value="2">2</option>
                       <option value="3">3</option>
@@ -281,10 +285,10 @@
                   </div>
                 </div>
               </div>
-              <div class="settings-group-line">
+              <div class="settings-line">
                 <label>Questions per module:</label>
                 <div>
-                  <select name="numOfQuest">
+                  <select name="numOfQuest" class="form-element">
                     <option value="4">4</option>
                     <option value="5">5</option>
                     <option value="6" selected="selected">6</option>
@@ -298,9 +302,9 @@
             </fieldset>
             
             <div class="interface">
-              <input id="settings-default" type="Reset" value="Default" />
-              <button id="settings-clear">Clear</button>
-              <input id="settings-apply" type="Submit" value="Apply" disabled />
+              <button id="settings-default" class="button3d form-element" type="Reset">Default</button>
+              <button id="settings-clear" class="button3d form-element">Clear</button>
+              <button id="settings-apply" class="button3d form-element" type="Submit" disabled>Apply</button>
             </div>
           </fieldset>
         </form>
@@ -310,6 +314,14 @@
   </main>
 
   <div id="dim"></div>
+  <div class="dialog">
+    <div class="dialog-head">
+      <div class="dialog-head-title"></div>
+      <div class="dialog-head-custom"></div>
+      <div class="dialog-head-close"></div>
+    </div>
+    <div class="dialog-body"></div>
+  </div>
 
 </body>
 

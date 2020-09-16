@@ -1,6 +1,6 @@
 import $ from 'jquery';
-import { Operation, objectCreator } from './m1-prototype';
-import { maths } from './m2-resources';
+import { Operation, objectCreator } from './m01-prototype';
+import { maths } from './m02-maths';
 import type { mathOperation } from './types';
 
 

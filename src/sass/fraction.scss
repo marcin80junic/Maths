@@ -23,29 +23,28 @@ Styleguide Fraction
 
 .fraction {
     display: flex;
+    align-items: center;
     height: 100%;
 }
-.fraction .whole {
+.fraction > .whole {
     display: flex;
     align-items: center;
+    font-size: 1.2em;
+    height: 100%;
 }
-.fraction .whole:not(:only-of-type) {
+.fraction > .whole:not(:only-of-type) {
     margin-right: 0.1em;
 }
-.fraction .whole input {
-    align-self: center;
-    width: 1.2em;
-    height: 75%;
+.fraction .whole > input[type="text"] {
+    width: 1.05em;
 }
-.fraction .fraction-unit {
-    display: inline-block;
+.fraction > .fraction-unit {
     text-align: center;
-    vertical-align: middle;
-    font-size: .75em;
+    font-size: .9em;
 }
-.fraction .fraction-unit input {
-    width: 1.9em;
+.fraction > .fraction-unit input[type="text"] {
+    width: 1.6em;
 }
-.fraction .denominator {
+.fraction > .fraction-unit > .denominator {
     border-top: 2px solid black;
 }

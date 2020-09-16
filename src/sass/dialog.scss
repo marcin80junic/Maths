@@ -1,0 +1,96 @@
+/*
+
+    Dialog window
+
+
+
+    Markup:
+    <div class="dialog">
+        <div class="dialog-head">
+            <div class="dialog-head-title">Title</div>
+            <div class="dialog-head-custom"></div>
+            <div class="dialog-head-close"></div>
+        </div>
+        <div class="dialog-body">
+        <div>
+    </div>
+
+    Styleguide Dialog Window
+
+*/
+
+
+.dialog {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    min-width: 57%;
+    z-index: 10;
+    border: 3px ridge $red-dark;
+}
+
+.dialog.active {
+    display: block;
+}
+
+.dialog-head {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2em;
+    padding: 0.2em 0.4em;
+    background-color: $green;
+    border-bottom: 3px ridge $red-dark;
+}
+
+.dialog-head-title {
+    font-weight: bold;
+    text-transform: capitalize;
+}
+
+.dialog-head-close {
+    position: absolute;
+    top: 0.1em;
+    right: 0.1em;
+    width: 1.7em;
+    height: 1.7em;
+    background-color: $red-light;
+    border: 1px ridge $red-dark;
+}
+.dialog-head-close::after {
+    content: "\02df";
+    font-size: 3em;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-49%, -43%);
+}
+.dialog-head-close:hover,
+.dialog-head-close:focus {
+    background-color: $red;
+}
+.dialog-head-close:active {
+    background-color: $red-dark;
+}
+
+.dialog-body {
+    max-height: 90vh;
+    margin-top: 2em;
+    overflow: auto;
+    background-color: beige;
+}
+
+@media (max-width: 664px) {
+    .dialog {
+        width: 100%;
+        top: 0;
+        left: 0;
+        transform: none;
+    }
+    .dialog-body {
+        max-height: 100%;
+    }
+}

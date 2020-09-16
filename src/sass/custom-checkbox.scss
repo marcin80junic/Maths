@@ -1,0 +1,31 @@
+
+/*
+
+Checkbox
+
+Markup:
+
+
+Styleguide Checkbox
+
+*/
+
+
+.checkbox {
+    position: relative;
+    appearance: none;
+    width: 1em;
+    height: 1em;
+    vertical-align: middle;
+    border: 1px solid rgba(0, 0, 0, 0.8);
+}
+
+.checkbox:checked:after {
+    font-weight: bold;
+    content: "\2713";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -51%);
+}
+

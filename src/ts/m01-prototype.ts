@@ -1,4 +1,4 @@
-import { maths } from './m2-resources';
+import { maths } from './m02-maths';
 import type { content } from './types';
 
 

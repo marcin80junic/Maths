@@ -1,6 +1,6 @@
 import './sass/index.scss';
 import $ from 'jquery';
-import { maths } from './ts/m2-resources';
+import { maths } from './ts/m02-maths';
 
 
 
@@ -35,13 +35,5 @@ $('document').ready(function () {
       }
       e.preventDefault();
     });
-
-    //adjust exercises columns padding if window resizes*/
-    $(window).resize( ()=> {
-      let column = $('.columns:visible');
-      if (column.length > 0) {
-        maths.handlers.adjustLinesPadding(column.children());
-      }
-    } ); 
 
 });

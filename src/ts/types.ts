@@ -51,6 +51,7 @@ export interface mainObject {
   fractions?: mathOperation,
 
   test: any,
+  dialog: any,
   accordion: any,
   timer: any,
 

@@ -5,7 +5,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 
-const devMode = process.env.NODE_ENV === 'development'
+const devMode = process.env.NODE_ENV === 'development';
 
 
 module.exports = {
@@ -22,7 +22,7 @@ module.exports = {
 
     output: {
         path: path.resolve(__dirname, 'dist'),
-        filename: '[name].bundle.js',
+        filename: devMode? '[name].bundle.js': '[name][hash].bundle.js',
     },
 
     resolve: {
@@ -85,7 +85,9 @@ module.exports = {
                     {
                         loader: 'file-loader',
                         options: {
-                            name: '[path][name].[ext]',
+                            name: devMode? 
+                                '[path][name].[ext]'
+                                : '[path][hash].[ext]',
                         }
                     },
                     
@@ -110,8 +112,8 @@ module.exports = {
             template: path.resolve(__dirname, "src", "index.html")
         }),
         new MiniCssExtractPlugin({
-            filename: devMode ? '[name].css' : '[name].[hash].css',
-            chunkFilename: devMode ? '[id].css' : '[id].[hash].css'
+            filename: devMode ? '[name].css' : '[name][hash].css',
+            chunkFilename: devMode ? '[id].css' : '[id][hash].css'
         })
     ]
 

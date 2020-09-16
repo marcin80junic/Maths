@@ -1,5 +1,5 @@
 import $ from 'jquery';
-import { maths } from './m2-resources';
+import { maths } from './m02-maths';
 import type { mathOperation } from './types';
 
 
@@ -10,7 +10,7 @@ export const handlers = {
             exerciseNumChoice = module.container.find(".exerciseNum"),
             scoreField = module.container.find(".score"),
             score = 0,
-            rows = module.container.find(".columns-line"),
+            rows = module.container.find(".columns-line-operation"),
             tooltips = rows.find(".tooltip"),
             showTooltips = (maths.settings.general.showTooltips === "true"),
             answerFields = rows.find(".answer"),
@@ -19,22 +19,23 @@ export const handlers = {
             resetButton = module.container.find(".reset"),
             reloadButton = module.container.find(".reload"),
             checkAllButton = module.container.find(".check-all"),
-            answerField: JQuery,
-            icon: JQuery,
-            checkBtn: JQuery,
+            answerField: JQuery,            // text field or fields currently checked
+            icon: JQuery,                   // icon of the line being checked
+            checkBtn: JQuery,               // currently pressed check button
             result: number | Array<number>, // result of a single operation
-            answers: Array<number>,     // user's answers
-            timeout: any = null;   // tooltip display delay
+            answers: Array<number>,         // user's answers
+            timeout: any = null;            // tooltip display delay
+        
         const goodAnswer = function () {
-            scoreField.text(++score);
-            answerField.each(function (idx) {
-                let className = $(this).parents().is('.fraction-unit')? "": "close";
-                $(this).hide().after('<span class="' + className + '">' + answers[idx] + '</span>');
-            });
-            icon.prop("src", maths.icons.tick);
-            checkBtn.addClass("invisible");
-            return true;
-            },
+                scoreField.text(++score);           // adjust the score
+                answerField.each(function (idx) {   // each text field to be replaced by given correct answer
+                    $(this).hide().after(`<div> ${ answers[idx] } </div>`); // hide text input and display answer
+                    icons.eq(idx).addClass("answered");                  // add some left margin to `tick` icon
+                });
+                icon.prop("src", maths.icons.tick);
+                checkBtn.addClass("invisible");
+                return true;
+                },
             wrongAnswer = function () {
                 icon.prop("src", maths.icons.cross);
                 answerField.addClass("warning");
@@ -49,8 +50,8 @@ export const handlers = {
                 let isCorrect = maths.handlers.validateOperation(answerField, result, answers);
                 return isCorrect ? goodAnswer() : wrongAnswer();
             };
-
-        $(document).ready(()=> this.adjustLinesPadding(rows));    //adjust padding
+        
+        this.adjustLinesLength(rows);
 
         levelChoice.on("change", function () {    //options change
             let name = $(this).find("option:selected").text();
@@ -90,16 +91,17 @@ export const handlers = {
             let index = checkButtons.index(this),
                 isCorrect = processOperation(index);
             maths.playSound(isCorrect);
-            $(this).blur();
+            $(this).trigger('blur');
         });
 
-        resetButton.on("click", () => {    //reset button
+        resetButton.on("click", () => {     // reset button
             score = 0;
-            scoreField.text(score);
-            answerFields.show().removeClass("warning").next().remove();
-            icons.prop("src", maths.icons.questMark);
-            checkButtons.removeClass("invisible");
-            resetButton.blur();
+            scoreField.text(score);                                         // reset the score
+            answerFields.show().removeClass("warning").next().remove();     // reset answers
+            icons.prop("src", maths.icons.questMark);                       // reset icons
+            checkButtons.removeClass("invisible");                          // reset buttons
+            icons.removeClass("answered");                                  // remove extra margin
+            resetButton.trigger('blur');
         });
 
         reloadButton.on("click", (e) => {   //reload button
@@ -114,30 +116,30 @@ export const handlers = {
                     processOperation(index);
                 }
             });
-            checkAllButton.blur();
+            checkAllButton.trigger('blur');
         });
 
         this.textInputs(rows, answerFields, processOperation);  //add input fields filtering
     },
 
-    test: function (module: mathOperation) {
-        let rows = module.container.find(".columns-line"),
-            answerFields = module.container.find(".answer"),
-            prevBtn = module.container.find('.button-prev'),
-            nextBtn = module.container.find('.button-next'),
-            startBtn = module.container.find('.button-start'),
-            finishBtn = module.container.find('.button-finish'),
-            headers = module.container.find('.test-accordeon-section-header'),
+    test: function (container: JQuery) {
+        let rows = container.find(".columns-line-operation"),
+            answerFields = container.find(".answer"),
+            prevBtn = container.find('.button-prev'),
+            nextBtn = container.find('.button-next'),
+            startBtn = container.find('.button-start'),
+            finishBtn = container.find('.button-finish'),
+            headers = container.find('.accordion-header'),
             closeBtn = maths.accordion.closeBtn,
             closeBtn2 = $("#test-close"),
             lastFocusableElements = $(startBtn).add(nextBtn).add(finishBtn).add(closeBtn).add(closeBtn2);
         const processTest = function () {
             let scores: Array<number> = [],
-                icons = module.container.find(".icon"),
-                results = module.results;
+                icons = container.find(".icon"),
+                results = maths.test.results;
             const wrongAnswer = function (index: number) {
                 scores[index] = 0;
-                rows.eq(index).find(".answer").addClass("warning");
+                rows.eq(index).find(".answer").addClass("warning"); // find all answer fields in a line
                 icons.eq(index).prop("src", maths.icons.cross);
             };
             const correctAnswer = function (index: number) {
@@ -145,9 +147,9 @@ export const handlers = {
                 rows.eq(index).find(".answer").addClass("correct");
                 icons.eq(index).prop("src", maths.icons.tick);
             };
-            rows.each(function (idx, row) {
+            rows.each(function (idx: number, row: HTMLElement) {
                 let fields = $(row).find(".answer"),
-                    result = module.results[idx],
+                    result = results[idx],
                     isCorrect = maths.handlers.validateOperation(fields, result);
                 if (isCorrect) {
                     correctAnswer(idx);
@@ -157,17 +159,17 @@ export const handlers = {
             });
             return scores;
         };
-
-        $(document).ready(()=> this.adjustLinesPadding(rows));    //adjust padding
-
+        
         startBtn.on("click", function () {
             if ($(this).text() === "Start") {
                 let ns = maths.test;
                 maths.timer.init($('.test-accordeon-titlebar-foo'), ns.times[ns.level], ns.summary);
-                maths.accordion.attachListeners();
-                $(this).text("Next");
+                $(this).text("Next");                       // change button text
+                maths.accordion.start();                    // show first section
+                maths.handlers.adjustLinesLength(rows);
+                return;
             }
-            maths.accordion.show(headers.eq(1), 1);
+            maths.accordion.show(headers.eq(1), 1);     // nextBtn behavior
         });
 
         prevBtn.on("click", function () {
@@ -209,7 +211,7 @@ export const handlers = {
     validateOperation: function (answerFields: JQuery, result: any, answers: any) {   //validates single operation
         let fraction = [],
             input: string;
-            
+
         answers = answers || [];
         answerFields.each(function (idx) {  //collect answer(s) and check if they're not empty
             input = <string>$(this).val();
@@ -258,7 +260,7 @@ export const handlers = {
         });
         answerFields.on("keydown", function (e) {
             let field = $(this),
-                row = field.parents(".columns-line"),
+                row = field.parents(".columns-line-operation"),
                 index = rows.index(row),
                 isFraction = row.find(".answer").length > 1,
                 char = String.fromCharCode(e.which),
@@ -288,31 +290,15 @@ export const handlers = {
         });
     },
 
-    adjustLinesPadding: function($lines: JQuery) {
-        let width = $lines[0].getBoundingClientRect().width,     // line's width (equal for all lines)
-            max = 0,    // the longest line
-            min = width,    // the shortest line
-            padding: number;
-        
-        Array.prototype.forEach.call($lines, function (line: HTMLElement) {
-            let children = line.children,
-                sum = 0,   // length of all child elements in pixels
-                style,
-                margin: string;
-        
-            Array.prototype.forEach.call(children, function (child: any) {
-                style = window.getComputedStyle(child) || child.currentStyle;
-                margin = style.marginLeft;
-                sum += parseInt(margin.substring(0, margin.indexOf('px')), 10) + 2;
-                sum += child.getBoundingClientRect().width;
-            });
-            min = (sum < min) ? sum : min;
-            max = (sum > max) ? sum : max;
+    adjustLinesLength: function($lines: JQuery) {
+        let max = 0,
+            width: number;
+        $lines.each(function(idx) {
+            width = $(this).width();
+            max = (width > max)? width: max;
         });
-        padding = (width - ((max + min) / 2)) / 2;  // padding based on average line width
-        padding = (padding > (width - max)) ? (width - max) / 2 : padding;  // adjust it if max is too long
-        Array.prototype.forEach.call($lines, function (line: HTMLElement) {
-            line.style.paddingRight = padding + 'px';
+        $lines.each(function() {
+            $(this).width(max);
         });
     }
 

@@ -1,45 +1,49 @@
+
 /* settings-group module */
 
-.settings-group {
-    display: flex;
-    flex-wrap: wrap;
-  }
-  .settings-group div + div {
-    margin-top: .3em;
-  }
-  .settings-group-line {
-    display: flex;
-    width: 100%;
-    margin: .8em 0;
-    padding: .2em;
-    border: 2px groove #ffffcc;
-    border-radius: .3em;
-  }
-  .settings-group-line > :first-child {
-    min-width: 10em;
-  }
-  .settings-group-line > :last-child {
-    margin-left: auto;
-  }
-  /* end of settings-group module */
+.settings-line {
+  display: flex;
+  width: 100%;
+  padding: 0.6em 0.8em;
+  border: 2px groove #ffffcc;
+  border-radius: .3em;
+}
+.settings-line > :first-child {
+  min-width: 10em;
+}
+.settings-line > :last-child {
+  margin-left: auto;
+}
+.settings-line:not(:first-of-type) {
+  margin-top: 1em;
+}
+
+/* end of settings-group module */
   
   
   
-  /* checkbox-group module */
-  .checkbox-group {
-    display: flex;
-    justify-content: flex-end;
-    flex-wrap: wrap;
-  }
-  .checkbox-group input {
-    width: 1em;
-    height: 1em;
-  }
-  .checkbox-group > div {
-    min-width: 10em;
-  }
-  .checkbox-group > .right {
-    margin-left: 1em;
-    text-align: right;
-  }
+/* checkbox-group module */
+
+.checkbox-group {
+  width: 70%;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(9em, 1fr));
+  grid-auto-rows: 1fr;
+  grid-row-gap: 1em;
+  grid-column-gap: 0.6em;
+  justify-items: end;
+}
+.select-group {
+  width: 70%;
+  display: flex;
+  flex-direction: row-reverse;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-bottom: -0.5em;
+}
+.select-group > div {
+  margin-left: 1em;
+  margin-bottom: 0.5em;
+}
+  
   /* end of checkbox-group module */
