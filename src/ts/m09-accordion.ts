@@ -61,7 +61,6 @@ export const accordion = {
             $header.addClass('selected');               // styling for selected header
             this.contentElements.css('height', '0');    // hide all elements
             $content.css('height', height + 'px');      // height value is required for transition to work
-            this.scrollTo(index);
         }
     },
 
@@ -75,7 +74,7 @@ export const accordion = {
 
     scrollTo: function (index: number) {
         if (index < 0 || index > this.headerElements.length - 1) {
-            throw new Error(`couldn't find the header at index ${index}`);
+            throw new Error(`couldn't find the header at index ${ index }`);
         }
         this.headerElements.eq(index)[0].scrollIntoView();
     }, 
