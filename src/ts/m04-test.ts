@@ -75,20 +75,15 @@ export const test = {
   },
 
   info: function () {
-    let html = `<div class="test-interface">
-                  <h3 class="center">Level: ${maths.difficulties[this.level]}</h3>
-                  <h3 class="center">Number of questions: ${this.modules.length * this.numOfQuest}</h3>
-                  <h3 class="center">Questions per module: ${this.numOfQuest}</h3>
-                  <h3 class="center">Modules: `;
-    this.modules.forEach(function (module: mathOperation) {
-      html += module.name + ", ";
-    });
-    html = html.replace(/,\s$/, "") + '</h3>';  // remove last coma
-    html += `<h3 class="center">Time to complete: ${this.times[this.level]} minutes</h3>
-               <h2 class="center">GOOD LUCK!</h2>
-               ${maths.layout.testNavigation(true, false)}
-              </div>`;
-    return html;
+    return `<div class="test-interface">
+              <h3 class="center">Level: ${ maths.difficulties[this.level] }</h3>
+              <h3 class="center">Number of questions: ${ this.modules.length * this.numOfQuest }</h3>
+              <h3 class="center">Questions per module: ${ this.numOfQuest }</h3>
+              <h3 class="center">Modules: ${ this.modules.join(', ') }</h3>
+              <h3 class="center">Time to complete: ${ this.times[this.level] } minutes</h3>
+              <h2 class="center">GOOD LUCK!</h2>
+              ${maths.layout.testNavigation(true, false)}
+            </div>`;
   },
 
   summary: `<div id="test-summary" class="test-interface">'

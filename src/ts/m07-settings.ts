@@ -114,7 +114,7 @@ export const settings = {
         this.fields.clearButton.on('click', () => {
             this.clearChanges();
             this.restoreSettings();
-            this.fields.clearButton.blur();
+            this.fields.clearButton.trigger('blur');;
             enableApplyButton();
         });
         this.fields.settingsForm.on('submit', function(e: Event) {
@@ -128,7 +128,7 @@ export const settings = {
         });
         this.fields.settingsForm.on('reset', ()=>{
             setTimeout(() => this.fields.volume.trigger('input'), 100);
-            $('#settings-default').blur();
+            $('#settings-default').trigger('blur');
             enableApplyButton();
         });
     },

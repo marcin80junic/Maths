@@ -7,11 +7,10 @@ export const timer = {
     seconds: "00",
     totalSecs: 0,
     totalMins: 0,
-    secondsElapsed: 0,
+    elapsed: 0,
     setTimer: null as any,
 
     getTimer: function(minutes: number) {
-        alert(minutes)
         if (this.setTimer !== null) {
             this.stop();
         }
@@ -39,19 +38,20 @@ export const timer = {
         const instance = this,
               start = Date.now(),
               seconds = this.totalSecs,
-              minutes = this.totalMins;
-        let elapsed = this.secondsElapsed,
-            secsModulus = this.totalSecs % 60;
+              minutes = this.totalMins,
+              secsModulus = this.totalSecs % 60;
 
         this.setTimer = setInterval(function () {
-            elapsed = Math.floor((Date.now() - start) / 1000) - 1;
-            if (elapsed >= seconds + 1) {
+
+            instance.elapsed = Math.floor((Date.now() - start) / 1000) - 1;
+
+            if (instance.elapsed >= seconds + 1) {
                 clearInterval(this.setTimer);
-                callback(elapsed);
+                callback(instance.elapsed);
                 return;
             }
-            let minsElapsed = Math.floor(elapsed / 60),
-                secsElapsed = (elapsed + 60) % 60,
+            let minsElapsed = Math.floor(instance.elapsed / 60),
+                secsElapsed = (instance.elapsed + 60) % 60,
                 mins = (secsElapsed < secsModulus + 1) ? minutes - minsElapsed : minutes - minsElapsed - 1,
                 secs = (secsModulus < secsElapsed) ? 60 - (secsElapsed - secsModulus) : secsModulus - secsElapsed;
 
@@ -66,7 +66,7 @@ export const timer = {
         this.minutes = "00";
         this.seconds = "00";
         this.setTimer = null;
-        return this.secondsElapsed;
+        return this.elapsed;
     }
 
 };
