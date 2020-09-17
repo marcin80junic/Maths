@@ -84,10 +84,21 @@
 }
 
 .dialog-body {
-    max-height: 90vh;
+    max-height: calc(100vh - 2em - 6px);
     margin-top: 2em;
     overflow: auto;
     background-color: beige;
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.dialog-body::-webkit-scrollbar {
+    display: none;
+}
+  
+/* Hide scrollbar for IE, Edge and Firefox */
+.dialog-body {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
 }
 
 @media (max-width: 664px) {

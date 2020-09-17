@@ -40,7 +40,7 @@
   background-color: $red-light;
   outline: none;
   border: 1px solid hsl(0, 100%, 20%);
-  border-top: transparent;
+  border-top: none;
   cursor: pointer;
 }
 .accordion-header:disabled {
@@ -54,9 +54,6 @@
 }
 .accordion-header.selected::after {
   content: "\2212";
-}
-.accordion > .accordion-header:first-of-type {
-  border-top: 1px solid hsl(0, 100%, 20%);
 }
 .accordion-header:hover:not(:disabled),
 .accordion-header:focus {

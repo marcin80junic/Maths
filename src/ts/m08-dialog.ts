@@ -36,6 +36,6 @@ export const dialog = {
         if (callback) {
             callback();
         }
-    }
+    },
 
 }
