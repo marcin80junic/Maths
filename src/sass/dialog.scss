@@ -41,12 +41,14 @@
     left: 0;
     right: 0;
     height: 2em;
-    padding: 0.2em 0.4em;
+    padding: 0.2em 0.6em;
     background-color: $green;
     border-bottom: 3px ridge $red-dark;
 }
 
 .dialog-head-title {
+    height: 100%;
+    line-height: 1.4;
     font-weight: bold;
     text-transform: capitalize;
 }
