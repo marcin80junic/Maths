@@ -60,27 +60,36 @@
 
 .dialog-head-close {
     position: absolute;
-    top: 0.1em;
-    right: 0.1em;
-    width: 1.7em;
-    height: 1.7em;
-    background-color: $red-light;
+    top: 50%;
+    right: 0.2em;
+    transform: translateY(-50%);
+
+    width: 2.5em;
+    height: 2.5em;
+    text-indent: 10em;
+    overflow: hidden;
+
+    background-image: linear-gradient($red, hsla(0, 90%, 50%, 1), $red);
     border: 1px ridge $red-dark;
+    outline: none;
 }
 .dialog-head-close::after {
-    content: "\02df";
-    font-size: 3em;
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-49%, -43%);
+    transform: translate(-50%, -50%);
+
+    font-size: 4em;
+    text-indent: 0;
+    padding: 1em;
+    content: "\00d7";
 }
 .dialog-head-close:hover,
 .dialog-head-close:focus {
-    background-color: $red;
+    background-image: linear-gradient(hsla(0, 65%, 50%), $red, hsla(0, 65%, 50%));
 }
 .dialog-head-close:active {
-    background-color: $red-dark;
+    background-image: linear-gradient(hsla(0, 75%, 40%), hsla(0, 65%, 50%), hsla(0, 75%, 40%));
 }
 
 .dialog-body {
