@@ -72,11 +72,8 @@ export const accordion = {
             .prop('disabled', true);
     },
 
-    scrollTo: function (index: number) {
-        if (index < 0 || index > this.headerElements.length - 1) {
-            throw new Error(`couldn't find the header at index ${ index }`);
-        }
-        this.headerElements.eq(index)[0].scrollIntoView();
+    showSummary: function () {
+        this.last()[0].scrollIntoView();
     }, 
 
     dispose: function () {

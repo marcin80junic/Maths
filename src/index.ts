@@ -4,7 +4,7 @@ import { maths } from './ts/m02-maths';
 
 
 
-$('document').ready(function () {
+$(function () {
   
     //find and hide all modules except for #home
     $('#main-menu a').each((index, el) => {

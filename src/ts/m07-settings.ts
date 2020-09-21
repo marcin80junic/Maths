@@ -12,8 +12,8 @@ export const settings = {
         isRandomized: $('#settings input[name="isRandomized"]'),
         showTooltips: $('#settings input[name="showTooltips"]'),
         testModules: $('#settings input[name="modules"]'),
-        testTimes: $('#settings select[name="times"'),
-        testNumOfQuest: $('#settings select[name="numOfQuest"'),
+        testTimes: $('#settings select[name="times"]'),
+        testNumOfQuest: $('#settings select[name="numOfQuest"]'),
         clearButton: $('#settings-clear'),
         applyButton: $('#settings-apply'),
         settingsForm: $('#settings-form')

@@ -150,7 +150,7 @@ export const test = {
 
     processResults();
     maths.accordion.unfold();
-    maths.accordion.scrollTo(this.modules.length + 1);
+    maths.accordion.showSummary();
   }
 
 }

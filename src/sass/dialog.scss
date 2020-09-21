@@ -70,28 +70,23 @@
     height: 2.5em;
     text-indent: 10em;
     overflow: hidden;
-
-    background-image: linear-gradient($red, hsla(0, 90%, 50%, 1), $red);
+    background-image: url('../../public/pics/close_32.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 120%;
     border: 1px ridge $red-dark;
+    border-radius: 0.5em;
     outline: none;
-}
-.dialog-head-close::after {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-
-    font-size: 4em;
-    text-indent: 0;
-    padding: 1em;
-    content: "\00d7";
 }
 .dialog-head-close:hover,
 .dialog-head-close:focus {
-    background-image: linear-gradient(hsla(0, 65%, 50%), $red, hsla(0, 65%, 50%));
+    background-image: url('../../public/pics/close_32.png');
+    box-shadow: inset 0 0 1.5em rgba(0, 0, 0, .3);
 }
 .dialog-head-close:active {
-    background-image: linear-gradient(hsla(0, 75%, 40%), hsla(0, 65%, 50%), hsla(0, 75%, 40%));
+    background-image: url('../../public/pics/close_32.png');
+    box-shadow: inset 0 0 1.5em rgba(0, 0, 0, .7);
+    transform: translateY(-48%);
 }
 
 .dialog-body {
