@@ -141,10 +141,10 @@ export const settings = {
                             this.accessStorage(object[field], namespace + field + ".", write);
                         } else if(write) {
                             localStorage.setItem(namespace + field, object[field]);
-                            console.log("saving: " + namespace + field + ": " + object[field]); /** */
+                      //      console.log("saving: " + namespace + field + ": " + object[field]); /** */
                         } else {
                             let loaded = localStorage.getItem(namespace + field);
-                            console.log("loading: " + namespace + field + ": " + loaded);   //** */
+                      //      console.log("loading: " + namespace + field + ": " + loaded);   //** */
                             if (loaded !== null) object[field] = loaded;
                         }
                     }

@@ -86,7 +86,7 @@ export const test = {
             </div>`;
   },
 
-  summary: `<div id="test-summary" class="test-interface">'
+  summary: `<div id="test-summary" class="test-interface">
               <div class="test-navigation">
                 <button id="test-close" class="form-element button3d">Close</button>
               </div>
@@ -142,9 +142,9 @@ export const test = {
       for (i = 0; i < mods.length; i += 1) {
         html += `<h3 class="center">${mods[i]} score: ${results[i]}/${exNums} (${percs[i]}%)</h3>`;
       }
-      html += `<h3 class="center">Total points: ${points}/${exNums * mods.length}</h3>
-               <h3 class="center">${unlockMessage}</h3>`;
-      $("#test-summary").prepend(html).css("height", "73vh");;
+      html += `<h3 class="center">Total points: ${points}/${exNums * mods.length}</h3>`
+      html += unlockMessage? `<h3 class="center">${unlockMessage}</h3>`: '';
+      $("#test-summary").prepend(html);
       maths.playSound(score > 59);
     };
 

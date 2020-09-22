@@ -100,7 +100,6 @@
 .dialog-body::-webkit-scrollbar {
     display: none;
 }
-  
 /* Hide scrollbar for IE, Edge and Firefox */
 .dialog-body {
     -ms-overflow-style: none;  /* IE and Edge */
@@ -113,8 +112,5 @@
         top: 0;
         left: 0;
         transform: none;
-    }
-    .dialog-body {
-        max-height: 100%;
     }
 }

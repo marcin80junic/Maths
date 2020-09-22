@@ -37,8 +37,20 @@ export const maths: mainObject = {
   },
 
   sounds: {
-    cheer: new Audio(cheer),
-    wrong: new Audio(wrong)
+    cheer: null,
+    wrong: null,
+    getCheer: function() {
+      if (!this.cheer) {
+        this.cheer = new Audio(cheer);
+      }
+      return this.cheer;
+    },
+    getWrong: function() {
+      if (!this.wrong) {
+        this.wrong = new Audio(wrong);
+      }
+      return this.wrong;
+    }
   },
 
   difficulties: ["Fair", "Advanced", "Super Hard"],
@@ -72,8 +84,8 @@ export const maths: mainObject = {
   range: (min: number, max: number) => Math.floor(Math.random() * (max - min + 1) + min),
 
   playSound: function (isCorrect: boolean, volume: number) {
-    let cheer = this.sounds.cheer,
-      wrong = this.sounds.wrong;
+    let cheer = this.sounds.getCheer(),
+      wrong = this.sounds.getWrong();
     if (volume !== 0) { // if called while adjusting settings the volume arg will have a value otherwise..
       volume = volume || maths.settings.system.volume;  //..it will be undefined so use stored setting value
     } else {  // only if volume is muted while adjusting in settings

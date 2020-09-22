@@ -3,19 +3,28 @@
 
 .settings-line {
   display: flex;
-  width: 100%;
   padding: 0.6em 0.8em;
   border: 2px groove #ffffcc;
   border-radius: .3em;
 }
-.settings-line > :first-child {
-  min-width: 10em;
+.settings-line:not(:first-of-type) {
+  margin-top: 1em;
 }
 .settings-line > :last-child {
   margin-left: auto;
 }
-.settings-line:not(:first-of-type) {
-  margin-top: 1em;
+.settings-line > .single-line {
+  display: flex;
+  align-items: center;
+}
+.settings-line > .single-line > * + * {
+  margin-left: 0.2em;
+}
+
+@media (max-width: $screen-mobile) {
+  .settings-line > label {
+    max-width: 3em;
+  }
 }
 
 /* end of settings-group module */
@@ -42,8 +51,8 @@
   margin-bottom: -0.5em;
 }
 .select-group > div {
-  margin-left: 1em;
+  margin-left: 0.4em;
   margin-bottom: 0.5em;
 }
   
-  /* end of checkbox-group module */
+/* end of checkbox-group module */

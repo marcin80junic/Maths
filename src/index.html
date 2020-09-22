@@ -3,17 +3,14 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
   <title>Problem Solving for Children</title>
 </head>
 
 <body>
-
+  <button class="mobile-toggle-button button3d">toggle menu</button>
   <nav class="sidenav" id="main-menu">
-    <div class="mobile-nav">
-      <button class="mobile-toggle-button button3d">toggle menu</button>
-      <h1 class="mobile-title">Menu</h1>
-    </div>
+    <h1 class="mobile-title">Menu</h1>
     <a href="#home" class="button3d selected" draggable="false">Home</a>
     <a href="#addition" class="button3d" draggable="false">Addition +</a>
     <a href="#subtraction" class="button3d" draggable="false">Subtraction -</a>
@@ -155,12 +152,14 @@
     </div>
 
     <div id="settings">
-      <h2 class="center">Settings</h2>
       <div class="intro">
-        Adjust any of the settings below, just mind that changing any of the options in "General" 
-        settings will void your progress in all modules (apart from "Test" module). Changing anything
-        in "Test" settings will void your progress only in a "Test" module. Remember no changes will take effect
-        unless you click "Apply" button at the bottom right!
+        <h2 class="center">Settings</h2>
+        <p>
+          Adjust any of the settings below, just mind that changing any of the options in "General"
+          settings will void your progress in all modules (apart from "Test" module). Changing anything
+          in "Test" settings will void your progress only in a "Test" module. Remember no changes will take effect
+          unless you click "Apply" button at the bottom right!
+        </p>
       </div>
       <div class="content">
         <form id="settings-form">
@@ -172,7 +171,7 @@
 
               <div class="settings-line">
                 <label>Volume:</label>
-                <div>
+                <div class="single-line">
                   <label id="volume-label"></label>
                   <input type="range" min="0" max="100" value="50" id="volume">
                   <img src="../public/pics/speaker-medium-volume.png" id="speaker">
@@ -186,7 +185,7 @@
             
               <div class="settings-line">
                 <label>Randomized answer fields:</label>
-                <div>
+                <div class="single-line">
                   <label class="custom-radio">Yes
                     <input type="radio" name="isRandomized" value="true" checked="true">
                     <span class="checkmark form-element"></span>
@@ -199,7 +198,7 @@
               </div>
               <div class="settings-line">
                 <label>Show tooltips:</label>
-                <div>
+                <div class="single-line">
                   <label class="custom-radio">Yes
                     <input type="radio" name="showTooltips" value="true" checked="true">
                     <span class="checkmark form-element"></span>
@@ -259,7 +258,7 @@
                       <option value="9">9</option>
                       <option value="10">10</option>
                     </select>
-                    <label>min</label>
+                    <span>min</span>
                   </div>
                   <div>
                     <label>Advanced:</label>
@@ -271,7 +270,7 @@
                       <option value="7">7</option>
                       <option value="8">8</option>
                     </select>
-                    <label>min</label>
+                    <span>min</span>
                   </div>
                   <div>
                     <label>Super Hard:</label>
@@ -283,13 +282,13 @@
                       <option value="5">5</option>
                       <option value="6">6</option>
                     </select>
-                    <label>min</label>
+                    <span>min</span>
                   </div>
                 </div>
               </div>
               <div class="settings-line">
                 <label>Questions per module:</label>
-                <div>
+                <div class="single-line">
                   <select name="numOfQuest" class="form-element">
                     <option value="4">4</option>
                     <option value="5">5</option>
