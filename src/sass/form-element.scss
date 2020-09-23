@@ -1,6 +1,5 @@
 
-/* collection of form elements */
-
+/* form-element module */
 
 .form-element {
     font-family: inherit;
@@ -11,32 +10,48 @@
     box-shadow: 2px 2px 2px rgba(0, 0, 0, .5);
     border: 1px solid rgba(0, 0, 0, .3);
     border-radius: 0.4em;
+    &:hover,
+    &:focus {
+        background-color: $green-light;
+    }
+    &:active {
+        background-color: $green;
+    }
+    &.correct {
+        border: 2px solid #1aff1a;
+    }
+    &.warning {
+        border: 2px solid $red-light;
+    }
+    &.invisible {
+        visibility: hidden;
+      }
 }
-input[type="text"].form-element {
+
+input[type=number].form-element {
     width: 2.3em;
     text-align: center;
     background-color: $yellow-pale;
-}
-input[type="checkbox"].form-element {
-    box-shadow: none;
-    border-radius: 0.2em;
-}
-input[type="checkbox"].form-element:active {
-    background-color: $green-dark;
-}
-.form-element:hover:not(:disabled) {
-    background-color: $green-light;
-}
-.form-element:active {
-    background-color: $green;
+    &:hover,
+    &:focus {
+        background-color: $yellow-light;
+    }
+    
+    @media (min-width: $screen-breakpoint-1) {
+        appearance: textfield;
+        &::-webkit-inner-spin-button,
+        &::-webkit-outer-spin-button {     /* Edge and IE */
+            -webkit-appearance: none; 
+        }
+    }
 }
 
-.form-element.correct {
-    border: 2px solid #1aff1a;
+input[type=checkbox].form-element {
+    box-shadow: none;
+    border-radius: 0.2em;
+    &:active {
+        background-color: $green-dark;
+    }
 }
-.form-element.warning {
-    border: 2px solid $red-light;
-}
-.form-element.invisible {
-    visibility: hidden;
-  }
+
+/* end of form-element module */

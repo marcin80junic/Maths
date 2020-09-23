@@ -50,8 +50,6 @@ export const handlers = {
                 let isCorrect = maths.handlers.validateOperation(answerField, result, answers);
                 return isCorrect ? goodAnswer() : wrongAnswer();
             };
-        
-        $(this.adjustLinesLength(rows));
 
         levelChoice.on("change", function () {    //options change
             let name = $(this).find("option:selected").text();
@@ -118,7 +116,7 @@ export const handlers = {
             });
             checkAllButton.trigger('blur');
         });
-
+        setTimeout(()=>this.adjustLinesLength(rows), 0);  // run it as soon as page is loaded
         this.textInputs(rows, answerFields, processOperation);  //add input fields filtering
     },
 
@@ -245,6 +243,9 @@ export const handlers = {
 
     textInputs: function (rows: JQuery, answerFields: JQuery, callback: any) { //input filtering for answer fields
         answerFields.on("paste", () => false);
+        answerFields.on("click", function() {
+            (<HTMLInputElement>this).select();
+        });
         answerFields.on("blur", function () {
             let field = $(this);
             if (field.val() === "") {

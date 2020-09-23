@@ -77,7 +77,6 @@ export const maths: mainObject = {
         this.test.init();
       }
     }
-
     this.active.scrollTop(0);
   },
 

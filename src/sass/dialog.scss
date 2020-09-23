@@ -106,7 +106,7 @@
     scrollbar-width: none;  /* Firefox */
 }
 
-@media (max-width: 664px) {
+@media (max-width: $screen-breakpoint-1) {
     .dialog {
         width: 100%;
         top: 0;

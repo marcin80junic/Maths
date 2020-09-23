@@ -19,32 +19,40 @@ Markup:
 </div>
 
 Styleguide Fraction
+
 */
 
 .fraction {
     display: flex;
     align-items: center;
     height: 100%;
+
+    & > .whole {
+        display: flex;
+        align-items: center;
+        font-size: 1.2em;
+        height: 100%;
+
+        &:not(:only-of-type) {
+            margin-right: 0.1em;
+        }
+        & > input[type=number] {
+            width: 1.05em;
+            padding: 0.2em 0;
+        }
+    }
+    & > .fraction-unit {
+        text-align: center;
+        font-size: .9em;
+
+        & input[type=number] {
+            width: 1.6em;
+            padding: 0.1em 0;
+        }
+        & > .denominator {
+            border-top: 2px solid black;
+        }
+    }
 }
-.fraction > .whole {
-    display: flex;
-    align-items: center;
-    font-size: 1.2em;
-    height: 100%;
-}
-.fraction > .whole:not(:only-of-type) {
-    margin-right: 0.1em;
-}
-.fraction .whole > input[type="text"] {
-    width: 1.05em;
-}
-.fraction > .fraction-unit {
-    text-align: center;
-    font-size: .9em;
-}
-.fraction > .fraction-unit input[type="text"] {
-    width: 1.6em;
-}
-.fraction > .fraction-unit > .denominator {
-    border-top: 2px solid black;
-}
+
+/* end of fraction module */

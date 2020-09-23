@@ -7,7 +7,7 @@
     "dev": "set NODE_ENV=development&& webpack",
     "test": "set NODE_ENV=development&&webpack-dev-server --open",
     "build": "set NODE_ENV=production&& webpack",
-    "server": "set NODE_ENV=production&&webpack-dev-server --host 0.0.0.0 --open"
+    "server": "set NODE_ENV=production&&webpack-dev-server --host 192.168.1.37 --open"
   },
   "repository": {
     "type": "git",

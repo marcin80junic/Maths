@@ -72,12 +72,12 @@ Styleguide Layout.Columns
     grid-auto-rows: 1fr;
     grid-row-gap: 1em;
     grid-column-gap: 1em;
-    justify-content: center;
     margin: 2em 0;
 }
 
 .columns-line {
     display: flex;
+    justify-content: center;
 }
 
 .columns-line-operation {
@@ -88,9 +88,15 @@ Styleguide Layout.Columns
     min-width: 10em;
     min-height: 2.6em;
     max-height: 2.6em;
-    margin: 0 auto;
 }
 .columns-line-operation > * {
     display: inline-block;
     margin-left: 0.3em;
+}
+
+@media (max-width: $screen-breakpoint-1) {
+
+    .columns {
+        grid-template-columns: repeat(auto-fit, minmax(12em, 1fr));
+    }
 }

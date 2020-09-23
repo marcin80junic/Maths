@@ -33,19 +33,21 @@ export const layout = {
         html += '</select></div>';  // end of num of exercises choice
 
         // current score
-        html += '<div class="interface-item-score">'; 
-        html += '<div>Your Score:</div>';
-        html += '<div><div class="score">0</div>';
-        html += '<div>/</div>';
-        html += '<div>' + num + '</div>';
-        html += '</div></div>';   // end of score
+        html += `<div class="interface-item-score"> 
+                    <div>Your Score:</div>
+                    <div>
+                        <div class="score">0</div>
+                        <div>/</div>
+                        <div>${num}</div>
+                    </div>
+                </div>`;
         html += '</div>'; // end of interface
 
         html += this.main(module, num); //add main content and assign results to module's results property
-
+    
         //bottom button group
-        html += '<div class="interface">';
-        html += '<button type="reset" class="reset button3d form-element">Reset</button>';
+        html += '<div class="interface-buttons">';
+        html += (screen.width > 720)? '<button type="reset" class="reset button3d form-element">Reset</button>':'';
         html += '<button type="submit" class="reload button3d form-element">Reload</button>';
         html += '<button type="submit" class="check-all button3d form-element">Check All</button>';
         html += '</div>';   // end of button group
@@ -114,7 +116,7 @@ export const layout = {
         let html = '';
         html += isAnswer ?
             `<div class="tooltip">
-                <input type="text" maxlength="3" class="answer form-element">
+                <input type="number" class="answer form-element">
                 <span class="tiptext"></span>
             </div>`
             : `<div> ${number} </div>`;
@@ -136,7 +138,7 @@ export const layout = {
 
         html += (wholeNum >= 1)?  // is there a whole number before a fraction part?
             isAnswer?
-                '<div class="whole"><input type="text" maxlength="1" class="answer form-element"></div>'
+                '<div class="whole"><input type="number" class="answer form-element"></div>'
                 : `<div class="whole"> ${wholeNum} </div>`
                 : ''
 
@@ -155,11 +157,11 @@ export const layout = {
         html += `<div class="fraction-unit">    
                     <div class="numerator">`;
         html += isAnswer?                                                // insert text field if at answer index
-            '<input type="text" class="answer form-element" size="1">'
+            '<input type="number" class="answer form-element" size="1">'
             : tempArray[0]                                               // otherwise insert a number
         html += '</div><div class="denominator">';    // closing 'numerator' tag, opening 'denominator' tag
         html += isAnswer?                                                // insert text field if at answer index
-            '<input type="text" class="answer form-element" size="1">'
+            '<input type="number" class="answer form-element" size="1">'
             : tempArray[1]                                               // otherwise insert a number
         html += '</div></div></div>';           // closing 'denominator', 'fraction-unit' and 'fraction' tags
 

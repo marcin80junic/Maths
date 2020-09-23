@@ -8,8 +8,9 @@
 </head>
 
 <body>
-  <button class="mobile-toggle-button button3d">toggle menu</button>
+  
   <nav class="sidenav" id="main-menu">
+    <button class="mobile-toggle-button button3d">toggle menu</button>
     <h1 class="mobile-title">Menu</h1>
     <a href="#home" class="button3d selected" draggable="false">Home</a>
     <a href="#addition" class="button3d" draggable="false">Addition +</a>
@@ -163,12 +164,9 @@
       </div>
       <div class="content">
         <form id="settings-form">
-          <fieldset>
-            <legend>Settings</legend>
-            
+  
             <fieldset>
               <legend>System</legend>
-
               <div class="settings-line">
                 <label>Volume:</label>
                 <div class="single-line">
@@ -177,12 +175,10 @@
                   <img src="../public/pics/speaker-medium-volume.png" id="speaker">
                 </div>
               </div>
-              
             </fieldset>
             
             <fieldset>
               <legend>General</legend>
-            
               <div class="settings-line">
                 <label>Randomized answer fields:</label>
                 <div class="single-line">
@@ -209,12 +205,10 @@
                   </label>
                 </div>
               </div>
-            
             </fieldset>
             
             <fieldset>
               <legend>Test</legend>
-
               <div class="settings-line">
                 <label>Choose test modules:</label>
                 <div class="checkbox-group">
@@ -302,12 +296,12 @@
               </div>
             </fieldset>
             
-            <div class="interface">
+            <div class="interface-buttons">
               <button id="settings-default" class="button3d form-element" type="Reset">Default</button>
               <button id="settings-clear" class="button3d form-element">Clear</button>
               <button id="settings-apply" class="button3d form-element" type="Submit" disabled>Apply</button>
             </div>
-          </fieldset>
+      
         </form>
       </div>
     </div>

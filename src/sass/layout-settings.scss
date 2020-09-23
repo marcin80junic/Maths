@@ -21,18 +21,6 @@
   margin-left: 0.2em;
 }
 
-@media (max-width: $screen-mobile) {
-  .settings-line > label {
-    max-width: 3em;
-  }
-}
-
-/* end of settings-group module */
-  
-  
-  
-/* checkbox-group module */
-
 .checkbox-group {
   width: 70%;
   display: grid;
@@ -54,5 +42,30 @@
   margin-left: 0.4em;
   margin-bottom: 0.5em;
 }
-  
-/* end of checkbox-group module */
+
+@media (max-width: $screen-breakpoint-1) {
+  .settings-line {
+    flex-direction: column;
+    align-items: center;
+    padding: 0.6em 0;
+  }
+  .settings-line > :last-child {
+    margin-left: 0;
+    margin-top: 1em;
+  }
+  .checkbox-group {
+    justify-items: center;
+  }
+  .select-group {
+    width: 100%;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    & > * {
+      text-align: center;
+    }
+  }
+  .select-group > div {
+    margin-left: 0;
+  }
+}
+/* end of settings-group module */

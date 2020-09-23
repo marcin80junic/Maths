@@ -5,8 +5,7 @@ import { maths } from './ts/m02-maths';
 
 
 $(function () {
-
-    const toggleButton = $('.mobile-toggle-button');
+    $(window).on('resize', ()=>console.log($(document).width()))
   
     //find and hide all modules except for #home
     $('#main-menu a').each((index, el) => {
@@ -31,16 +30,11 @@ $(function () {
           maths.active.fadeIn();
         });
       }
-      if (toggleButton.is(':visible')) {
-        toggleButton.trigger('click');
+      if ($('.sidenav .mobile-toggle-button').is(':visible')) {
+        $('.sidenav').toggleClass('is-open');
+        $('body').toggleClass('body-hidden-overflow');
       }
       e.preventDefault();
-    });
-
-    toggleButton.on('click', function() {
-      $(this).toggleClass('pressed');
-      $('.sidenav').toggleClass('is-open');
-      $('body').toggleClass('body-hidden-overflow');
     });
 
 });
