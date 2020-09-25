@@ -37,17 +37,23 @@ Styleguide Fraction
             margin-right: 0.1em;
         }
         & > input[type=number] {
-            width: 1.05em;
-            padding: 0.2em 0;
+            width: 1.3em;
+            padding: 0.4rem 0;
+            @media (min-width: $screen-breakpoint-1) {
+                padding: 0.2rem 0;
+            }
         }
     }
     & > .fraction-unit {
         text-align: center;
-        font-size: .9em;
+        font-size: 1em;
 
         & input[type=number] {
             width: 1.6em;
-            padding: 0.1em 0;
+            padding: 0.3rem 0;
+            @media (min-width: $screen-breakpoint-1) {
+                padding: 0.1rem 0;
+            }
         }
         & > .denominator {
             border-top: 2px solid black;

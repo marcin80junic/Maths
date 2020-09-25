@@ -41,6 +41,9 @@ export const accordion = {
         let header = $('<button class="accordion-header">' + head + '</button>'),
             content = $('<div class="accordion-content">' + cont + '</div>');
         header.prop('disabled', true);
+        if (!maths.isTouchscreen) {
+            header.addClass("no-touch");
+        }
         this.container.append(header, content);
     },
 

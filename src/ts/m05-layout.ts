@@ -13,7 +13,7 @@ export const layout = {
         // choice of level
         html += `<div class="interface-item">
                     <label for="level">Difficulty:</label>
-                    <select class="level form-element">`;
+                    <select class="level form-element ${maths.noTouchClass}">`;
         maths.difficulties.forEach((item, index) => {
             html += (module.level === index) ?
                 '<option selected="selected">' + item + '</option>'
@@ -24,7 +24,7 @@ export const layout = {
         // number of exercises choice
         html += `<div class="interface-item">
                     <label for="exerciseNum">How many exercises?</label>
-                    <select class="exerciseNum form-element">`;
+                    <select class="exerciseNum form-element ${maths.noTouchClass}">`;
         maths.numOfExercises.forEach((item, index) => {
             html += (module.exerciseNum === parseInt(item, 10)) ?
                 '<option selected="selected">' + item + '</option>'
@@ -47,10 +47,12 @@ export const layout = {
     
         //bottom button group
         html += '<div class="interface-buttons">';
-        html += (screen.width > 720)? '<button type="reset" class="reset button3d form-element">Reset</button>':'';
-        html += '<button type="submit" class="reload button3d form-element">Reload</button>';
-        html += '<button type="submit" class="check-all button3d form-element">Check All</button>';
-        html += '</div>';   // end of button group
+        html += (screen.width > 720)? 
+            `<button type="reset" class="reset button3d form-element ${maths.noTouchClass}">Reset</button>`
+            :'';
+        html += `<button type="submit" class="reload button3d form-element ${maths.noTouchClass}">Reload</button>
+                 <button type="submit" class="check-all button3d form-element ${maths.noTouchClass}">Check All</button>
+                </div>`;   // end of button group
         module.levelDisplayed = module.level;
         module.container.html(html);
     },
@@ -103,7 +105,8 @@ export const layout = {
             }
             html += '<img src="' + maths.icons.questMark + '" class="icon">';
             html += !isTest ?  // insert a check button if not a test
-                '<button type="submit" class="check button3d form-element">check</button>' : "";
+                `<button type="submit" class="check button3d form-element ${maths.noTouchClass}">check</button>`
+                : "";
             html += '</span></div>';
             /* end of single operation  */
         }
@@ -116,7 +119,7 @@ export const layout = {
         let html = '';
         html += isAnswer ?
             `<div class="tooltip">
-                <input type="number" class="answer form-element">
+                <input type="number" class="answer form-element ${maths.noTouchClass}">
                 <span class="tiptext"></span>
             </div>`
             : `<div> ${number} </div>`;
@@ -133,12 +136,14 @@ export const layout = {
             tempArray = [],
             html = '';
 
-        html += isAnswer? '<span class="tooltip">': ''; // if it's an answer wrap fraction in a tooltip module
+        html += isAnswer?   // if it's an answer wrap fraction in a tooltip module
+            `<span class="tooltip">`
+            : ''; 
         html += '<div class="fraction">';   // opening fraction tag
 
         html += (wholeNum >= 1)?  // is there a whole number before a fraction part?
             isAnswer?
-                '<div class="whole"><input type="number" class="answer form-element"></div>'
+                `<div class="whole"><input type="number" class="answer form-element ${maths.noTouchClass}"></div>`
                 : `<div class="whole"> ${wholeNum} </div>`
                 : ''
 
@@ -157,11 +162,11 @@ export const layout = {
         html += `<div class="fraction-unit">    
                     <div class="numerator">`;
         html += isAnswer?                                                // insert text field if at answer index
-            '<input type="number" class="answer form-element" size="1">'
+            '<input type="number" class="answer form-element ${maths.noTouchClass}" size="1">'
             : tempArray[0]                                               // otherwise insert a number
         html += '</div><div class="denominator">';    // closing 'numerator' tag, opening 'denominator' tag
         html += isAnswer?                                                // insert text field if at answer index
-            '<input type="number" class="answer form-element" size="1">'
+            '<input type="number" class="answer form-element ${maths.noTouchClass}" size="1">'
             : tempArray[1]                                               // otherwise insert a number
         html += '</div></div></div>';           // closing 'denominator', 'fraction-unit' and 'fraction' tags
 
@@ -179,9 +184,9 @@ export const layout = {
             lastClass = isLast ? "button-finish" : "button-next",
             html = '<div class="test-navigation">';
 
-        html += `<button class="${firstClass} form-element button3d">${first}</button>`;
+        html += `<button class="${firstClass} form-element ${maths.noTouchClass} button3d">${first}</button>`;
         html += isFirst ? '</div>'
-            : `<button class="${lastClass} form-element button3d">${last}</button></div>`;
+            : `<button class="${lastClass} form-element ${maths.noTouchClass} button3d">${last}</button></div>`;
 
         return html;
     }

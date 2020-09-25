@@ -62,14 +62,17 @@ export const settings = {
         this.restoreSettings();
 
         // define handlers for all settings input fields
-        this.fields.volume.on('input change', () => this.updateVolumeLabel(this.fields.volume.val()));
-        this.fields.volume.on('change', function() {
+        if (!maths.isTouchscreen) {
+            this.fields.volume.on('input change', () => this.updateVolumeLabel(this.fields.volume.val()));
+            this.fields.volume.on('change', function() {
             let volume = <number>$(this).val() / 100;
             if (ns.system.volume == volume) delete ns.changed.system.volume
             else ns.changed.system.volume = volume
             maths.playSound(true, volume);
             enableApplyButton();
-        });
+            });
+        }
+        
         this.fields.isRandomized.on('change', function() {
             let isRand = $(this).val();
             if (isRand === ns.general.isRandomized) delete ns.changed.general.isRandomized

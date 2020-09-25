@@ -2,16 +2,12 @@
 /* custom-radio module */
 
 .custom-radio {    /* Customize the label (the container) */
-    display: flex;
-    position: relative;
-    padding-left: 1.4em;
-    cursor: pointer;
-  }
-  .custom-radio input {    /* Hide the browser's default radio button */
-    opacity: 0;
-    width: 0;
-  }
-  .checkmark {    /* Create a custom radio button */
+  display: flex;
+  position: relative;
+  padding-left: 1.4em;
+  cursor: pointer;
+
+  & .checkmark {    /* Create a custom radio button */
     position: absolute;
     top: 0;
     left: 0;
@@ -20,36 +16,41 @@
     background-color: #fff;
     border: 1px solid rgba(0, 0, 0, .3);
     border-radius: 50%;
-  }
-  .custom-radio:hover input ~ .checkmark {   /* On mouse-over, add a grey background color */
-    background-color: #ccc;
-  }
-  .custom-radio input:checked ~ .checkmark {   /* When the radio button is checked, add a green background */
-    background-color: #009900;
-  }
-  .checkmark:after {    /* Create the indicator (the dot/circle - hidden when not checked) */
-    content: "";
-    position: absolute;
-    display: none;
-  }
-  .custom-radio input:checked ~ .checkmark:after {   /* Show the indicator (dot/circle) when checked */
-    display: block;
-  }
-  .custom-radio input:focus ~ .checkmark {
-    border: 1px groove rgba(0, 0, 0, 0.6);
-  }
-  .custom-radio input:focus ~ .checkmark:after {
-    border: 1px groove rgba(0, 0, 0, 0.8);
-  }
-  .custom-radio .checkmark:after {   /* Style the indicator (dot/circle) */
-    top: .28em;
-    left: .28em;
-    width: .56em;
-    height: .56em;
-    border: 1px groove rgba(0, 0, 0, 0.5);
-    border-radius: 50%;
-    background: white;
-  }
 
-  /* end of custom-radio module */
+    &:after {    /* Create an style the indicator (the dot/circle - hidden when not checked) */
+      content: "";
+      position: absolute;
+      display: none;
+      top: .28em;
+      left: .28em;
+      width: .56em;
+      height: .56em;
+      border: 1px groove rgba(0, 0, 0, 0.5);
+      border-radius: 50%;
+      background: white;
+    }
+  }
+  &.no-touch:hover input:not(:checked) ~ .checkmark {
+    background-color: #ccc;   /* On mouse-over, add a grey background color */
+  }
+  & input {    /* Hide the browser's default radio button */
+    opacity: 0;
+    width: 0;
+    &:checked ~ .checkmark {   
+      background-color: #009900;  /* When the radio button is checked, add a green background */
+      &:after {   
+        display: block; /* Show the indicator (dot/circle) when checked */
+      }
+    }
+    &:focus ~ .checkmark {
+      border: 1px groove rgba(0, 0, 0, 0.6);
+      &:after {
+        border: 1px groove rgba(0, 0, 0, 0.8);
+      }    
+    }
+  }
+  
+}
+ 
+/* end of custom-radio module */
   

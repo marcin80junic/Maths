@@ -10,8 +10,8 @@
     box-shadow: 2px 2px 2px rgba(0, 0, 0, .5);
     border: 1px solid rgba(0, 0, 0, .3);
     border-radius: 0.4em;
-    &:hover,
-    &:focus {
+    &.no-touch:hover:not(:disabled),
+    &.no-touch:focus:not(:disabled) {
         background-color: $green-light;
     }
     &:active {
@@ -25,20 +25,21 @@
     }
     &.invisible {
         visibility: hidden;
-      }
+    }
 }
 
 input[type=number].form-element {
     width: 2.3em;
+    padding: 0.5rem 0;
     text-align: center;
     background-color: $yellow-pale;
-    &:hover,
-    &:focus {
+    &.no-touch:hover,
+    &.no-touch:focus {
         background-color: $yellow-light;
     }
-    
     @media (min-width: $screen-breakpoint-1) {
         appearance: textfield;
+        padding: 0.2rem 0.1rem;
         &::-webkit-inner-spin-button,
         &::-webkit-outer-spin-button {     /* Edge and IE */
             -webkit-appearance: none; 

@@ -26,6 +26,11 @@ import wrong from '../../public/sounds/fart.mp3';
 
 export const maths: mainObject = {
 
+  isTouchscreen: "ontouchstart" in document.documentElement,
+  noTouchClass: (function() {
+    return ("ontouchstart" in document.documentElement)? '': 'no-touch'
+  }()),
+
   icons: {
     tick: tick,
     cross: cross,

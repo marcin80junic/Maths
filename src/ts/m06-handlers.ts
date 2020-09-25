@@ -61,6 +61,7 @@ export const handlers = {
         });
 
         tooltips.on("mouseover mouseout", function (e) {
+            if (maths.isTouchscreen) return;
             if (showTooltips) {       
                 let tip = $(this).find(".tiptext"),
                     idx = tooltips.index(this);
@@ -116,7 +117,7 @@ export const handlers = {
             });
             checkAllButton.trigger('blur');
         });
-        setTimeout(()=>this.adjustLinesLength(rows), 0);  // run it as soon as page is loaded
+        setTimeout(()=>this.adjustLinesLength(rows), 100);  // run it as soon as page is loaded
         this.textInputs(rows, answerFields, processOperation);  //add input fields filtering
     },
 
@@ -263,7 +264,7 @@ export const handlers = {
             let field = $(this),
                 row = field.parents(".columns-line-operation"),
                 index = rows.index(row),
-                isFraction = row.find(".answer").length > 1,
+                isFraction = row.find(".fraction").length > 0,
                 char = String.fromCharCode(e.which),
                 length = (<string>field.val()).length,
                 limit = 3;
@@ -299,7 +300,7 @@ export const handlers = {
             max = (width > max)? width: max;
         });
         $lines.each(function() {
-            $(this).width(max);
+            $(this).width(max - 5);
         });
     }
 

@@ -25,8 +25,8 @@
     background-position: 5%, 50%;
     background-color: transparentize($red, 0.3);
   }
-  .button-ladder button:not(:disabled):hover,
-  .button-ladder button:focus {
+  .button-ladder.no-touch button:not(:disabled):hover,
+  .button-ladder.no-touch button:focus {
     background-color: $red;
   }
   .button-ladder button:not(:disabled):active {

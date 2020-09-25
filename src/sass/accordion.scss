@@ -28,53 +28,58 @@
   
 .accordion {
   background-color: hsl(180, 50%, 90%);
+
+  & .accordion-header {
+    position: relative;
+    width: 100%;
+    font-size: 1.1em;
+    padding: .4rem 1rem;
+    text-align: left;
+    color: hsl(90, 100%, 55%);
+    background-color: $red-light;
+    outline: none;
+    border: 1px solid hsl(0, 100%, 20%);
+    border-top: none;
+    cursor: pointer;
+
+    &:disabled {
+      cursor: initial;
+      background-color: transparentize($red-light, 0.3);
+    }
+    &:after {
+      position: absolute;
+      right: 1rem;
+      content: "\002B";
+    }
+    &.no-touch:hover:not(:disabled),
+    &.no-touch:focus:not(:disabled) {
+      background-color: $red;
+    }
+    &:active,
+    &.selected.no-touch:hover,
+    &.selected.no-touch:focus {
+      background-color: $red-dark;
+    }
+    &.selected {
+      background-color: $red-dark;
+      &:after {
+        content: "\2212";
+      }
+      & + .accordion-content {
+        height: auto;
+        border: 1px solid hsl(0, 100%, 30%);
+        border-top: transparent;
+      }
+    }
+    & + .accordion-content {
+      height: 0;
+      overflow: hidden;
+      transition: height 0.3s linear;
+    }
+  }
+  
+  & .accordion-content > * {
+    margin: 1em .5em;
+  }
 }
 
-.accordion-header {
-  position: relative;
-  width: 100%;
-  font-size: 1.1em;
-  padding: .4rem 1rem;
-  text-align: left;
-  color: hsl(90, 100%, 55%);
-  background-color: $red-light;
-  outline: none;
-  border: 1px solid hsl(0, 100%, 20%);
-  border-top: none;
-  cursor: pointer;
-}
-.accordion-header:disabled {
-  cursor: initial;
-  background-color: transparentize($red-light, 0.3);
-}
-.accordion-header::after {
-  position: absolute;
-  right: 1rem;
-  content: "\002B";
-}
-.accordion-header.selected::after {
-  content: "\2212";
-}
-.accordion-header:hover:not(:disabled),
-.accordion-header:focus {
-  background-color: $red;
-}
-.accordion-header.selected,
-.accordion-header.selected:hover,
-.accordion-header:active {
-  background-color: $red-dark;
-}
-.accordion-header + .accordion-content {
-  height: 0;
-  overflow: hidden;
-  transition: height 0.3s linear;
-}
-.accordion-header.selected + .accordion-content {
-  height: auto;
-  border: 1px solid hsl(0, 100%, 30%);
-  border-top: transparent;
-}
-
-.accordion-content > * {
-  margin: 1em .5em;
-}

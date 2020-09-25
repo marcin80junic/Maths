@@ -24,6 +24,7 @@ export const dialog = {
         this.closeBtn.on('click', function() {
             maths.dialog.dispose(options.callback? options.callback: null);
         } );
+        $('body').addClass('body-hidden-overflow');
     },
 
     dispose: function(callback: Function) {
@@ -36,6 +37,7 @@ export const dialog = {
         if (callback) {
             callback();
         }
+        $('body').removeClass('body-hidden-overflow');
     },
 
 }

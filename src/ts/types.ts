@@ -31,6 +31,8 @@ export interface mathOperation {
 }
 
 export interface mainObject {
+  isTouchscreen: boolean,
+  noTouchClass: string,
   icons: any,
   sounds: any,
   difficulties: Array<string>,
