@@ -5,9 +5,8 @@ import { maths } from './ts/m02-maths';
 
 
 $(function () {
-  $(window).on('resize', ()=>console.log($(document).width()))
   
-  //find and hide all modules except for #home
+  // find and hide all modules except for #home
   $('#main-menu a').each((index, el) => {
     let link = $(el),
         href = link.prop('href');
@@ -17,8 +16,10 @@ $(function () {
     }
   });
 
-  
+  // adjust app for touschscreen
   if (maths.isTouchscreen) {
+    $('#settings-form > fieldset:first-child').remove();  // remove the volume adjustment
+  } else {
     $(`.mobile-toggle-button,
       .sidenav a,
       .button-ladder,
@@ -26,7 +27,6 @@ $(function () {
       .form-element,
       .custom-radio`)
         .addClass(maths.noTouchClass);  // add class allowing ':hover' effects on no-touch screens
-    $('#settings-form > fieldset:first-child').remove();  // remove the volume adjustment
   }
  
 

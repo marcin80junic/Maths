@@ -60,30 +60,39 @@ export const handlers = {
             module.setExerciseNum(parseInt(number, 10));
         });
 
+        const showTip = (wrapper: JQuery) => {
+            let tip = wrapper.find('.tiptext'),
+                idx = tooltips.index(wrapper),
+                tip_center: number,
+                el_center = wrapper.width() / 2;    // find 'tooltip' wrapper center
+
+            if (tip.children().length === 0) {
+                maths.createAndAppendCanvas(tip, module, idx);  // create tiptext content
+                tip_center = tip.width() / 2,                   // find tiptext center
+                tip.css('marginLeft', el_center - (tip_center + 11) + "px");
+            }
+            tip.addClass("showtip");
+        }
+
         tooltips.on("mouseover mouseout", function (e) {
             if (maths.isTouchscreen) return;
-            if (showTooltips) {       
-                let tip = $(this).find(".tiptext"),
-                    idx = tooltips.index(this);
-                if (e.type === "mouseover") {               // position tooltip by setting its margin-left property
-                    let el_center = $(this).width() / 2,    // find 'tooltip' wrapper center
-                        tip_center: number;
-                    timeout = setTimeout(function () {
-                        if (tip.children().length === 0) {
-                            maths.createAndAppendCanvas(tip, module, idx);  // create tiptext content
-                            tip_center = tip.width() / 2,                   // find tiptext center
-                            tip.css('marginLeft', el_center - (tip_center + 11) + "px");
-                        }
-                        tip.addClass("showtip");
-                    }, 1200);
+            if (showTooltips) {   
+                if (e.type === "mouseover") {               // position tooltip by setting its margin-left property 
+                    timeout = setTimeout(() => showTip($(this)), 1200);
                 } else {
                     if (timeout !== null) {
                         clearTimeout(timeout);
                     }
-                    tip.removeClass("showtip");
+                    $(this).find(".tiptext").removeClass("showtip");
                 }
             }
         });
+
+      //  if(maths.isTouchscreen) {
+            icons.on('click', function() {
+                showTip($(this).prev());
+            });
+      //  }
 
         checkButtons.on("click", function (e) {   //listeners for all check buttons on page
             e.preventDefault();

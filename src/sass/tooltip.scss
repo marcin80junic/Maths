@@ -33,7 +33,7 @@ Styleguide Tooltip
 }
 .tiptext {
     visibility: hidden;
-    min-width: 10em;
+    width: 100%;
     position: absolute;   /* Position the tooltip text */
     bottom: 100%;
     left: 0;

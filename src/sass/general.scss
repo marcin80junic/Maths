@@ -69,6 +69,7 @@ h1, h2, h3, h4, h5, h6 {
   margin-top: 0;
 }
 p {
+  padding: 0 1rem;
   text-align: justify;
   line-height: 2em;
 }
@@ -100,8 +101,8 @@ img.answered {
   }
   main {
     width: 100%;
-    margin: 0;
-    padding: 1.5em 0.3em;
+    margin: 0 auto;
+    padding: 1.5em 0.4rem;
   }
   fieldset {
     padding: 1em 0;
