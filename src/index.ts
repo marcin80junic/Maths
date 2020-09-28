@@ -5,20 +5,13 @@ import { maths } from './ts/m02-maths';
 
 
 $(function () {
-  
-  // find and hide all modules except for #home
-  $('#main-menu a').each((index, el) => {
-    let link = $(el),
-        href = link.prop('href');
-    href = href.substring(href.indexOf('#'));
-    if (href !== '#home') {
-      $(href).hide();
-    }
-  });
 
-  // adjust app for touschscreen
+  // adjust app for touschscreen devices
   if (maths.isTouchscreen) {
     $('#settings-form > fieldset:first-child').remove();  // remove the volume adjustment
+    $('main').on('click', () => {
+      $('.showtip').removeClass('showtip');               // hide tooltip on 'anywhere' tap
+    });  
   } else {
     $(`.mobile-toggle-button,
       .sidenav a,
@@ -29,8 +22,6 @@ $(function () {
         .addClass(maths.noTouchClass);  // add class allowing ':hover' effects on no-touch screens
   }
  
-
-
   //event handler for navigation menu
   $('#main-menu').on('click', (e) => {
     let link = $(e.target),

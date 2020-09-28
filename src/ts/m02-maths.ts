@@ -64,19 +64,19 @@ export const maths: mainObject = {
 
   active: $("#home"),
 
-  switch: function (id: string) { // id argument comes from href property of clicked navigation menu link
+  switch: function (id: string) {     // id argument comes from href property of clicked navigation menu link
     let moduleName: string = id.replace("#", ""),
-        module = this[moduleName];  // obtain actual object which is a property of maths
+        module = this[moduleName];    // obtain actual object which is a property of maths
 
-    this.active = $(id);  // matches the id of maths modules (divs)
+    this.active = $(id);              // matches the id of maths modules (divs)
 
-    if (!this.settings.areLoaded) {   //initialize settings module if needed
+    if (!this.settings.areLoaded) {   // initialize settings module if needed
       this.settings.init();
     }
     if (Operation.prototype === Object.getPrototypeOf(module)) {
       if (module.level !== module.levelDisplayed) {   // initialize module if it's an instance of..
-        module.init();  //..Operation class (excludes settings test and home). Only when loaded first time.. 
-      }                 //..the levelDisplayed is -1 and will not match the module's level property
+        module.init();    //..Operation class (excludes settings test and home). Only when loaded first time.. 
+      }                   //..the levelDisplayed is -1 and will not match the module's level property
     } else if (moduleName === "test") {
       if (!this.test.isLoaded) {
         this.test.init();
@@ -90,9 +90,9 @@ export const maths: mainObject = {
   playSound: function (isCorrect: boolean, volume: number) {
     let cheer = this.sounds.getCheer(),
       wrong = this.sounds.getWrong();
-    if (volume !== 0) { // if called while adjusting settings the volume arg will have a value otherwise..
+    if (volume !== 0) {     // if called while adjusting settings the volume arg will have a value otherwise..
       volume = volume || maths.settings.system.volume;  //..it will be undefined so use stored setting value
-    } else {  // only if volume is muted while adjusting in settings
+    } else {                // only if volume is muted while adjusting in settings
       cheer.pause();
       return;
     }
@@ -107,7 +107,7 @@ export const maths: mainObject = {
   },
 
   createAndAppendCanvas: function (parent: JQuery, module: mathOperation, index: number) {
-    let numbers: any = module.numbers[index],
+    let numbers:any = module.numbers[index],
       answerIdx = module.answersIdxs[index],
       sign = module.sign,
       i: number,
@@ -116,9 +116,10 @@ export const maths: mainObject = {
       nums = (answerIdx !== numbers.length - 1) ?
         transform()                             // transform the pattern if answer index is not last
         : numbers.slice(0, numbers.length - 1),       // otherwise only cut off the answer
-      factor = $('body').width() / ($('body').width() / 80), // calculate width factor
-      width = calculateWidth(factor),               // calculate width according to the window width
-      canvas = <HTMLCanvasElement>$('<canvas class="canvas" width="' + width + 'px" height="80px"></canvas>')[0],
+   //   factor = $('body').width() / ($('body').width() / 80), // calculate width factor
+   //   width = calculateWidth(factor),               // calculate width according to the window width
+      width = parent.parent().width() - 40,
+      canvas = <HTMLCanvasElement>$(`<canvas class="canvas" width="${width}px" height="80px"></canvas>`)[0],
       c: CanvasRenderingContext2D = canvas.getContext("2d");
     const rads = (x: number) => Math.PI * x / 180;
 
@@ -148,7 +149,7 @@ export const maths: mainObject = {
       }
     }
 
-    function calculateWidth(factor: number) {   // # needs to be changed so it considers integers as well
+ /*   function calculateWidth(factor: number) {   // # needs to be changed so it considers integers as well
       let sum: number = 1,
         whole: number,
         i: number,
@@ -162,7 +163,7 @@ export const maths: mainObject = {
         }
       }
       return sum * factor;
-    }
+    } */
 
     function transform() {
       switch (sign) {  // if transforming addition and multiplication the sign needs to be changed

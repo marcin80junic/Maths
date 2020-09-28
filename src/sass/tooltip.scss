@@ -33,11 +33,12 @@ Styleguide Tooltip
 }
 .tiptext {
     visibility: hidden;
-    width: 100%;
+    max-width: 100%;
     position: absolute;   /* Position the tooltip text */
     bottom: 100%;
     left: 0;
     margin-bottom: .5em;
+    margin-left: 0;
     padding: .5em;
     text-align: justify;
     background-color: beige;
@@ -45,6 +46,7 @@ Styleguide Tooltip
     border-radius: .5em;
     opacity: 0;       /* Fade in tooltip */
     transition: opacity 0.3s;
+    overflow: hidden;
 }
 .tooltip .tiptext::after {    /* Tooltip arrow */
     content: "";

@@ -85,7 +85,8 @@ export const layout = {
             }
     
             /* single operation */
-            html += `<div class="columns-line">
+            html += `<div class="columns-line tooltip">
+                        <span class="tiptext"></span>
                         <span class="columns-line-operation">`;
             for (let j = 0; j < len; j += 1) {
                 isFraction = (numbers[j].length > 1);
@@ -118,10 +119,7 @@ export const layout = {
     integer: function (number: number, isAnswer: boolean, results: Array<number>) {
         let html = '';
         html += isAnswer ?
-            `<div class="tooltip">
-                <input type="number" class="answer form-element ${maths.noTouchClass}">
-                <span class="tiptext"></span>
-            </div>`
+            `<input type="number" class="answer form-element ${maths.noTouchClass}">`
             : `<div> ${number} </div>`;
         if (isAnswer) {
             results.push(number);
@@ -136,21 +134,17 @@ export const layout = {
             tempArray = [],
             html = '';
 
-        html += isAnswer?   // if it's an answer wrap fraction in a tooltip module
-            `<span class="tooltip">`
-            : ''; 
         html += '<div class="fraction">';   // opening fraction tag
 
         html += (wholeNum >= 1)?  // is there a whole number before a fraction part?
             isAnswer?
                 `<div class="whole"><input type="number" class="answer form-element ${maths.noTouchClass}"></div>`
                 : `<div class="whole"> ${wholeNum} </div>`
-                : ''
+            : ''
 
-        if (isInteger) {    // if fraction is an integer add closing tags and return
+        if (isInteger) {    // if fraction is an integer add closing tag and return
             html += '</div>';
             if (isAnswer) {
-                html += '<span class="tiptext"></span></span>';
                 results.push(array);
             }
             return html;
@@ -171,7 +165,6 @@ export const layout = {
         html += '</div></div></div>';           // closing 'denominator', 'fraction-unit' and 'fraction' tags
 
         if (isAnswer) {
-            html += '<span class="tiptext"></span></span>';  // closing tooltip module tag
             results.push(array);
         }
         return html;

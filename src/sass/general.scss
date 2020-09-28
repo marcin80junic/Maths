@@ -63,6 +63,10 @@ main {
   width: 85%;
   min-height: 100vh;
   padding: 2em;
+
+  &>:nth-child(n+2) {
+    display: none;
+  }
 }
 
 h1, h2, h3, h4, h5, h6 {

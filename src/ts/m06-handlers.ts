@@ -11,7 +11,6 @@ export const handlers = {
             scoreField = module.container.find(".score"),
             score = 0,
             rows = module.container.find(".columns-line-operation"),
-            tooltips = rows.find(".tooltip"),
             showTooltips = (maths.settings.general.showTooltips === "true"),
             answerFields = rows.find(".answer"),
             icons = rows.find(".icon"),
@@ -19,12 +18,12 @@ export const handlers = {
             resetButton = module.container.find(".reset"),
             reloadButton = module.container.find(".reload"),
             checkAllButton = module.container.find(".check-all"),
-            answerField: JQuery,            // text field or fields currently checked
-            icon: JQuery,                   // icon of the line being checked
-            checkBtn: JQuery,               // currently pressed check button
-            result: number | Array<number>, // result of a single operation
-            answers: Array<number>,         // user's answers
-            timeout: any = null;            // tooltip display delay
+            answerField: JQuery,                        // text field or fields currently checked
+            icon: JQuery,                               // icon of the line being checked
+            checkBtn: JQuery,                           // currently pressed check button
+            result: number | Array<number>,             // result of a single operation
+            answers: Array<number>,                     // user's answers
+            timeout: any = null;                        // tooltip display delay
         
         const goodAnswer = function () {
                 scoreField.text(++score);           // adjust the score
@@ -51,7 +50,7 @@ export const handlers = {
                 return isCorrect ? goodAnswer() : wrongAnswer();
             };
 
-        levelChoice.on("change", function () {    //options change
+        levelChoice.on("change", function () {                      // options change
             let name = $(this).find("option:selected").text();
             module.setLevel(maths.difficulties.indexOf(name));
         });
@@ -60,41 +59,41 @@ export const handlers = {
             module.setExerciseNum(parseInt(number, 10));
         });
 
-        const showTip = (wrapper: JQuery) => {
-            let tip = wrapper.find('.tiptext'),
-                idx = tooltips.index(wrapper),
-                tip_center: number,
-                el_center = wrapper.width() / 2;    // find 'tooltip' wrapper center
-
+        const showTip = (row: JQuery) => {
+            let tip = row.prev(),                                   // tooltip 'body' is a previous sibling
+                margin: number,
+                idx: number;
             if (tip.children().length === 0) {
-                maths.createAndAppendCanvas(tip, module, idx);  // create tiptext content
-                tip_center = tip.width() / 2,                   // find tiptext center
-                tip.css('marginLeft', el_center - (tip_center + 11) + "px");
+                idx = rows.index(row);                                  // find index of operation
+                maths.createAndAppendCanvas(tip, module, idx);          // create tiptext content
+                margin = (tip.parent().width() - tip.outerWidth()) / 2; // calculate left margin..
+                tip.css('marginLeft', `${margin}px`);                   // ..needed to center the tooltip
             }
             tip.addClass("showtip");
         }
 
-        tooltips.on("mouseover mouseout", function (e) {
-            if (maths.isTouchscreen) return;
-            if (showTooltips) {   
-                if (e.type === "mouseover") {               // position tooltip by setting its margin-left property 
-                    timeout = setTimeout(() => showTip($(this)), 1200);
+        answerFields.on("mouseover mouseout", function (e) {
+            if (maths.isTouchscreen) return;                // don't display tooltips on touchscreen devices    
+            if (showTooltips) { 
+                if (e.type === "mouseover") {               // find operation's row and pass it to showtip
+                    timeout = setTimeout(() => showTip($(this).parents('.columns-line-operation')), 1200);
                 } else {
                     if (timeout !== null) {
                         clearTimeout(timeout);
                     }
-                    $(this).find(".tiptext").removeClass("showtip");
+                    $('.showtip').removeClass('showtip');
                 }
             }
         });
-
-      //  if(maths.isTouchscreen) {
-            icons.on('click', function() {
-                showTip($(this).prev());
+        if(maths.isTouchscreen) {                       // for touchscreen display tooltip on icon 'tap'
+            icons.on('click', function(event) {
+                $('.showtip').removeClass('showtip');
+                showTip($(this).parent());              // operation's row is a direct parent of icon
+                event.stopPropagation();                // prevent body's handler to hide this tooltip
             });
-      //  }
+        }
 
-        checkButtons.on("click", function (e) {   //listeners for all check buttons on page
+        checkButtons.on("click", function (e) {         // listeners for all check buttons on page
             e.preventDefault();
             let index = checkButtons.index(this),
                 isCorrect = processOperation(index);
@@ -102,7 +101,7 @@ export const handlers = {
             $(this).trigger('blur');
         });
 
-        resetButton.on("click", () => {     // reset button
+        resetButton.on("click", () => {                                     // reset button
             score = 0;
             scoreField.text(score);                                         // reset the score
             answerFields.show().removeClass("warning").next().remove();     // reset answers
@@ -126,8 +125,8 @@ export const handlers = {
             });
             checkAllButton.trigger('blur');
         });
-        setTimeout(()=>this.adjustLinesLength(rows), 100);  // run it as soon as page is loaded
-        this.textInputs(rows, answerFields, processOperation);  //add input fields filtering
+        setTimeout(()=>this.adjustLinesLength(rows), 1);        // run it as soon as page is loaded
+        this.textInputs(rows, answerFields, processOperation);  // add input fields filtering
     },
 
 
@@ -259,8 +258,8 @@ export const handlers = {
         answerFields.on("blur", function () {
             let field = $(this);
             if (field.val() === "") {
-                let parent = field.removeClass("warning").parents(".columns-line");
-                let fields = parent.find(".answer");
+                let parent = field.removeClass("warning").parents(".columns-line-operation");
+                let fields = parent.find(".answer").removeClass("warning");
                 if (fields.length > 1) {  // only if a fraction
                     if (fields.not(field).val() !== "") {
                         return;
