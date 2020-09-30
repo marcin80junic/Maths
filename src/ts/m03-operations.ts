@@ -1,245 +1,287 @@
+
 import $ from 'jquery';
-import { Operation, objectCreator } from './m01-prototype';
-import { maths } from './m02-maths';
-import type { mathOperation } from './types';
+import { MathOperation } from './m01-prototype';
 
 
-export const addition = (function() {
-  
-    let addition: mathOperation = objectCreator(Operation.prototype);
+class Addition extends MathOperation {
 
-    addition.container = $("#addition-exercises");
+  getNumbers(level: number) {
 
-    addition.name = "addition";
+    const operation = [],
+      rand = MathOperation.range,
+      reduce = MathOperation.reduce,
 
-    addition.sign = "+";
-
-    addition.getNumbers = function(level: number) {
-      const rand = maths.range;
-      let numbers: Array<number> = [];
-      switch (level) {
-        case 0:
-          numbers = [rand(2, 9), rand(2, 9)];
-          break;
-        case 1:
-          numbers = 
-          (Math.random() < 0.5) ?
-            (Math.random() < 0.5) ?
-              [rand(10, 19), rand(2, 9)]
-              : [rand(2, 9), rand(10, 19)]
-            : [rand(2, 9), rand(2, 9), rand(2, 9)];
-          break;
-        case 2:
-          numbers = 
-          (Math.random() < 0.5) ?
-            [rand(10, 99), rand(10, 19), rand(2, 9)]
-            : [rand(10, 19), rand(2, 9), rand(10, 99)];
-          break;
-      }
-      numbers.push(numbers.reduce(this.reducer)); //add result as the last number in array
-      return numbers;
-    };
-
-    addition.reducer = (accumulator: number, number: number) => accumulator + number;
-
-    return addition;
-
-  }());
-  
-
-  export const subtraction = (function() {
-
-    let subtraction: mathOperation = objectCreator(Operation.prototype);
-
-    subtraction.container = $("#subtraction-exercises");
-
-    subtraction.name = "subtraction";
-
-    subtraction.sign = "-";
-    
-    subtraction.getNumbers = function(level: number) {
-      const rand = maths.range;
-      let numbers: Array<number> = [];
-      switch (level) {
-        case 0:
-          numbers = [rand(3, 9), rand(2, 8)];
-          break;
-        case 1:
-          numbers = 
-          (Math.random() < 0.5) ?
-            [rand(10, 19), rand(2, 9)]
-            : [rand(10, 19), rand(2, 9), rand(2, 5)];
-          break;
-        case 2:
-          numbers = 
-          (Math.random() < 0.5) ?
-            [rand(10, 99), rand(10, 19), rand(2, 9)]
-            : [rand(10, 99), rand(10, 97)];
-          break;
-      }
-      let result = numbers.reduce(this.reducer);
-      if (result > 0) {
-        numbers.push(result) //add result as the last number in array
-      } else {
-        numbers = this.getNumbers(level);
-      }
-      return numbers;
-    };
-
-    subtraction.reducer = (accumulator: number, number: number) => accumulator - number;
-
-    return subtraction;
-
-  }());
-
-
-  export const multiplication = (function() {
-
-    let multiplication: mathOperation = objectCreator(Operation.prototype);
-
-    multiplication.container = $("#multiplication-exercises");
-
-    multiplication.name = "multiplication";
-
-    multiplication.sign = "\u00D7";
-   
-    multiplication.getNumbers = function (level: number) {
-      const rand = maths.range;
-      let numbers: Array<number> = [];
-      switch (level) {
-        case 0:
-          numbers = 
-          (Math.random() < 0.5)?
-            [rand(2, 5), rand(2, 6)]
-            : [rand(2, 6), rand(2, 5)];
-          break;
-        case 1:
-          numbers = [rand(2, 9), rand(2, 9)];
-          break;
-        case 2:
-          numbers = 
-          (Math.random() < 0.5) ?
-            [rand(2, 5), rand(10, 19)]
-            : (Math.random() < 0.5) ?
-              [rand(2, 9), rand(2, 5), rand(2, 9)]
-              : [rand(2, 9), rand(2, 9), rand(2, 5)];
-          break;
-      }
-      numbers.push(numbers.reduce(this.reducer)); //add result as the last number in an array
-      return numbers;
-    };
-
-    multiplication.reducer = (accumulator: number, number: number) => accumulator * number;
-
-    return multiplication;
-
-  }());
-
-
-  export const division = (function() {
-
-    let division: mathOperation = objectCreator(Operation.prototype);
-
-    division.container = $("#division-exercises");
-
-    division.name = "division";
-
-    division.sign = "\u00F7";
-    
-    division.getNumbers = function (level: number) {
-      const rand = maths.range;
-      let numbers: Array<number> = [];
-      switch (level) {
-        case 0:
-          numbers = [rand(4, 20), rand(2, 9)];
-          break;
-        case 1:
-          numbers = [rand(12, 100), rand(3, 9)];
-          break;
-        case 2:
-          numbers = 
-          (Math.random() < 0.5) ?
-            [rand(20, 200), rand(10, 19)]
-            : [rand(20, 200), rand(2, 9), rand(2, 5)];
-          break;
-      }
-      let result = numbers.reduce(this.reducer);
-      if ((result % 1 === 0 && result > 1) && ((level !== 1) || (level === 1 && result < 10))) {
-        numbers.push(result) //add result as the last number in array
-      } else {
-        numbers = this.getNumbers(level);
-      }
-      return numbers;
-    };
-
-    division.reducer = (accumulator: number, number: number) => {
-      return accumulator / number;
-    };
-
-    return division;
-
-  }());
-  
-  
-  export const fractions = (function () {
-
-    let fractions: mathOperation = objectCreator(Operation.prototype);
-
-    fractions.container = $("#fractions-exercises");
-
-    fractions.name = "fractions";
-
-    fractions.sign = "+";
-
-    fractions.getNumbers = function (level: number) {
-      const rand = maths.range,
-            fraction = (base: number, max: number) => [rand(1, max), base];
-      let numbers: Array<Array<number>> = [],
-          base1: number,
-          base2: number;
-      switch(level) {
-        case 0:
-          base1 = rand(2, 6);
-          numbers = [fraction(base1, base1 - 1), fraction(base1, base1 - 1)];
-          break;
-        case 1:
-          base1 = rand(2, 4);
-          base2 = rand(2, 5);
-          if (base1 === base2) {
-            numbers = [fraction(base1, base1 + 1), fraction(base2, base2 -1)];
+      easy = () => {
+        operation.push(rand(2, 9), this.sign, rand(2, 9));
+      },
+      medium = () => {
+        if (Math.random() < 0.5) {
+          if (Math.random() < 0.5) {
+            operation.push(rand(10, 19), this.sign, rand(2, 9));
           } else {
-            numbers = [fraction(base1, Math.floor(base1 / 2)), fraction(base2, Math.floor(base2 / 2))];
+            operation.push(rand(2, 9), this.sign, rand(10, 19));
           }
-          break;
-        case 2:
-          base1 = rand(2, 10);
-          base2 = rand(2, 4);
-          numbers = [fraction(base1, 2 * base1 - 1), fraction(base2, 2 * base2 - 1)];
-          break;
+        } else {
+          operation.push(rand(2, 9), this.sign, rand(2, 9), this.sign, rand(2, 9));
+        }
+      },
+      hard = () => {
+        let random = Math.random();
+        if (random < 0.33) {
+          if (Math.random() < 0.5) {
+            operation.push(rand(2, 9), this.sign, rand(10, 19), this.sign, rand(11, 99));
+          } else {
+            operation.push(rand(2, 9), this.sign, rand(11, 99), this.sign, rand(10, 19));
+          }
+        } else if (random < 0.66) {
+          if (Math.random() < 0.5) {
+            operation.push(rand(10, 19), this.sign, rand(2, 9), this.sign, rand(11, 99));
+          } else {
+            operation.push(rand(10, 19), this.sign, rand(11, 99), this.sign, rand(2, 9));
+          }
+        } else {
+          if (Math.random() < 0.5) {
+            operation.push(rand(11, 99), this.sign, rand(2, 9), this.sign, rand(10, 19));
+          } else {
+            operation.push(rand(11, 99), this.sign, rand(10, 19), this.sign, rand(2, 9));
+          }
+        }
+      };
+        
+    switch (level) {
+      case 0:
+        easy();
+        break;
+      case 1:
+        medium();
+        break;
+      case 2:
+        hard();
+        break;
+    }
+    operation.push('=', reduce(operation));
+    return operation;
+  }
+}
+
+
+class Subtraction extends MathOperation {
+
+  getNumbers = function(level: number) {
+
+    let subTotal: number;
+    const operation = [],
+      rand = MathOperation.range,
+      reduce = MathOperation.reduce,
+
+      easy = () => {
+        subTotal = rand(3, 9)
+        operation.push(subTotal, this.sign, rand(2, subTotal - 1));
+      },
+      medium = () => {
+        subTotal = rand(10, 19);
+        if (Math.random() < 0.5) {
+          operation.push(subTotal, this.sign, rand(2, subTotal - 2));
+        } else {
+          operation.push(subTotal, this.sign, rand(2, subTotal - 3), this.sign);
+          subTotal = reduce(operation);
+          operation.push(rand(2, subTotal));
+        }
+      },
+      hard = () => {
+        subTotal = rand(20, 99);
+        if (Math.random() < 0.5) {
+          operation.push(subTotal, this.sign, rand(11, subTotal - 2));
+        } else {
+          operation.push(subTotal, this.sign, rand(2, 19), this.sign);
+          subTotal = reduce(operation);
+          operation.push(rand(2, subTotal));
+        }
+      };
+
+    switch (level) {
+      case 0:
+        easy();
+        break;
+      case 1:
+        medium();
+        break;
+      case 2:
+        hard();
+        break;
+    }
+
+    operation.push('=', reduce(operation));
+    return operation;
+  }
+
+}
+
+
+class Multiplication extends MathOperation {
+
+  getNumbers = function (level: number) {
+
+    const operation = [],
+      rand = MathOperation.range,
+      reduce = MathOperation.reduce,
+
+      easy = () => {
+        operation.push(rand(2, 6), this.sign, rand(2, 6));
+      },
+      medium = () => {
+        if (Math.random() < 0.5) {
+          operation.push(rand(2, 5), this.sign, rand(2, 5), this.sign, rand(2, 5));
+        } else {
+          if (Math.random() < 0.5) {
+            operation.push(rand(5, 9), this.sign, rand(2, 9));
+          } else {
+            operation.push(rand(2, 9), this.sign, rand(5, 9));
+          }
+        }
+      },
+      hard = () => {
+        if (Math.random() < 0.5) {
+          if (Math.random() < 0.5) {
+            operation.push(rand(2, 9), this.sign, rand(11, 19));
+          } else {
+            operation.push(rand(11, 19), this.sign, rand(2, 9));
+          }
+        } else {
+          let random = Math.random();
+          if (random < 0.33) {
+            operation.push(rand(2, 5), this.sign, rand(2, 9), this.sign, rand(2, 9));
+          } else if (random < 0.66) {
+            operation.push(rand(2, 9), this.sign, rand(2, 5), this.sign, rand(2, 9));
+          } else {
+            operation.push(rand(2, 9), this.sign, rand(2, 9), this.sign, rand(2, 5));
+          }
+        }
+      };
+
+    switch (level) {
+      case 0:
+        easy();
+        break;
+      case 1:
+        medium();
+        break;
+      case 2:
+        hard();
+        break;
+    }
+
+    operation.push('=', reduce(operation));
+    return operation;
+  }
+
+}
+
+
+class Division extends MathOperation {
+
+  getNumbers = function (level: number) {
+
+    let subTotal: number,
+        divArray: any;
+    const operation = [],
+      rand = MathOperation.range,
+      reduce = MathOperation.reduce,
+      divisors = MathOperation.divisors,
+      easy = () => {
+        subTotal = rand(4, 24, true);
+        divArray = divisors(subTotal);
+        operation.push(subTotal, this.sign, rand(2, 10, false, divArray));
+      },
+      medium = () => {
+        subTotal = rand(11, 100, true);
+        divArray = divisors(subTotal);
+        if (Math.random() < 0.5) {
+          operation.push(subTotal, this.sign, rand(2, subTotal/2, false, divArray));
+        } else {
+          operation.push(subTotal, this.sign, rand(2, subTotal/2, false, divArray));
+          if (operation[2] < 10) {
+            subTotal = reduce(operation);
+            divArray = divisors(subTotal);
+            if (divArray.length > 0) {
+              operation.push(this.sign, rand(2, subTotal, false, divArray));
+            }
+          }
+        }
+      },
+      hard = () => {
+        subTotal = rand(50, 200, true);
+        divArray = divisors(subTotal);
+        if (Math.random() < 0.5) {
+
+        } else {
+
+        }
       }
-      if (level === 0) numbers.push(numbers.reduce(this.simpleReducer));
-      else numbers.push(numbers.reduce(this.reducer));
-      return numbers;
-    };
 
-    fractions.reducer = (accArray: Array<number>, array: Array<number>) => {
-      let num = accArray[0] * array[1] + array[0] * accArray[1],
-          den = accArray[1] * array[1],  // add two fractions using common denominator
-          x = num, y = den;
-      while (y) {  // find greatest common divisor
-        var temp = y;
-        y = x % y;
-        x = temp;
-      }
-      return [num / x, den / x]; // return reduced fraction
-    };
+    switch (level) {
+      case 0:
+        easy();
+        break;
+      case 1:
+        medium();
+        break;
+      case 2:
+        numbers = 
+        (Math.random() < 0.5) ?
+          [rand(20, 200), rand(10, 19)]
+          : [rand(20, 200), rand(2, 9), rand(2, 5)];
+        break;
+    }
+    
+    operation.push('=', reduce(operation));
+    return operation;
+  }
 
-    fractions.simpleReducer = (accArray: Array<number>, array: Array<number>) => {
-      let num = accArray[0] + array[0], // add two fractions assuming denominators are equal
-          den = accArray[1]; 
-      return [num, den];
-    };
+}
 
-    return fractions;
 
-  }());
+class Fractions extends MathOperation {
+
+  getNumbers = function (level: number) {
+    const rand = MathOperation.range,
+          fraction = (base: number, max: number) => [rand(1, max), base];
+    let numbers: Array<any> = [],
+        base1: number,
+        base2: number;
+    switch(level) {
+      case 0:
+        base1 = rand(2, 6);
+        numbers = [fraction(base1, base1 - 1), fraction(base1, base1 - 1)];
+        break;
+      case 1:
+        base1 = rand(2, 4);
+        base2 = rand(2, 5);
+        if (base1 === base2) {
+          numbers = [fraction(base1, base1 + 1), fraction(base2, base2 -1)];
+        } else {
+          numbers = [fraction(base1, Math.floor(base1 / 2)), fraction(base2, Math.floor(base2 / 2))];
+        }
+        break;
+      case 2:
+        base1 = rand(2, 10);
+        base2 = rand(2, 4);
+        numbers = [fraction(base1, 2 * base1 - 1), fraction(base2, 2 * base2 - 1)];
+        break;
+    }
+    numbers.push('=', MathOperation.reduce(numbers))
+    return numbers;
+  }
+
+}
+
+
+export const addition = new Addition($('#addition-exercises'), 'addition', '+');
+
+export const subtraction = new Subtraction($("#subtraction-exercises"), "subtraction", "-");
+
+export const multiplication = new Multiplication($("#multiplication-exercises"), "multiplication", "\u00D7");
+
+export const division = new Division($("#division-exercises"), "division", "\u00F7");
+
+export const fractions = new Fractions($("#fractions-exercises"), "fractions", ["+", "-", "\u00D7", "\u00F7"]);

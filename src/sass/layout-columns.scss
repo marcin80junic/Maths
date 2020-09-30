@@ -87,6 +87,9 @@ Styleguide Layout.Columns
     align-items: center;
     min-height: 2.6em;
 
+    &.fraction-line {
+        min-height: 4em;
+    }
     & > * {
         display: inline-block;
         margin-left: 0.3em;

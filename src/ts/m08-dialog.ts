@@ -1,5 +1,5 @@
+
 import $ from 'jquery';
-import { maths } from "./m02-maths";
 
 
 export const dialog = {
@@ -21,9 +21,7 @@ export const dialog = {
         this.body.append(content);
         this.dimmer.addClass('active');
         this.container.addClass('active');
-        this.closeBtn.on('click', function() {
-            maths.dialog.dispose(options.callback? options.callback: null);
-        } );
+        this.closeBtn.on( 'click', () => this.dispose(options.callback? options.callback: null) );
         $('body').addClass('body-hidden-overflow');
     },
 

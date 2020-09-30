@@ -6,14 +6,15 @@ module.exports = function (api) {
 
       "presets": [
 
-        "@babel/env",
-        "@babel/preset-typescript"
+        "@babel/preset-typescript",
+        "@babel/env"
   
       ],
 
       "plugins": [
         
-        '@babel/plugin-transform-runtime'
+        '@babel/plugin-transform-runtime',
+        'transform-class-properties'
         
       ]
 

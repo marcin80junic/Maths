@@ -1,4 +1,4 @@
-import type { content } from './types';
+
 import $ from 'jquery';
 import { maths } from './m02-maths';
 
@@ -18,10 +18,10 @@ export const accordion = {
         this.show(this.headerElements.eq(1)[0], 1);
     },
 
-    init: function (contentObj: content) {
+    init: function (contentObj: object) {
         for (const name in contentObj) {
             if (contentObj.hasOwnProperty(name)) {
-                this.createSection(name, contentObj[name as keyof content]);
+                this.createSection(name, contentObj[name as keyof object]);
             }
         }
         this.headerElements = $(this.container.find('.accordion-header'));

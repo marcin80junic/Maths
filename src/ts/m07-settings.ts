@@ -1,7 +1,8 @@
+
 import $ from 'jquery';
-import { Operation } from './m01-prototype';
-import { maths } from './m02-maths';
 import type { mainObject } from './types';
+import { MathOperation } from './m01-prototype';
+import { maths } from './m02-maths';
 
 
 export const settings = {
@@ -165,7 +166,7 @@ export const settings = {
             resetModules = () => {  // resets levelDisplayed property of Operation modules, this will cause
                 for (const object in maths) {  // the program to reload modules next time they will be displayed
                     if (maths.hasOwnProperty(object) &&  
-                        Object.getPrototypeOf(maths[object as keyof mainObject]) === Operation.prototype) {
+                        maths[object as keyof mainObject] instanceof MathOperation) {
                         maths[object as keyof mainObject]["levelDisplayed"] = -1; // actual reset
                     }
                 }

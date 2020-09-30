@@ -21,7 +21,7 @@
         border: 2px solid #1aff1a;
     }
     &.warning {
-        border: 2px solid $red-light;
+        border: 2px inset $red-light;
     }
     &.invisible {
         visibility: hidden;

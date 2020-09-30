@@ -1,6 +1,7 @@
-import type { mainObject, mathOperation } from './types';
+
 import $ from 'jquery';
-import { Operation } from './m01-prototype';
+import type { mainObject } from './types';
+import { MathOperation } from './m01-prototype';
 import * as operations from './m03-operations';
 import { test } from './m04-test';
 import { layout } from './m05-layout';
@@ -73,9 +74,9 @@ export const maths: mainObject = {
     if (!this.settings.areLoaded) {   // initialize settings module if needed
       this.settings.init();
     }
-    if (Operation.prototype === Object.getPrototypeOf(module)) {
+    if (module instanceof MathOperation) {
       if (module.level !== module.levelDisplayed) {   // initialize module if it's an instance of..
-        module.init();    //..Operation class (excludes settings test and home). Only when loaded first time.. 
+        module.init();    //..MathOperation class (excludes settings test and home). Only when loaded first time.. 
       }                   //..the levelDisplayed is -1 and will not match the module's level property
     } else if (moduleName === "test") {
       if (!this.test.isLoaded) {
@@ -84,8 +85,6 @@ export const maths: mainObject = {
     }
     this.active.scrollTop(0);
   },
-
-  range: (min: number, max: number) => Math.floor(Math.random() * (max - min + 1) + min),
 
   playSound: function (isCorrect: boolean, volume: number) {
     let cheer = this.sounds.getCheer(),
@@ -106,9 +105,9 @@ export const maths: mainObject = {
     }
   },
 
-  createAndAppendCanvas: function (parent: JQuery, module: mathOperation, index: number) {
-    let numbers:any = module.numbers[index],
-      answerIdx = module.answersIdxs[index],
+  createAndAppendCanvas: function (parent: JQuery, module: MathOperation, index: number) {
+    let numbers = module.numbersBank[index],
+      answerIdx = module.answersMap.get(index),
       sign = module.sign,
       i: number,
       temp: Array<number> = [],
@@ -140,7 +139,7 @@ export const maths: mainObject = {
         drawInteger(nums[i]);
       }
       if (i < nums.length - 1) {
-        drawSign(sign);
+    //    drawSign(sign);
         c.translate(57, 0);
       } else {
         drawSign("=");

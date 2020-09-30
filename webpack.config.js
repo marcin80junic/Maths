@@ -10,6 +10,8 @@ const devMode = process.env.NODE_ENV === 'development';
 
 module.exports = {
 
+    mode: 'none',
+
     devtool: devMode? 'inline-source-map': 'none',
 
     devServer: {

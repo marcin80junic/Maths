@@ -1,6 +1,7 @@
 import $ from 'jquery';
+import { MathOperation } from './m01-prototype';
 import { maths } from './m02-maths';
-import type { mathOperation, content } from './types';
+import type { content } from './types';
 
 
 export const test = {
@@ -39,9 +40,9 @@ export const test = {
   },
 
   createTest: function () {
-    let module: mathOperation,
+    let module: MathOperation,
         max = this.modules.length,
-        testContent: content = {
+        testContent: object = {
           info: this.info()
         },
         testContainer: any,
@@ -53,7 +54,7 @@ export const test = {
     for (let i = 0; i < max; i += 1) {
       module = maths[this.modules[i]];
       if (module) {
-        this.numbers = module.numbersCreator(this.numOfQuest, this.level);
+        this.numbers = module.generateOperations(this.numOfQuest, this.level);
         this.sign = module.sign;        // sign and numbers properties to be used by layout object
         html = maths.layout.main(this); // string containing markup for operations
         if (i === max - 1) {            // add bottom navigation depending on the position in test

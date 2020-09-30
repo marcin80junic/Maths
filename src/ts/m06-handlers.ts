@@ -1,11 +1,12 @@
+
 import $ from 'jquery';
+import { MathOperation } from './m01-prototype';
 import { maths } from './m02-maths';
-import type { mathOperation } from './types';
 
 
 export const handlers = {
 
-    exercises: function (module: mathOperation) {
+    exercises: function (module: MathOperation) {
         let levelChoice = module.container.find(".level"),
             exerciseNumChoice = module.container.find(".exerciseNum"),
             scoreField = module.container.find(".score"),
@@ -41,22 +42,25 @@ export const handlers = {
                 return false;
             },
             processOperation = function (index: number) {
+                const answerIdx = module.answersMap.get(index);
+                let isCorrect: boolean;
+
                 answerField = rows.eq(index).find(".answer");
                 icon = icons.eq(index);
                 checkBtn = checkButtons.eq(index);
-                result = module.results[index];
+                result = module.numbersBank[index][answerIdx];
                 answers = [];
-                let isCorrect = maths.handlers.validateOperation(answerField, result, answers);
-                return isCorrect ? goodAnswer() : wrongAnswer();
+                isCorrect = maths.handlers.validateOperation(answerField, result, answers);
+                return isCorrect ? goodAnswer(): wrongAnswer();
             };
 
         levelChoice.on("change", function () {                      // options change
             let name = $(this).find("option:selected").text();
-            module.setLevel(maths.difficulties.indexOf(name));
+            module.level = maths.difficulties.indexOf(name);
         });
         exerciseNumChoice.on("change", function () {
             let number = $(this).find("option:selected").text();
-            module.setExerciseNum(parseInt(number, 10));
+            module.exercisesCount = parseInt(number, 10);
         });
 
         const showTip = (row: JQuery) => {
