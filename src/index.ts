@@ -1,6 +1,6 @@
 import './sass/index.scss';
 import $ from 'jquery';
-import { maths } from './ts/m02-maths';
+import { maths } from './ts/m03-maths';
 
 
 

@@ -1,7 +1,7 @@
 
 import $ from 'jquery';
 import { MathOperation } from './m01-prototype';
-import { maths } from './m02-maths';
+import { maths } from './m03-maths';
 
 
 export const handlers = {
@@ -10,7 +10,6 @@ export const handlers = {
         let levelChoice = module.container.find(".level"),
             exerciseNumChoice = module.container.find(".exerciseNum"),
             scoreField = module.container.find(".score"),
-            score = 0,
             rows = module.container.find(".columns-line-operation"),
             showTooltips = (maths.settings.general.showTooltips === "true"),
             answerFields = rows.find(".answer"),
@@ -27,7 +26,7 @@ export const handlers = {
             timeout: any = null;                        // tooltip display delay
         
         const goodAnswer = function () {
-                scoreField.text(++score);           // adjust the score
+                scoreField.text(++module.score);           // adjust the score
                 answerField.each(function (idx) {   // each text field to be replaced by given correct answer
                     $(this).hide().after(`<div> ${ answers[idx] } </div>`); // hide text input and display answer
                     icon.addClass("answered");                  // add some left margin to `tick` icon
@@ -49,6 +48,7 @@ export const handlers = {
                 icon = icons.eq(index);
                 checkBtn = checkButtons.eq(index);
                 result = module.numbersBank[index][answerIdx];
+                console.log("result in numbers bank: "+result)
                 answers = [];
                 isCorrect = maths.handlers.validateOperation(answerField, result, answers);
                 return isCorrect ? goodAnswer(): wrongAnswer();
@@ -106,8 +106,8 @@ export const handlers = {
         });
 
         resetButton.on("click", () => {                                     // reset button
-            score = 0;
-            scoreField.text(score);                                         // reset the score
+            module.score = 0;
+            scoreField.text(module.score);                                         // reset the score
             answerFields.show().removeClass("warning").next().remove();     // reset answers
             icons.prop("src", maths.icons.questMark);                       // reset icons
             checkButtons.removeClass("invisible");                          // reset buttons
@@ -135,7 +135,7 @@ export const handlers = {
 
 
     test: function (container: JQuery) {
-        let rows = container.find(".columns-line-operation"),
+        const rows = container.find(".columns-line-operation"),
             answerFields = container.find(".answer"),
             prevBtn = container.find('.button-prev'),
             nextBtn = container.find('.button-next'),
@@ -144,33 +144,43 @@ export const handlers = {
             headers = container.find('.accordion-header'),
             closeBtn = maths.accordion.closeBtn,
             closeBtn2 = $("#test-close"),
-            lastFocusableElements = $(startBtn).add(nextBtn).add(finishBtn).add(closeBtn).add(closeBtn2);
-        const processTest = function () {
-            let scores: Array<number> = [],
-                icons = container.find(".icon"),
-                results = maths.test.results;
-            const wrongAnswer = function (index: number) {
-                scores[index] = 0;
-                rows.eq(index).find(".answer").addClass("warning"); // find all answer fields in a line
-                icons.eq(index).prop("src", maths.icons.cross);
-            };
-            const correctAnswer = function (index: number) {
-                scores[index] = 1;
-                rows.eq(index).find(".answer").addClass("correct");
-                icons.eq(index).prop("src", maths.icons.tick);
-            };
-            rows.each(function (idx: number, row: HTMLElement) {
-                let fields = $(row).find(".answer"),
-                    result = results[idx],
+            lastFocusableElements = $(startBtn).add(nextBtn).add(finishBtn).add(closeBtn).add(closeBtn2),
+
+            processTest = function () {
+                let module = maths.test.modules[0],
+                    moduleIndex: number,
+                    answerIdx: number,
+                    fields: JQuery,
+                    result: any,
+                    isCorrect: boolean;
+                const icons = container.find(".icon"),
+                    questPerModule = maths.test.numOfQuest,
+                    totalQuestions = maths.test.modules.length * questPerModule,    
+                    wrongAnswer = function (index: number) {
+                        rows.eq(index).find(".answer").addClass("warning"); // find all answer fields in a line
+                        icons.eq(index).prop("src", maths.icons.cross);
+                    },
+                    correctAnswer = function (index: number) {
+                        module.score += 1;
+                        rows.eq(index).find(".answer").addClass("correct");
+                        icons.eq(index).prop("src", maths.icons.tick);
+                    };
+                rows.each(function (idx: number, row: HTMLElement) {
+                    moduleIndex = idx % questPerModule;
+                    if (moduleIndex === 0) {
+                        module = maths.test.modules[idx/questPerModule];
+                    }
+                    fields = $(row).find(".answer"),
+                    answerIdx = module.answersMap.get(moduleIndex);
+                    result = module.numbersBank[moduleIndex][answerIdx];
                     isCorrect = maths.handlers.validateOperation(fields, result);
-                if (isCorrect) {
-                    correctAnswer(idx);
-                } else {
-                    wrongAnswer(idx);
-                }
-            });
-            return scores;
-        };
+                    if (isCorrect) {
+                        correctAnswer(idx);
+                    } else {
+                        wrongAnswer(idx);
+                    }
+                });
+            };
         
         startBtn.on("click", function () {
             if (startBtn.text() === "Start") {
@@ -194,10 +204,10 @@ export const handlers = {
         });
 
         finishBtn.on("click", function () {
-            let scores = processTest();
+            processTest();
             answerFields.prop("disabled", "true");
             $(startBtn).add(prevBtn).add(nextBtn).add(finishBtn).hide();
-            maths.test.displayResults(scores, maths.timer.stop());
+            maths.test.displayResults(maths.timer.stop());
         });
 
         closeBtn2.on("click", () => maths.dialog.dispose(() => maths.accordion.dispose()));

@@ -8,6 +8,7 @@ export interface mainObject {
   sounds: any,
   difficulties: Array<string>,
   numOfExercises: Array<string>,
+  signMap: Map<string, string>,
 
   active: JQuery,
 

@@ -2,7 +2,7 @@
 import $ from 'jquery';
 import type { mainObject } from './types';
 import { MathOperation } from './m01-prototype';
-import { maths } from './m02-maths';
+import { maths } from './m03-maths';
 
 
 export const settings = {
@@ -10,11 +10,16 @@ export const settings = {
     areLoaded: false,
     fields: {
         volume: $('#volume'),
+
         isRandomized: $('#settings input[name="isRandomized"]'),
         showTooltips: $('#settings input[name="showTooltips"]'),
-        testModules: $('#settings input[name="modules"]'),
+
+        fractionSigns: $('#settings #fractions-settings input[name="signs"]'),
+
+        testModules: $('#settings #test-settings input[name="modules"]'),
         testTimes: $('#settings select[name="times"]'),
         testNumOfQuest: $('#settings select[name="numOfQuest"]'),
+
         clearButton: $('#settings-clear'),
         applyButton: $('#settings-apply'),
         settingsForm: $('#settings-form')
@@ -27,7 +32,7 @@ export const settings = {
         isRandomized: "false"
     },
     fractions: {
-
+        signs: "addition,subtraction"
     },
     test: {
         modules: "addition,subtraction,multiplication,division,fractions",
@@ -38,28 +43,43 @@ export const settings = {
     changed: {
         system: {},
         general: {},
+        fractions: {},
         test: {}
     },
 
     init: function() {
-        let ns = maths.settings,
+        const ns = maths.settings,
             namespace = "maths.settings.",
             all = {
                 system: this.system,
                 general: this.general,
+                fractions: this.fractions,
                 test: this.test
+            },
+            readCheckBtnGroup = (group: JQuery) => {
+                const mods: Array<string> = [];
+                group.each((i: number, el: HTMLElement) => {
+                    if ($(el).is(':checked')) {
+                        mods.push(<string>$(el).val())
+                    } 
+                });
+                return mods.join(",");
+            },
+            enableApplyButton = () => {
+                if ($.isEmptyObject(this.changed.system)
+                    && $.isEmptyObject(this.changed.general)
+                    && $.isEmptyObject(this.changed.fractions)
+                    && $.isEmptyObject(this.changed.test))    {
+                        ns.fields.applyButton.prop('disabled', true);
+                } else  {
+                    ns.fields.applyButton.prop('disabled', false);
+                }
             };
-        const enableApplyButton = () => {
-            if ($.isEmptyObject(ns.changed.system)
-                && $.isEmptyObject(ns.changed.general)
-                && $.isEmptyObject(ns.changed.test))
-                    ns.fields.applyButton.prop('disabled', true)
-            else  ns.fields.applyButton.prop('disabled', false)
-        }
             
         // read settings from local storage and update all settings fields
         this.accessStorage(all, namespace, false);
         this.areLoaded = true;
+        this.updateModuleSigns("fractions");
         this.restoreSettings();
 
         // define handlers for all settings input fields
@@ -73,7 +93,6 @@ export const settings = {
             enableApplyButton();
             });
         }
-        
         this.fields.isRandomized.on('change', function() {
             let isRand = $(this).val();
             if (isRand === ns.general.isRandomized) delete ns.changed.general.isRandomized
@@ -86,15 +105,22 @@ export const settings = {
             else ns.changed.general.showTooltips = isTooltip
             enableApplyButton();
         });
-        this.fields.testModules.on('change', function() {
-            let mods: Array<string> = [];
-            ns.fields.testModules.each((i: number, el: HTMLElement) => {
-                if ($(el).is(':checked')) {
-                    mods.push(<string>$(el).val())
-                } 
-            });
-            if (mods.join(",") === ns.test.modules) delete ns.changed.test.modules
-            else ns.changed.test.modules = mods.join(",");
+        this.fields.fractionSigns.on('change', () => {
+            const options = readCheckBtnGroup(this.fields.fractionSigns);
+            if (options === ns.fractions.signs) {
+                delete ns.changed.fractions.signs
+            } else {
+                ns.changed.fractions.signs = options;
+            }
+            enableApplyButton();
+        });
+        this.fields.testModules.on('change', () => {
+            const options = readCheckBtnGroup(this.fields.testModules);
+            if (options === ns.test.modules) {
+                delete ns.changed.test.modules
+            } else {
+                ns.changed.test.modules = options;
+            }
             enableApplyButton();
         });
         this.fields.testTimes.on('change', function() {
@@ -136,6 +162,7 @@ export const settings = {
             enableApplyButton();
         });
     },
+
     accessStorage: function(object: any, namespace: string, write: boolean) {
         try {
             if (typeof (Storage) !== "undefined") {
@@ -145,10 +172,10 @@ export const settings = {
                             this.accessStorage(object[field], namespace + field + ".", write);
                         } else if(write) {
                             localStorage.setItem(namespace + field, object[field]);
-                      //      console.log("saving: " + namespace + field + ": " + object[field]); /** */
+                            console.log("saving: " + namespace + field + ": " + object[field]); /** */
                         } else {
                             let loaded = localStorage.getItem(namespace + field);
-                      //      console.log("loading: " + namespace + field + ": " + loaded);   //** */
+                            console.log("loading: " + namespace + field + ": " + loaded);   //** */
                             if (loaded !== null) object[field] = loaded;
                         }
                     }
@@ -158,16 +185,20 @@ export const settings = {
             alert("can't access the local storage");
         }
     },
+
     applyChanges: function() {
-        let changed = this.changed,
-            apply = false,
-            temp: any,
-            isEmpty: boolean,
-            resetModules = () => {  // resets levelDisplayed property of Operation modules, this will cause
-                for (const object in maths) {  // the program to reload modules next time they will be displayed
-                    if (maths.hasOwnProperty(object) &&  
-                        maths[object as keyof mainObject] instanceof MathOperation) {
-                        maths[object as keyof mainObject]["levelDisplayed"] = -1; // actual reset
+        let temp: any,
+            isEmpty: boolean;
+        const changed = this.changed,
+            resetModules = (module?: string) => {  // resets levelDisplayed property of Operation modules, this will cause
+                if (module) {
+                    maths[module]["levelDisplayed"] = -1;
+                } else {
+                    for (const object in maths) {  // the program to reload modules next time they will be displayed
+                        if (maths.hasOwnProperty(object) &&  
+                            maths[object as keyof mainObject] instanceof MathOperation) {
+                            maths[object as keyof mainObject]["levelDisplayed"] = -1; // actual reset
+                        }
                     }
                 }
             },
@@ -175,7 +206,7 @@ export const settings = {
                 maths.settings.test.unlocked = "0";
                 maths.test.isLoaded = false;
                 this.accessStorage({"unlocked": "0"}, "maths.settings.test.", true);
-            }
+            };
 
         for (const object in changed) {   // assign temporary changes to actual settings
             if (changed.hasOwnProperty(object)) {
@@ -188,34 +219,47 @@ export const settings = {
                     }
                 }
                 if (!isEmpty) {
-                    if (object === "general") resetModules();
+                    if (object === "general") resetModules();   // reset all modules
+                    if (object === "fractions") {
+                        this.updateModuleSigns("fractions");
+                        resetModules("fractions");
+                    }
                     if (object === "test") resetTest();
                 }
             }
         }   
     },
+
     restoreSettings: function() {
-        let testModules = this.test.modules.split(","), 
-            testTimes = this.test.times.split(","); 
+        const fractionSigns = this.fractions.signs.split(','),
+              testModules = this.test.modules.split(','), 
+              testTimes = this.test.times.split(','),
+              setCheckBtnGroup = ($el: JQuery, values: string[]) => {
+                let checked = false;
+                values.forEach((val: string) => {
+                    if ($el.is(`[value="${val}"]`)) {
+                        checked = true;
+                    }
+                });
+                $el.prop('checked', checked);
+              };
 
         this.fields.volume.val(this.system.volume * 100);  
         this.updateVolumeLabel(this.system.volume * 100);    
-        this.fields.isRandomized.filter('[value="' + this.general.isRandomized + '"]').prop('checked', true);
-        this.fields.showTooltips.filter('[value="' + this.general.showTooltips + '"]').prop('checked', true);
+        this.fields.isRandomized.filter(`[value="${this.general.isRandomized}"]`).prop('checked', true);
+        this.fields.showTooltips.filter(`[value="${this.general.showTooltips}"]`).prop('checked', true);
+        this.fields.fractionSigns.each((i: number, el: HTMLElement) => {
+            setCheckBtnGroup($(el), fractionSigns);
+        });
         this.fields.testModules.each((i: number, el: HTMLElement) => {
-            let checked = false;
-            testModules.forEach((val: string) => {
-                if ($(el).is('[value="' + val + '"]')) {
-                    checked = true;
-                }
-            });
-            $(el).prop('checked', checked);
+            setCheckBtnGroup($(el), testModules);
         });
         this.fields.testTimes.each((i: number, el: HTMLElement) => {
             $(el).val(testTimes[i]);
         });
         this.fields.testNumOfQuest.val(this.test.numOfQuest);
     },
+
     clearChanges: function() {
         for (let field in this.changed) {
             if (this.changed.hasOwnProperty(field)) {
@@ -223,6 +267,7 @@ export const settings = {
             }
         }
     },
+
     confirmChanges: function() {
         let conf = true,
             general = !$.isEmptyObject(this.changed.general),
@@ -238,6 +283,17 @@ export const settings = {
         }
         return conf;
     },
+
+    updateModuleSigns: function(module: string) {
+        const moduleSigns = [],
+              moduleSettings = this.fractions.signs.split(',');
+              
+        for (const settSign of moduleSettings) {
+            moduleSigns.push(maths.signMap.get(settSign));
+        }
+        maths[module].sign = moduleSigns;
+    },
+
     updateVolumeLabel: function(value: number) {
         $('#volume-label').html(value + "%");
         if (value < 1) $('#speaker').prop('src', maths.icons.volumeMuted);

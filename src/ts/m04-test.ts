@@ -1,28 +1,29 @@
 import $ from 'jquery';
 import { MathOperation } from './m01-prototype';
-import { maths } from './m02-maths';
+import { maths } from './m03-maths';
 import type { content } from './types';
 
 
 export const test = {
 
-  container: $("#test"),
+  container: $(".dialog-body"),
   name: "test",
   isLoaded: false,
-  results: [],
 
   /* following properties will be initialized during module init below */
-  modules: [],
+  moduleNames: [],
   times: [],
   numOfQuest: 0,
   unlocked: 0,
   level: 0,
+  /* to be initialized during test creation */
+  modules: [],
 
   init: function () { 
     let choiceButtons = $(".test-level-choice"),
         ns = maths.settings.test;
   
-    this.modules = ns.modules.split(",");
+    this.moduleNames = ns.modules.split(",");
     this.times = ns.times.split(",");
     this.numOfQuest = parseInt(ns.numOfQuest);
     this.unlocked = parseInt(ns.unlocked);
@@ -41,30 +42,32 @@ export const test = {
 
   createTest: function () {
     let module: MathOperation,
-        max = this.modules.length,
-        testContent: object = {
-          info: this.info()
-        },
         testContainer: any,
-        html = "";
-
-    this.results = [];      // reset results array
-    this.answersIdxs = [];  // and indexes of answers
+        sign: any,
+        html: string;
+    const testContent = { info: this.info() },
+          max = this.moduleNames.length;
+        
+    this.modules = [];
 
     for (let i = 0; i < max; i += 1) {
-      module = maths[this.modules[i]];
-      if (module) {
-        this.numbers = module.generateOperations(this.numOfQuest, this.level);
-        this.sign = module.sign;        // sign and numbers properties to be used by layout object
-        html = maths.layout.main(this); // string containing markup for operations
-        if (i === max - 1) {            // add bottom navigation depending on the position in test
-          html += maths.layout.testNavigation(false, true);
-        } else {
-          html += maths.layout.testNavigation(false, false);
-        }
-        testContent[module.name as keyof content] = html; // create property of content object 
-      }                                                       // and assign the markup
+
+      sign = (this.moduleNames[i] === "fractions")?
+              maths[this.moduleNames[i]].sign
+              : maths.signMap.get(this.moduleNames[i]);
+      // create new module object
+      module = maths[this.moduleNames[i]].constructor(this.container, this.moduleNames[i], sign);
+      module.numbersBank = module.generateOperations(this.numOfQuest, this.level);  // generate operations
+      module.answersMap = new Map();              // answersMap needs to be initialized manually in test
+      html = maths.layout.main(module, true);     // string containing markup for operations
+      html += (i === max - 1)?                    // add bottom navigation depending on the position in test
+                maths.layout.testNavigation(false, true)      // buttons `prev` and `finish`
+                : maths.layout.testNavigation(false, false);  // buttons `prev` and `next`
+      testContent[module.name as keyof content] = html;       // create property of content object...
+      this.modules.push(module);                              // add module to test database
+
     }
+
     testContent["summary" as keyof content] = this.summary;
     testContainer = maths.accordion.init(testContent);
     maths.dialog.init(testContainer, {
@@ -78,9 +81,9 @@ export const test = {
   info: function () {
     return `<div class="test-interface">
               <h3 class="center">Level: ${ maths.difficulties[this.level] }</h3>
-              <h3 class="center">Number of questions: ${ this.modules.length * this.numOfQuest }</h3>
+              <h3 class="center">Number of questions: ${ this.moduleNames.length * this.numOfQuest }</h3>
               <h3 class="center">Questions per module: ${ this.numOfQuest }</h3>
-              <h3 class="center">Modules: ${ this.modules.join(', ') }</h3>
+              <h3 class="center">Modules: ${ this.moduleNames.join(', ') }</h3>
               <h3 class="center">Time to complete: ${ this.times[this.level] } minutes</h3>
               <h2 class="center">GOOD LUCK!</h2>
               ${maths.layout.testNavigation(true, false)}
@@ -93,8 +96,8 @@ export const test = {
               </div>
             </div>`,
 
-  displayResults: function (scores: Array<number>, secs: number) {
-    let mods = this.modules,
+  displayResults: function (secs: number) {
+    let mods = this.moduleNames,
         exNums: number = this.numOfQuest,
         results: Array<number> = [],
         percs: Array<number> = [],

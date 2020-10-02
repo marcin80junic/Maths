@@ -1,9 +1,8 @@
 
-import $ from 'jquery';
 import { MathOperation } from './m01-prototype';
 
 
-class Addition extends MathOperation {
+export class Addition extends MathOperation {
 
   getNumbers(level: number) {
 
@@ -65,7 +64,7 @@ class Addition extends MathOperation {
 }
 
 
-class Subtraction extends MathOperation {
+export class Subtraction extends MathOperation {
 
   getNumbers = function(level: number) {
 
@@ -118,7 +117,7 @@ class Subtraction extends MathOperation {
 }
 
 
-class Multiplication extends MathOperation {
+export class Multiplication extends MathOperation {
 
   getNumbers = function (level: number) {
 
@@ -178,7 +177,7 @@ class Multiplication extends MathOperation {
 }
 
 
-class Division extends MathOperation {
+export class Division extends MathOperation {
 
   getNumbers = function (level: number) {
 
@@ -212,11 +211,14 @@ class Division extends MathOperation {
       hard = () => {
         subTotal = rand(50, 200, true);
         divArray = divisors(subTotal);
-        if (Math.random() < 0.5) {
-
-        } else {
-
-        }
+          operation.push(subTotal, this.sign, rand(2, subTotal/2, false, divArray));
+          subTotal = reduce(operation);
+          if (subTotal > 10) {
+            divArray = divisors(subTotal);
+            if (divArray.length > 0) {
+              operation.push(this.sign, rand(2, subTotal/2, false, divArray));
+            }
+          }
       }
 
     switch (level) {
@@ -227,10 +229,7 @@ class Division extends MathOperation {
         medium();
         break;
       case 2:
-        numbers = 
-        (Math.random() < 0.5) ?
-          [rand(20, 200), rand(10, 19)]
-          : [rand(20, 200), rand(2, 9), rand(2, 5)];
+        hard();
         break;
     }
     
@@ -241,47 +240,76 @@ class Division extends MathOperation {
 }
 
 
-class Fractions extends MathOperation {
+export class Fractions extends MathOperation {
 
   getNumbers = function (level: number) {
-    const rand = MathOperation.range,
-          fraction = (base: number, max: number) => [rand(1, max), base];
-    let numbers: Array<any> = [],
-        base1: number,
-        base2: number;
+
+    let subTotal: number,
+        divArray: any,
+        den1: number,
+        num1: number,
+        den2: number,
+        num2: number,
+        sign = (this.sign.length > 1)? MathOperation.randomValue(this.sign): this.sign[0];
+    const operation = [],
+      rand = MathOperation.range,
+      reduce = MathOperation.reduce,
+      fract = (maxNum: number, den: number) => [rand(1, maxNum), den],
+
+      easy = () => {
+        den1 = rand(2, 6);
+        if (sign === MathOperation.SUBTRACTION_SIGN) {
+          num1 = rand(2, den1);
+          num2 = rand(1, num1-1);
+        } else {
+          num1 = rand(1, den1-1);
+          num2 = rand(1, den1-num1);
+        }
+        operation.push([num1, den1], sign, [num2, den1]);
+      },
+
+      medium = () => {
+        den1 = rand(2, 9);
+        if (sign === MathOperation.SUBTRACTION_SIGN) {
+          num1 = rand(2, den1*2);
+          num2 = rand(1, num1-1);
+        } else {
+          num1 = rand(1, den1-1);
+          num2 = rand(1, den1*2);
+        }
+        operation.push([num1, den1], sign, [num2, den1]);
+      },
+
+      hard = () => {
+        den1 = rand(2, 7);
+        den2 = rand(3, 5);
+        if (sign === MathOperation.SUBTRACTION_SIGN) {
+          num1 = rand(5, den1*3);
+          num2 = rand(1, num1/den1*den2 - 1);
+        } else {
+          num1 = rand(1, den1*3);
+          num2 = rand(1, den2*3);
+        }
+        if (num1 % den1 === 0 && num2 % den2 === 0) {
+          num2 -= 1;
+        }
+        operation.push([num1, den1], sign, [num2, den2]);
+      }
+        
     switch(level) {
       case 0:
-        base1 = rand(2, 6);
-        numbers = [fraction(base1, base1 - 1), fraction(base1, base1 - 1)];
+        easy();
         break;
       case 1:
-        base1 = rand(2, 4);
-        base2 = rand(2, 5);
-        if (base1 === base2) {
-          numbers = [fraction(base1, base1 + 1), fraction(base2, base2 -1)];
-        } else {
-          numbers = [fraction(base1, Math.floor(base1 / 2)), fraction(base2, Math.floor(base2 / 2))];
-        }
+        medium();
         break;
       case 2:
-        base1 = rand(2, 10);
-        base2 = rand(2, 4);
-        numbers = [fraction(base1, 2 * base1 - 1), fraction(base2, 2 * base2 - 1)];
+        hard();
         break;
     }
-    numbers.push('=', MathOperation.reduce(numbers))
-    return numbers;
+
+    operation.push('=', reduce(operation));
+    return operation;
   }
 
 }
-
-
-export const addition = new Addition($('#addition-exercises'), 'addition', '+');
-
-export const subtraction = new Subtraction($("#subtraction-exercises"), "subtraction", "-");
-
-export const multiplication = new Multiplication($("#multiplication-exercises"), "multiplication", "\u00D7");
-
-export const division = new Division($("#division-exercises"), "division", "\u00F7");
-
-export const fractions = new Fractions($("#fractions-exercises"), "fractions", ["+", "-", "\u00D7", "\u00F7"]);

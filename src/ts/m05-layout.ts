@@ -1,6 +1,6 @@
 
 import { MathOperation } from './m01-prototype';
-import { maths } from './m02-maths';
+import { maths } from './m03-maths';
 
 
 export const layout = {
@@ -58,10 +58,9 @@ export const layout = {
         module.container.html(html);
     },
 
-    main: function (module: MathOperation) {
-
-        let isTest = module.name === "test",
-            isRandomized = (maths.settings.general.isRandomized === "true"), 
+    main: function (module: MathOperation, isTest?: boolean) {
+        
+        let isRandomized = (maths.settings.general.isRandomized === "true"), 
             isFraction = (module.name === "fractions"),
             isAnswer: boolean,
             numsBank = module.numbersBank,  // numbers bank
@@ -102,7 +101,7 @@ export const layout = {
                 } 
             }
             html += '<img src="' + maths.icons.questMark + '" class="icon">';
-            html += !isTest ?  // insert a check button if not a test
+            html += (isTest !== true)?  // insert a check button if not a test
                 `<button type="submit" class="check button3d form-element ${maths.noTouchClass}">check</button>`
                 : "";
             html += '</span></div>';

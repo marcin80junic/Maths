@@ -1,6 +1,6 @@
 
 import $ from 'jquery';
-import { maths } from './m02-maths';
+import { maths } from './m03-maths';
 
 
 export const accordion = {
