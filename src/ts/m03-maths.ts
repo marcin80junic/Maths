@@ -11,14 +11,15 @@ import { dialog } from './m08-dialog';
 import { accordion } from './m09-accordion';
 import { timer } from './m10-timer';
 import { canvas } from './m11-canvas';
-import tick from '../../public/pics/correct.png';
-import cross from '../../public/pics/wrong.png';
-import questMark from '../../public/pics/question.png';
-import volumeMuted from '../../public/pics/speaker-muted.png';
-import volumeLow from '../../public/pics/speaker-low-volume.png';
-import volumeMedium from '../../public/pics/speaker-medium-volume.png';
-import volumeHigh from '../../public/pics/speaker-high-volume.png';
-import cheer from '../../public/sounds/cheering.mp3';
+// @ts-ignore
+import tick from '../../public/pics/correct.png'; // @ts-ignore
+import cross from '../../public/pics/wrong.png';  // @ts-ignore
+import questMark from '../../public/pics/question.png'; // @ts-ignore
+import volumeMuted from '../../public/pics/speaker-muted.png';  // @ts-ignore
+import volumeLow from '../../public/pics/speaker-low-volume.png'; // @ts-ignore
+import volumeMedium from '../../public/pics/speaker-medium-volume.png'; // @ts-ignore
+import volumeHigh from '../../public/pics/speaker-high-volume.png'; // @ts-ignore
+import cheer from '../../public/sounds/cheering.mp3'; // @ts-ignore
 import wrong from '../../public/sounds/fart.mp3';
 
 
@@ -28,10 +29,6 @@ import wrong from '../../public/sounds/fart.mp3';
 
 export const maths: mainObject = {
 
-  isTouchscreen: "ontouchstart" in document.documentElement,
-  noTouchClass: (function() {
-    return ("ontouchstart" in document.documentElement)? '': 'no-touch'
-  }()),
 
   icons: {
     tick: tick,

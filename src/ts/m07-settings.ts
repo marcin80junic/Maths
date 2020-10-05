@@ -1,5 +1,5 @@
 
-import $ from 'jquery';
+
 import type { mainObject } from './types';
 import { MathOperation } from './m01-prototype';
 import { maths } from './m03-maths';
@@ -7,7 +7,7 @@ import { maths } from './m03-maths';
 
 export const settings = {
     name: "settings",
-    areLoaded: false,
+    
     fields: {
         volume: $('#volume'),
 
