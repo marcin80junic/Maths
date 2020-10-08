@@ -1,12 +1,15 @@
 import './sass/index.scss';
 import $ from 'jquery';
+import { ModuleRegistry } from './ts/c00_factory';
+import { Container } from './ts/c01_00_container';
+
 
 
 $(function () {
 
+  let prevModule = ModuleRegistry.getModule(document.getElementById('home'));
   
-
-
+/*
   // adjust app for touschscreen devices
   if (maths.isTouchscreen) {
     $('#settings-form > fieldset:first-child').remove();  // remove the volume adjustment
@@ -21,21 +24,24 @@ $(function () {
       .form-element,
       .custom-radio`)
         .addClass(maths.noTouchClass);  // add class allowing ':hover' effects on no-touch screens
-  }
+  }*/
  
   //event handler for navigation menu
   $('#main-menu').on('click', (e) => {
-    let link = $(e.target),
-        href = link.prop('href');
+
+    const link = $(e.target);
+    let href = link.prop('href'),
+        module: Container;
+          
     if (href !== undefined) {
-      href = href.substring(href.indexOf('#'));
       $('.selected').removeClass('selected');
       link.addClass('selected');
-      maths.active.fadeOut(() => {
-        maths.switch(href);
-        maths.active.fadeIn();
-      });
+      href = href.substring(href.indexOf('#') + 1);
+      module = ModuleRegistry.getModule(document.getElementById(href));
+      prevModule.hide(() => module.show());
+      prevModule = module;
     }
+
     if ($('.sidenav .mobile-toggle-button').is(':visible')) {
       $('.sidenav').toggleClass('is-open');
       $('body').toggleClass('body-hidden-overflow');

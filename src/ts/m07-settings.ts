@@ -1,6 +1,4 @@
 
-
-import type { mainObject } from './types';
 import { MathOperation } from './m01-prototype';
 import { maths } from './m03-maths';
 
@@ -195,10 +193,10 @@ export const settings = {
                     maths[module]["levelDisplayed"] = -1;
                 } else {
                     for (const object in maths) {  // the program to reload modules next time they will be displayed
-                        if (maths.hasOwnProperty(object) &&  
-                            maths[object as keyof mainObject] instanceof MathOperation) {
-                            maths[object as keyof mainObject]["levelDisplayed"] = -1; // actual reset
-                        }
+                    //    if (maths.hasOwnProperty(object) &&  
+                      //      maths[object as keyof mainObject] instanceof MathOperation) {
+                        //   maths[object as keyof mainObject]["levelDisplayed"] = -1; // actual reset
+                    //    }
                     }
                 }
             },
