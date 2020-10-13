@@ -1,6 +1,6 @@
 import './sass/index.scss';
 import $ from 'jquery';
-import { ModuleRegistry } from './ts/c00_factory';
+import { ModuleRegistry } from './ts/c00_registry';
 import { Container } from './ts/c01_00_container';
 
 
