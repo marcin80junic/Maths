@@ -1,7 +1,8 @@
 import './sass/index.scss';
 import $ from 'jquery';
-import { ModuleRegistry } from './ts/c00_registry';
-import { Container } from './ts/c01_00_container';
+import { ModuleRegistry } from './ts/registry';
+import { Container } from './ts/container_home';
+import { Configuration } from './ts/module_config';
 
 
 
@@ -9,9 +10,10 @@ $(function () {
 
   let prevModule = ModuleRegistry.getModule(document.getElementById('home'));
   
-/*
-  // adjust app for touschscreen devices
-  if (maths.isTouchscreen) {
+
+  /* adjust app for touschscreen devices */
+
+  if (Configuration.isTouchscreen) {
     $('#settings-form > fieldset:first-child').remove();  // remove the volume adjustment
     $('main').on('click', () => {
       $('.showtip').removeClass('showtip');               // hide tooltip on 'anywhere' tap
@@ -23,12 +25,12 @@ $(function () {
       .dialog-head-close,
       .form-element,
       .custom-radio`)
-        .addClass(maths.noTouchClass);  // add class allowing ':hover' effects on no-touch screens
-  }*/
+        .addClass(Configuration.noTouchClass);      // add class allowing ':hover' effects on no-touch screens
+  }
  
-  //event handler for navigation menu
-  $('#main-menu').on('click', (e) => {
+  /* event handler for navigation menu */
 
+  $('#main-menu').on('click', (e) => {
     const link = $(e.target);
     let href = link.prop('href'),
         module: Container;
@@ -41,7 +43,6 @@ $(function () {
       prevModule.hide(() => module.show());
       prevModule = module;
     }
-
     if ($('.sidenav .mobile-toggle-button').is(':visible')) {
       $('.sidenav').toggleClass('is-open');
       $('body').toggleClass('body-hidden-overflow');

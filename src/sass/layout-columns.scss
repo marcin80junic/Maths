@@ -93,10 +93,14 @@ Styleguide Layout.Columns
             margin-left: 0.5em;
         }
     }
+
     & > * {
         display: inline-block;
         &:not(:first-child) {
             margin-left: 0.3em;
+        }
+        &.answered {
+            margin-left: 0.5em;
         }
     }
 

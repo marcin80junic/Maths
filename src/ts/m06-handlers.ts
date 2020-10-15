@@ -7,61 +7,11 @@ import { maths } from './m03-maths';
 export const handlers = {
 
     exercises: function (module: MathOperation) {
-        let levelChoice = module.container.find(".level"),
-            exerciseNumChoice = module.container.find(".exerciseNum"),
-            scoreField = module.container.find(".score"),
-            rows = module.container.find(".columns-line-operation"),
+        let 
             showTooltips = (maths.settings.general.showTooltips === "true"),
-            answerFields = rows.find(".answer"),
-            icons = rows.find(".icon"),
-            checkButtons = rows.find(".check"),
-            resetButton = module.container.find(".reset"),
-            reloadButton = module.container.find(".reload"),
-            checkAllButton = module.container.find(".check-all"),
-            answerField: JQuery,                        // text field or fields currently checked
-            icon: JQuery,                               // icon of the line being checked
-            checkBtn: JQuery,                           // currently pressed check button
-            result: number | Array<number>,             // result of a single operation
-            answers: Array<number>,                     // user's answers
+            
             timeout: any = null;                        // tooltip display delay
         
-        const goodAnswer = function () {
-                scoreField.text(++module.score);           // adjust the score
-                answerField.each(function (idx) {   // each text field to be replaced by given correct answer
-                    $(this).hide().after(`<div> ${ answers[idx] } </div>`); // hide text input and display answer
-                    icon.addClass("answered");                  // add some left margin to `tick` icon
-                });
-                icon.prop("src", maths.icons.tick);
-                checkBtn.addClass("invisible");
-                return true;
-                },
-            wrongAnswer = function () {
-                icon.prop("src", maths.icons.cross);
-                answerField.addClass("warning");
-                return false;
-            },
-            processOperation = function (index: number) {
-                const answerIdx = module.answersMap.get(index);
-                let isCorrect: boolean;
-
-                answerField = rows.eq(index).find(".answer");
-                icon = icons.eq(index);
-                checkBtn = checkButtons.eq(index);
-                result = module.numbersBank[index][answerIdx];
-                console.log("result in numbers bank: "+result)
-                answers = [];
-                isCorrect = maths.handlers.validateOperation(answerField, result, answers);
-                return isCorrect ? goodAnswer(): wrongAnswer();
-            };
-
-        levelChoice.on("change", function () {                      // options change
-            let name = $(this).find("option:selected").text();
-            module.level = maths.difficulties.indexOf(name);
-        });
-        exerciseNumChoice.on("change", function () {
-            let number = $(this).find("option:selected").text();
-            module.exercisesCount = parseInt(number, 10);
-        });
 
         const showTip = (row: JQuery) => {
             let tip = row.prev(),                                   // tooltip 'body' is a previous sibling
@@ -97,39 +47,6 @@ export const handlers = {
             });
         }
 
-        checkButtons.on("click", function (e) {         // listeners for all check buttons on page
-            e.preventDefault();
-            let index = checkButtons.index(this),
-                isCorrect = processOperation(index);
-            maths.playSound(isCorrect);
-            $(this).trigger('blur');
-        });
-
-        resetButton.on("click", () => {                                     // reset button
-            module.score = 0;
-            scoreField.text(module.score);                                         // reset the score
-            answerFields.show().removeClass("warning").next().remove();     // reset answers
-            icons.prop("src", maths.icons.questMark);                       // reset icons
-            checkButtons.removeClass("invisible");                          // reset buttons
-            icons.removeClass("answered");                                  // remove extra margin
-            resetButton.trigger('blur');
-        });
-
-        reloadButton.on("click", (e) => {   //reload button
-            e.preventDefault();
-            module.init();
-        });
-
-        checkAllButton.on("click", (e) => {
-            e.preventDefault();
-            checkButtons.each(function (index, btn) {
-                if (!$(btn).is(".invisible")) {
-                    processOperation(index);
-                }
-            });
-            checkAllButton.trigger('blur');
-        });
-        setTimeout(()=>this.adjustLinesLength(rows), 1);        // run it as soon as page is loaded
         this.textInputs(rows, answerFields, processOperation);  // add input fields filtering
     },
 
@@ -265,65 +182,8 @@ export const handlers = {
     },
 
     textInputs: function (rows: JQuery, answerFields: JQuery, callback: any) { //input filtering for answer fields
-        answerFields.on("paste", () => false);
-        answerFields.on("click", function() {
-            (<HTMLInputElement>this).select();
-        });
-        answerFields.on("blur", function () {
-            let field = $(this);
-            if (field.val() === "") {
-                let parent = field.removeClass("warning").parents(".columns-line-operation");
-                let fields = parent.find(".answer").removeClass("warning");
-                if (fields.length > 1) {  // only if a fraction
-                    if (fields.not(field).val() !== "") {
-                        return;
-                    }
-                }
-                parent.find(".icon").prop("src", maths.icons.questMark);
-            }
-        });
-        answerFields.on("keydown", function (e) {
-            let field = $(this),
-                row = field.parents(".columns-line-operation"),
-                index = rows.index(row),
-                isFraction = row.find(".fraction").length > 0,
-                char = String.fromCharCode(e.which),
-                length = (<string>field.val()).length,
-                limit = 3;
-            if (isFraction) { // adjust variables if fraction
-                limit = 2;
-            }
-            if ((window.getSelection().toString() !== "") && ($.isNumeric(char) ||
-                (e.which > 95 && e.which < 106))) {
-                return true; //allow replacing selection with numbers
-            }
-            if (e.which === 8 || e.which === 9 || e.which === 46 || e.which === 37 || e.which === 39) {
-                return true; //allow backspace, tab, delete, left and right arrow
-            }
-            if ((e.which > 95) && (e.which < 106) && (length < limit)) {
-                return true; //allow numeric keyboard
-            }
-            if (e.which === 13 && typeof callback === "function") {
-                let isCorrect = callback(index); // check line when "enter" pressed
-                maths.playSound(isCorrect);
-                return false;
-            }
-            if (!$.isNumeric(char) || (length === limit)) {
-                return false;
-            }
-        });
-    },
+        
 
-    adjustLinesLength: function($lines: JQuery) {
-        let max = 0,
-            width: number;
-        $lines.each(function(idx) {
-            width = $(this).width();
-            max = (width > max)? width: max;
-        });
-        $lines.each(function() {
-            $(this).width(max - 5);
-        });
-    }
+    
 
 };
