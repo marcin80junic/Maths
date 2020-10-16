@@ -5,9 +5,9 @@
 .interface {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: space-around;
 
-  & > *:not(:last-child) {
+  & > * {
     margin-right: 1em;
   }
   & > .interface-item {

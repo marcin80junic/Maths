@@ -1,54 +1,10 @@
 
 import $ from 'jquery';
 import { MathOperation } from './m01-prototype';
-import { maths } from './m03-maths';
+
 
 
 export const handlers = {
-
-    exercises: function (module: MathOperation) {
-        let 
-            showTooltips = (maths.settings.general.showTooltips === "true"),
-            
-            timeout: any = null;                        // tooltip display delay
-        
-
-        const showTip = (row: JQuery) => {
-            let tip = row.prev(),                                   // tooltip 'body' is a previous sibling
-                margin: number,
-                idx: number;
-            if (tip.children().length === 0) {
-                idx = rows.index(row);                                  // find index of operation
-                maths.createAndAppendCanvas(tip, module, idx);          // create tiptext content
-                margin = (tip.parent().width() - tip.outerWidth()) / 2; // calculate left margin..
-                tip.css('marginLeft', `${margin}px`);                   // ..needed to center the tooltip
-            }
-            tip.addClass("showtip");
-        }
-
-        answerFields.on("mouseover mouseout", function (e) {
-            if (maths.isTouchscreen) return;                // don't display tooltips on touchscreen devices    
-            if (showTooltips) { 
-                if (e.type === "mouseover") {               // find operation's row and pass it to showtip
-                    timeout = setTimeout(() => showTip($(this).parents('.columns-line-operation')), 1200);
-                } else {
-                    if (timeout !== null) {
-                        clearTimeout(timeout);
-                    }
-                    $('.showtip').removeClass('showtip');
-                }
-            }
-        });
-        if(maths.isTouchscreen) {                       // for touchscreen display tooltip on icon 'tap'
-            icons.on('click', function(event) {
-                $('.showtip').removeClass('showtip');
-                showTip($(this).parent());              // operation's row is a direct parent of icon
-                event.stopPropagation();                // prevent body's handler to hide this tooltip
-            });
-        }
-
-        this.textInputs(rows, answerFields, processOperation);  // add input fields filtering
-    },
 
 
     test: function (container: JQuery) {
@@ -150,18 +106,7 @@ export const handlers = {
         let fraction = [],
             input: string;
 
-        answers = answers || [];
-        answerFields.each(function (idx) {  //collect answer(s) and check if they're not empty
-            input = <string>$(this).val();
-            if (input === "") {
-                if (result.length && idx === 0 && result[0] > result[1]) {
-                    input = "0";     // if no input in "whole" part of fraction assume zero
-                } else {
-                    return false;
-                }
-            }
-            answers.push(parseInt(input, 10));
-        });
+       
         if (result.length) {  // if dealing with fractions convert answers to simple fractions
             if (answers.length === 1) {
                 fraction = [answers[0], 1];
@@ -181,9 +126,5 @@ export const handlers = {
         }
     },
 
-    textInputs: function (rows: JQuery, answerFields: JQuery, callback: any) { //input filtering for answer fields
-        
-
     
-
 };
