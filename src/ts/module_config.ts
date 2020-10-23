@@ -50,6 +50,7 @@ export class Configuration {
     public static readonly TOOLTIPS = `${Configuration.GENERAL}.tooltips`;
     public static readonly RANDOMIZE = `${Configuration.GENERAL}.randomize`;
     public static readonly FRACTIONS_OPERATORS = `${Configuration.FRACTIONS}.operators`;
+    public static readonly CUSTOM_OPERATORS = `${Configuration.CUSTOM}.operators`;
     public static readonly TEST_MODULES = `${Configuration.TEST}.modules`;
     public static readonly TEST_TIMES = `${Configuration.TEST}.times`;
     public static readonly TEST_QUESTIONS = `${Configuration.TEST}.questions`
@@ -67,6 +68,7 @@ export class Configuration {
     private _general_tooltips = "true";
     private _general_randomize = "false";
     private _fractions_operators = "addition,subtraction";
+    private _custom_operators = "addition,subtraction,multiplication, division";
     private _test_modules = "addition,subtraction,multiplication,division,fractions";
     private _test_times = "10, 8, 6";
     private _test_questions = "4";
@@ -74,7 +76,7 @@ export class Configuration {
     /* touchscreen detection */
     public static readonly isTouchscreen = "ontouchstart" in document.documentElement;
     public static readonly noTouchClass = Configuration.isTouchscreen? "": "no-touch";
-    map: Map<string, Function>
+
 
     private constructor() {
         this.settersMap = new Map([
@@ -82,6 +84,7 @@ export class Configuration {
             [Configuration.TOOLTIPS, this.setTooltips],
             [Configuration.RANDOMIZE, this.setRandomize],
             [Configuration.FRACTIONS_OPERATORS, this.setFractionsOperators],
+            [Configuration.CUSTOM_OPERATORS, this.setCustomOperators],
             [Configuration.TEST_MODULES, this.setTestModules],
             [Configuration.TEST_TIMES, this.setTestTimes],
             [Configuration.TEST_QUESTIONS, this.setTestQuestions]
@@ -91,6 +94,7 @@ export class Configuration {
             [Configuration.TOOLTIPS, () => this._general_tooltips],
             [Configuration.RANDOMIZE, () => this._general_randomize],
             [Configuration.FRACTIONS_OPERATORS, () => this._fractions_operators],
+            [Configuration.CUSTOM_OPERATORS, () => this._custom_operators],
             [Configuration.TEST_MODULES, () => this._test_modules],
             [Configuration.TEST_TIMES, () => this._test_times],
             [Configuration.TEST_QUESTIONS, () => this._test_questions]
@@ -100,6 +104,7 @@ export class Configuration {
             [Configuration.TOOLTIPS, [Configuration.EVENT_CONTAINER]],
             [Configuration.RANDOMIZE, [Configuration.EVENT_EXERCISE, Configuration.EVENT_TEST]],
             [Configuration.FRACTIONS_OPERATORS, [Configuration.EVENT_FRACTIONS, Configuration.EVENT_TEST]],
+            [Configuration.CUSTOM_OPERATORS, [Configuration.EVENT_CUSTOM]],
             [Configuration.TEST_MODULES, [Configuration.EVENT_TEST]],
             [Configuration.TEST_TIMES, [Configuration.EVENT_TEST]],
             [Configuration.TEST_QUESTIONS, [Configuration.EVENT_TEST]]
@@ -216,6 +221,7 @@ export class Configuration {
     private setTooltips = (newValue: string) => this._general_tooltips = newValue;
     private setRandomize = (newValue: string) => this._general_randomize = newValue;
     private setFractionsOperators = (newValue: string) => this._fractions_operators = newValue;
+    private setCustomOperators = (newValue: string) => this._custom_operators = newValue;
     private setTestModules = (newValue: string) => this._test_modules = newValue;
     private setTestTimes = (newValue: string) => this._test_times = newValue;
     private setTestQuestions = (newValue: string) => this._test_questions = newValue;
@@ -229,6 +235,8 @@ export class Configuration {
     set general_randomize(newVal) { this._general_randomize = "" + newVal; }
     get fractions_operators() { return this._fractions_operators.split(",") }
     set fractions_operators(newVal) { this._fractions_operators = newVal.join(",") }
+    get custom_operators() { return this._custom_operators.split(",") }
+    set custom_operators(newVal) { this._custom_operators = newVal.join(",") }
     get test_modules() { return this._test_modules.split(",") }
     set test_modules(newVal) { this._test_modules = newVal.join(",") }
     get test_times() { return this._test_times.split(",").map((val) => parseInt(val, 10)) }

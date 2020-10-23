@@ -18,6 +18,7 @@ export class SettingsContainer extends Container {
     private readonly general_randomize_input = this.container.find('input[name="isRandomized"]');
     private readonly general_tooltips_input = this.container.find('input[name="showTooltips"]');
     private readonly fractions_operators_input = this.container.find('#fractions-settings input[name="signs"]');
+    private readonly custom_operators_input = this.container.find('#custom-settings input[name="signs"]');
     private readonly test_modules_input = this.container.find('#test-settings input[name="modules"]');
     private readonly test_times_input = this.container.find('select[name="times"]');
     private readonly test_questions_input = this.container.find('select[name="numOfQuest"]');
@@ -71,6 +72,9 @@ export class SettingsContainer extends Container {
         this.fractions_operators_input.each((i: number, el: HTMLElement) => {
             setCheckBtnGroup ($(el), this.config.fractions_operators);
         });
+        this.custom_operators_input.each((i: number, el: HTMLElement) => {
+            setCheckBtnGroup ($(el), this.config.custom_operators);
+        });
         this.test_modules_input.each((i: number, el: HTMLElement) => {
             setCheckBtnGroup($(el), this.config.test_modules);
         });
@@ -111,7 +115,8 @@ export class SettingsContainer extends Container {
             this.system_volume_input
                 .on('input change', () => this.updateVolumeLabel(<number>this.system_volume_input.val()));
             this.system_volume_input.on('change', () => {
-                let volume = <number>this.system_volume_input.val() / 100;
+                let volume = parseFloat((<number>this.system_volume_input.val() / 100).toFixed(2));
+                console.log(volume + ", " + typeof volume)
                 MediaPlayback.playSound(MediaPlayback.SOUND_CHEER, volume);
                 updateChanged(Configuration.VOLUME, '' + volume)
             });
@@ -127,6 +132,10 @@ export class SettingsContainer extends Container {
         this.fractions_operators_input.on('change', () => {
             const options = readCheckBtnGroup(this.fractions_operators_input);
             updateChanged(Configuration.FRACTIONS_OPERATORS, options);
+        });
+        this.custom_operators_input.on('change', () => {
+            const options = readCheckBtnGroup(this.custom_operators_input);
+            updateChanged(Configuration.CUSTOM_OPERATORS, options);
         });
         this.test_modules_input.on('change', () => {
             const options = readCheckBtnGroup(this.test_modules_input);

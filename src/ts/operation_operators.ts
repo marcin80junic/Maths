@@ -1,22 +1,21 @@
-import { MathModule } from "./module_math";
 import { OperationElement } from "./operation";
 import { Operand } from "./operation_operands";
 
 
 export class OperatorFactory {
     
-    public static obtainOperator(symbol: string): Operator {
-        switch(symbol) {
+    public static obtainOperator(name: string): Operator {
+        switch(name) {
             case Operator.ADDITION_OPERATOR:
-                return AdditionOperator.getInstance(symbol);
+                return AdditionOperator.getInstance(Operator.OPERATORS.get(name));
             case Operator.SUBTRACTION_OPERATOR:
-                return SubtractionOperator.getInstance(symbol);
+                return SubtractionOperator.getInstance(Operator.OPERATORS.get(name));
             case Operator.MULTIPLICATION_OPERATOR:
-                return MultiplicationOperator.getInstance(symbol);
+                return MultiplicationOperator.getInstance(Operator.OPERATORS.get(name));
             case Operator.DIVISION_OPERATOR:
-                return DivisionOperator.getInstance(symbol);
+                return DivisionOperator.getInstance(Operator.OPERATORS.get(name));
             case Operator.EQUALS_OPERATOR:
-                return EqualsOperator.getInstance(symbol);
+                return EqualsOperator.getInstance(Operator.OPERATORS.get(name));
             default:
                 throw new Error('not recognized operator string');
         }
@@ -26,29 +25,40 @@ export class OperatorFactory {
 
 export abstract class Operator implements OperationElement {
 
-    public static readonly ADDITION_OPERATOR = "+";
-    public static readonly SUBTRACTION_OPERATOR = "-";
-    public static readonly MULTIPLICATION_OPERATOR = "\u00D7";
-    public static readonly DIVISION_OPERATOR = "\u00F7";
-    public static readonly EQUALS_OPERATOR = "="
-    
+    public static readonly ADDITION_OPERATOR = "addition";
+    public static readonly SUBTRACTION_OPERATOR = "subtraction";
+    public static readonly MULTIPLICATION_OPERATOR = "multiplication";
+    public static readonly DIVISION_OPERATOR = "division";
+    public static readonly EQUALS_OPERATOR = "equals";
+    public static readonly OPERATORS = new Map([
+        [Operator.ADDITION_OPERATOR, "+"],
+        [Operator.SUBTRACTION_OPERATOR, "-"],
+        [Operator.MULTIPLICATION_OPERATOR, "\u00D7"],
+        [Operator.DIVISION_OPERATOR, "\u00F7"],
+        [Operator.EQUALS_OPERATOR, "="]
+    ]);
+
     protected symbol: string;
 
     protected constructor(symbol: string) {
         this.symbol = symbol;
     }
       
-    abstract getNumber(level: number, operation: OperationElement[], OperandType: string): number | number[];
-    abstract reduce(prev: number | number[], current: number | number[]): number | number[];
+    abstract getNumber(level: number, subtotal: number | number[], OperandType: string, length?: number)
+        : number | number[];
+    abstract reduce(prev: number | number[], curr: number | number[]): number | number[];
 
-    value(): string {
+    value(): number {
+        return NaN;
+    }
+    toString(): string {
         return this.symbol;
     }
     getLayout(): string {
         return `<div>${this.symbol}</div>`;
     }
     draw(context: CanvasRenderingContext2D): void {
-        
+        //** */
     }
 
     /*
@@ -138,6 +148,31 @@ export abstract class Operator implements OperationElement {
         return array[Math.floor(Math.random() / (1 / array.length))];
     }
 
+    static reduceFraction(fraction: number[]): number[] {
+        let x = fraction[0],
+            y = fraction[1],
+            temp: number;
+
+        while (y) {                 // find greatest common divisor
+            temp = y;
+            y = x % y;
+            x = temp;
+        }
+        return [fraction[0] / x, fraction[1] / x];
+    }
+
+    static filterDivisors(divident: number, divisors: number[]): number[] {
+        const temp = [];
+
+        for (const div of divisors) {
+            if (divident % div === 0 || div % divident === 0) {
+                temp.push(div);
+            }
+        }
+        return temp;
+    }
+
+
 }
 
 
@@ -156,9 +191,12 @@ export class AdditionOperator extends Operator {
         return this.instance;
     }
 
-    getNumber(level: number, operation: OperationElement[], operandType: string): number | number[] {   
-        const subtotal = (operation.length === 0)? 0: MathModule.reduce(operation);
-        let den: number;
+    getNumber(level: number, subtotal: number | number[], operandType: string, left: number)
+        : number | number[] {  
+
+        let den: number,
+            fraction: number[];
+        const divisors = [2, 3, 4, 5, 6, 7, 8, 9];
 
         if (operandType === Operand.INTEGER_OPERAND) {
             switch (level) {
@@ -170,37 +208,49 @@ export class AdditionOperator extends Operator {
                     return Operator.range(11, 99);
             }
         } else {
+            subtotal = subtotal? subtotal: [0, Operator.range(2,6)];
             switch (level) {
                 case 0:
                     den = (typeof subtotal === "number")?
                         Operator.range(2, 6)
                         : subtotal[1]
-                    return [Operator.range(1, den - 1), den];
+                    fraction = [Operator.range(Math.ceil(left / 2), den - 1 + Math.ceil(left / 2)), den];
+                    break;
                 case 1:
                     den = (typeof subtotal === "number")?
-                        Operator.range(2, 9)
+                        Operator.range(2, 7)
                         : subtotal[1]
-                    return [Operator.range(1, den*2), den];
+                    fraction = [Operator.range(Math.ceil(left / 2), den*2 + Math.ceil(left / 2)), den];
+                    break;
                 case 2:
-                    den = Operator.range(2, 9);
-                    return [Operator.range(2, den*3), den];
+                    den = (subtotal[1] > 9)?
+                        Operator.range(2, 9, false, Operator.filterDivisors(subtotal[1], divisors))
+                        : Operator.range(2, 9)
+                    fraction = Operator.reduceFraction([Operator.range(left, den*3 + left), den]);
+                    break;
             }
+            return (fraction[0] % fraction[1] !== 0)?
+                fraction
+                : this.getNumber(level, subtotal, operandType, left);
         }
     }
 
-    reduce(prev: number | number[], current: number | number[]): number | number[] {
+    reduce(prev: number | number[], curr: number | number[]): number | number[] {
         let total: number | number[];
+
         if (typeof prev === "number") {
-            if (typeof current === "number") {
-                total = prev + current;
+            if (typeof curr === "number") {
+                total = prev + curr;
             } else {
-                total = [(prev * current[1] + current[0]), current[1]];
+                total = [(prev * curr[1] + curr[0]), curr[1]];
             }
         } else {
-            if (typeof current === "number") {
-                total = [prev[1] * current + prev[0], prev[1]];
+            if (typeof curr === "number") {
+                total = [prev[1] * curr + prev[0], prev[1]];
             } else {
-                total = [prev[0] * current[1] + current[0] * prev[1], prev[1] * current[1]];
+                total = (prev[1] === curr[1])?
+                    [prev[0] + curr[0], prev[1]]
+                    : [prev[0] * curr[1] + curr[0] * prev[1], prev[1] * curr[1]];
             }
         }
         return total;
@@ -223,13 +273,94 @@ export class SubtractionOperator extends Operator {
         return this.instance;
     }
 
-    getNumber(level: number, operation: OperationElement[], operandType: string): number | number[] {
+    getNumber(level: number, subtotal: number | number[], operandType: string, left: number)
+        : number | number[] {
         
-        return null;
+        let den: number,
+            num: number,
+            max: number,
+            fraction: number[];
+        const divisors = [2, 3, 4, 5, 6, 7, 8, 9],
+            temptotal = subtotal;
+    
+        if (operandType === Operand.INTEGER_OPERAND) {
+            subtotal = subtotal?
+                (subtotal instanceof Array)?
+                    Math.ceil(subtotal[0] / subtotal[1])
+                    : <number>subtotal
+                : 0
+            switch (level) {
+                case 0:
+                    return subtotal?
+                        Operator.range(2, subtotal - 2 * left)
+                        : Operator.range(4 * Math.ceil(left / 2), 10 * Math.ceil(left / 2));
+                case 1:
+                    return subtotal?
+                        Operator.range(2, subtotal - 2 * left)
+                        : Operator.range(9 * Math.ceil(left / 2), 19 * Math.ceil(left / 2));
+                case 2:
+                    return subtotal?
+                        Operator.range(2, subtotal - 2 * left)
+                        : Operator.range(19 * Math.ceil(left / 2), 99 * Math.ceil(left / 2));
+            }
+        } else {
+            if (!subtotal) {
+                subtotal = [1, Operator.range(2, 6)];
+                num = Operator.range(2 * left, 3 * left);
+            } else {
+                max = (left < 2)?
+                    subtotal[0] - 1
+                    : subtotal[0] - left;
+                num = Operator.range(1, max);
+            }
+            switch (level) {
+                case 0:
+                    den = (typeof subtotal === "number")?
+                        Operator.range(2, 6)
+                        : subtotal[1]
+                    fraction = [num, den];
+                    break;
+                case 1:
+                    den = (typeof subtotal === "number")?
+                        Operator.range(2, 9)
+                        : subtotal[1]
+                    fraction = [num, den];
+                    break;
+                case 2:
+                    den = (subtotal[1] > 9)?
+                        Operator.range(2, 9, false, Operator.filterDivisors(subtotal[1], divisors))
+                        : Operator.range(2, 9);
+                    num = temptotal?
+                        Math.floor(Operator.range(1, subtotal[0] / subtotal[1]))
+                        : Operator.range(left * 3, left * 6);
+                    fraction = Operator.reduceFraction([num, den]);
+                    break;
+            }
+            return (fraction[0] % fraction[1] !== 0)?
+                fraction
+                : this.getNumber(level, temptotal, operandType, left);
+        }
     }
 
-    reduce(prev: number | number[], current: number | number[]): number | number[] {
-        throw new Error("Method not implemented.");
+    reduce(prev: number | number[], curr: number | number[]): number | number[] {
+        let total: number | number[];
+
+        if (typeof prev === "number") {
+            if (typeof curr === "number") {
+                total = prev - curr;
+            } else {
+                total = [(prev * curr[1] - curr[0]), curr[1]];
+            }
+        } else {
+            if (typeof curr === "number") {
+                total = [prev[1] * curr - prev[0], prev[1]];
+            } else {
+                total = (prev[1] === curr[1])?
+                    [prev[0] - curr[0], prev[1]]
+                    : [prev[0] * curr[1] - curr[0] * prev[1], prev[1] * curr[1]];
+            }
+        }
+        return total;
     }
 
 }
@@ -249,13 +380,67 @@ export class MultiplicationOperator extends Operator {
         return this.instance;
     }
 
-    getNumber(level: number, operation: OperationElement[], operandType: string): number | number[] {
-        
-        return null;
+    getNumber(level: number, subtotal: number | number[], operandType: string, left: number)
+        : number | number[] {
+
+        let den: number,
+            fraction: number[];
+        const divisors = [2, 3, 4, 5, 6, 7, 8, 9];
+
+        if (operandType === Operand.INTEGER_OPERAND) {
+            switch (level) {
+                case 0:
+                    return Operator.range(2, 5);
+                case 1:
+                    return Operator.range(2, 9);
+                case 2:
+                    return Operator.range(4, 20);
+            }
+        } else {
+            subtotal = subtotal? subtotal: [1, Operator.range(2,6)];
+            switch (level) {
+                case 0:
+                    den = (typeof subtotal === "number")?
+                        Operator.range(2, 6)
+                        : subtotal[1]
+                    fraction = [Operator.range(Math.ceil(left / 2), den - 1 + Math.ceil(left / 2)), den];
+                    break;
+                case 1:
+                    den = (typeof subtotal === "number")?
+                        Operator.range(2, 7)
+                        : subtotal[1]
+                    fraction = [Operator.range(Math.ceil(left / 2), den*2 + Math.ceil(left / 2)), den];
+                    break;
+                case 2:
+                    den = (subtotal[1] > 9)?
+                        Operator.range(2, 9, false, Operator.filterDivisors(subtotal[1], divisors))
+                        : Operator.range(2, 9)
+                    fraction = Operator.reduceFraction([Operator.range(left, den*3 + left), den]);
+                    break;
+            }
+            return (fraction[0] % fraction[1] !== 0)?
+                fraction
+                : this.getNumber(level, subtotal, operandType, left);
+        }
     }
 
-    reduce(prev: number | number[], current: number | number[]): number | number[] {
-        throw new Error("Method not implemented.");
+    reduce(prev: number | number[], curr: number | number[]): number | number[] {
+        let total: number | number[];
+
+        if (typeof prev === "number") {
+            if (typeof curr === "number") {
+                total = prev * curr;
+            } else {
+                total = [prev * curr[0], curr[1]];
+            }
+        } else {
+            if (typeof curr === "number") {
+                total = [prev[0] * curr, prev[1]];
+            } else {
+                total = [prev[0] * curr[0], prev[1] * curr[1]];
+            }
+        }
+        return total;
     }
 
 }
@@ -275,12 +460,12 @@ export class DivisionOperator extends Operator {
         return this.instance;
     }
 
-    getNumber(level: number, operation: OperationElement[], operandType: string): number | number[] {
+    getNumber(level: number, subtotal: number | number[], operandType: string): number | number[] {
         
         return null;
     }
 
-    reduce(prev: number | number[], current: number | number[]): number | number[] {
+    reduce(prev: number | number[], curr: number | number[]): number | number[] {
         throw new Error("Method not implemented.");
     }
 
@@ -301,10 +486,10 @@ export class EqualsOperator extends Operator {
         return this.instance;
     }
 
-    getNumber(level: number, operation: OperationElement[], operandType: string): number | number[] {
+    getNumber(level: number, subtotal: number | number[], operandType: string): number | number[] {
         throw new Error("Method not implemented.");
     }
-    reduce(prev: number | number[], current: number | number[]): number | number[] {
+    reduce(prev: number | number[], curr: number | number[]): number | number[] {
         throw new Error("Method not implemented.");
     }
     

@@ -10,10 +10,11 @@ import { ContainerHandler, ExerciseContainerHandler } from './container_handlers
 
 
 export class AdditionContainerFactory implements AbstractContainerFactory {
-    createContainer(container: JQuery, config: Configuration): Container {
+    createContainer(container: JQuery): Container {
         const builder = new MathModuleBuilder();
         builder
-            .setName(Configuration.ADDITION)
+            .setName("addition")
+            .setNamespace(Configuration.ADDITION)
             .setOparators(OperatorFactory.obtainOperator(Operator.ADDITION_OPERATOR))
             .setOperands(Operand.INTEGER_OPERAND);
         return new ExerciseContainer(container, builder.build());
@@ -21,10 +22,11 @@ export class AdditionContainerFactory implements AbstractContainerFactory {
 }
 
 export class SubtractionContainerFactory implements AbstractContainerFactory {
-    createContainer(container: JQuery, config: Configuration): Container {
+    createContainer(container: JQuery): Container {
         const builder = new MathModuleBuilder();
         builder
-            .setName(Configuration.SUBTRACTION)
+            .setName("subtraction")
+            .setNamespace(Configuration.SUBTRACTION)
             .setOparators(OperatorFactory.obtainOperator(Operator.SUBTRACTION_OPERATOR))
             .setOperands(Operand.INTEGER_OPERAND);
         return new ExerciseContainer(container, builder.build());
@@ -32,10 +34,11 @@ export class SubtractionContainerFactory implements AbstractContainerFactory {
 }
 
 export class MultiplicationContainerFactory implements AbstractContainerFactory {
-    createContainer(container: JQuery, config: Configuration): Container {
+    createContainer(container: JQuery): Container {
         const builder = new MathModuleBuilder();
         builder
-            .setName(Configuration.MULTIPLICATION)
+            .setName("multiplication")
+            .setNamespace(Configuration.MULTIPLICATION)
             .setOparators(OperatorFactory.obtainOperator(Operator.MULTIPLICATION_OPERATOR))
             .setOperands(Operand.INTEGER_OPERAND);
         return new ExerciseContainer(container, builder.build());
@@ -43,10 +46,11 @@ export class MultiplicationContainerFactory implements AbstractContainerFactory 
 }
 
 export class DivisionContainerFactory implements AbstractContainerFactory {
-    createContainer(container: JQuery, config: Configuration): Container {
+    createContainer(container: JQuery): Container {
         const builder = new MathModuleBuilder();
         builder
-            .setName(Configuration.DIVISION)
+            .setName("division")
+            .setNamespace(Configuration.DIVISION)
             .setOparators(OperatorFactory.obtainOperator(Operator.DIVISION_OPERATOR))
             .setOperands(Operand.INTEGER_OPERAND);
         return new ExerciseContainer(container, builder.build());
@@ -55,36 +59,52 @@ export class DivisionContainerFactory implements AbstractContainerFactory {
 
 export class FractionsContainerFactory implements AbstractContainerFactory {
     createContainer(container: JQuery, config: Configuration): Container {
-        const builder = new MathModuleBuilder();
+        const builder = new MathModuleBuilder(),
+              operators: Operator[] = [];
+            
+        for (const operator of config.fractions_operators) {
+            operators.push(OperatorFactory.obtainOperator(operator));
+        }
         builder
-            .setName(Configuration.FRACTIONS)
-            .setOparators(OperatorFactory.obtainOperator(Operator.ADDITION_OPERATOR))
+            .setName("fractions")
+            .setNamespace(Configuration.FRACTIONS)
+            .setOparators(...operators)
             .setOperands(Operand.FRACTION_OPERAND);
-        return new ExerciseContainer(container, builder.build());
+        return new FractionContainer(container, builder.build());
     }
 }
 
 export class CustomContainerFactory implements AbstractContainerFactory {
     createContainer(container: JQuery, config: Configuration): Container {
-
-        return new ExerciseContainer(container, null);
+        const builder = new MathModuleBuilder(),
+              operators: Operator[] = [];
+            
+        for (const operator of config.custom_operators) {
+            operators.push(OperatorFactory.obtainOperator(operator));
+        }
+        builder
+            .setName("custom")
+            .setNamespace(Configuration.CUSTOM)
+            .setOparators(...operators)
+            .setOperands(Operand.INTEGER_OPERAND, Operand.FRACTION_OPERAND, Operand.COMPOSITE_OPERAND);
+        return new CustomContainer(container, builder.build());
     }
 }
 
 
 class ExerciseContainer extends Container {
     
-    private globalConfig: Configuration;
-    private localConfig: ExerciseConfig;
-    private module: MathModule;
-    private handler: ContainerHandler;
-    private configChanged: boolean;
-    private showTooltips: boolean;
+    protected globalConfig: Configuration;
+    protected localConfig: ExerciseConfig;
+    protected module: MathModule;
+    protected handler: ContainerHandler;
+    protected configChanged: boolean;
+    protected showTooltips: boolean;
 
-    private innerContainer: JQuery;
-    private interfaceContainer: JQuery;
-    private mainContainer: JQuery;
-    private buttonContainer: JQuery;
+    protected formContainer: JQuery;
+    protected interfaceContainer: JQuery;
+    protected mainContainer: JQuery;
+    protected buttonContainer: JQuery;
 
     constructor(container: JQuery, content: MathModule) {
         super(container);
@@ -93,12 +113,12 @@ class ExerciseContainer extends Container {
         this.getLocalConfig();
         this.createContainers();
         this.localConfig.listen(this.interfaceContainer);
-        this.handler = new ExerciseContainerHandler(this.innerContainer, this.module);
+        this.handler = new ExerciseContainerHandler(this.formContainer, this.module);
         this.handler.handleContent(() => this.reloadMainContainer());
         this.activateTooltips();
     }
 
-    private getGlobalConfig() {
+    protected getGlobalConfig() {
         this.globalConfig = Configuration.getConfig();
         this.globalConfig.addListener(Configuration.EVENT_CONTAINER, () => this.updateContainerProps());
         this.globalConfig.addListener(Configuration.EVENT_EXERCISE, () => this.configChanged = true);
@@ -113,13 +133,13 @@ class ExerciseContainer extends Container {
 
     private createContainers(): void {
         let name = this.module.namespace.substring(this.module.namespace.lastIndexOf(".") + 1);
-        this.innerContainer = this.container.find(`#${name}-exercises`);
+        this.formContainer = this.container.find(`#${name}-exercises`);
         this.interfaceContainer = $(LayoutCreator.createInterfaceContainer(this.module));
         this.mainContainer = 
             $('<div class="mainContainer"></div>')
             .html(LayoutCreator.createMainContainer(this.module, false));
         this.buttonContainer = $(LayoutCreator.createButtonsContainer());
-        this.innerContainer.append(this.interfaceContainer, this.mainContainer, this.buttonContainer);
+        this.formContainer.append(this.interfaceContainer, this.mainContainer, this.buttonContainer);
     }
 
     private updateContainerProps() {
@@ -129,8 +149,15 @@ class ExerciseContainer extends Container {
         }
     }
 
-    private updateExercisesProps() {
-        this.module.randomize = this.globalConfig.general_randomize
+    protected updateExercisesProps() {
+        this.module.randomize = this.globalConfig.general_randomize;
+    }
+
+    protected updateOperators(array: string[]) {
+        this.module.operators = [];
+        for (const operator of array) {
+            this.module.operators.push(OperatorFactory.obtainOperator(operator));
+        }
     }
 
     private updateLocalProps() {
@@ -145,7 +172,7 @@ class ExerciseContainer extends Container {
 
     private reloadMainContainer() {
         this.mainContainer.html(LayoutCreator.createMainContainer(this.module, false));
-        this.handler = new ExerciseContainerHandler(this.innerContainer, this.module);
+        this.handler = new ExerciseContainerHandler(this.formContainer, this.module);
         this.handler.handleContent(() => this.reloadMainContainer());
         this.activateTooltips();
     }
@@ -211,6 +238,40 @@ class ExerciseContainer extends Container {
         }
     }
   
+}
+
+class FractionContainer extends ExerciseContainer {
+    
+    constructor(container: JQuery, content: MathModule) {
+        super(container, content);
+    }
+
+    protected getGlobalConfig() {
+        super.getGlobalConfig();
+        this.globalConfig.addListener(Configuration.EVENT_FRACTIONS, () => this.configChanged = true);
+    }
+    protected updateExercisesProps() {
+        super.updateExercisesProps();
+        this.updateOperators(this.globalConfig.fractions_operators);
+    }
+
+}
+
+class CustomContainer extends ExerciseContainer {
+    
+    constructor(container: JQuery, content: MathModule) {
+        super(container, content);
+    }
+
+    protected getGlobalConfig() {
+        super.getGlobalConfig();
+        this.globalConfig.addListener(Configuration.EVENT_CUSTOM, () => this.configChanged = true);
+    }
+    protected updateExercisesProps() {
+        super.updateExercisesProps();
+        this.updateOperators(this.globalConfig.custom_operators);
+    }
+
 }
 
 

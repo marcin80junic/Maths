@@ -1,4 +1,5 @@
 import { Configuration } from "./module_config";
+import { MathModule } from "./module_math";
 import { OperationElement } from "./operation";
 
 
@@ -38,7 +39,9 @@ export abstract class Operand implements OperationElement {
     }
 
     abstract value(): number | number[];
-    abstract reduce(): Operand;
+    abstract toString(): string;
+    abstract reduce(): number | number[];
+    abstract reduceOperand(): Operand;
     abstract getLayout(isAnswer?: boolean): string;
     abstract draw(context: CanvasRenderingContext2D): void;
 
@@ -51,9 +54,15 @@ export class IntegerOperand extends Operand {
     value(): number | number[] {
         return this._value;
     }
-    reduce(): Operand {
-        return this;
+    toString(): string {
+        return this._value.toLocaleString();
+    }
+    reduce(): number | number[] {
+        return this._value;
     };
+    reduceOperand(): Operand {
+        return this;
+    }
     getLayout(isAnswer?: boolean): string {
         return (isAnswer === true)?
             `<input type="number" class="answer form-element ${Configuration.noTouchClass}">`
@@ -72,19 +81,25 @@ export class FractionOperand extends Operand {
     value(): number[] {
         return this._value;
     }
-    reduce(): Operand {
+    toString(): string {
+        return this._value.toLocaleString();
+    }
+    reduce(): number | number[] {
         let x = this._value[0],
             y = this._value[1],
             temp: number;
-        while (y) {                             // find greatest common divisor
+
+        while (y) {                 // find greatest common divisor
             temp = y;
             y = x % y;
             x = temp;
         }
-        this._value = [this._value[0] / x, this._value[1] / x];
+        return this._value = [this._value[0] / x, this._value[1] / x];
+    }
+    reduceOperand(): Operand {
+        this.reduce();
         return this;
     }
-
     getLayout(isAnswer?: boolean): string {
         let number = this._value[0] / this._value[1],   // decimal representation of fraction
             wholeNum = Math.floor(number),              // whole part of a fraction
@@ -99,7 +114,7 @@ export class FractionOperand extends Operand {
                     class="answer form-element ${Configuration.noTouchClass}"></div>`
                 : `<div class="whole"> ${wholeNum} </div>`
             : ''
-        if (isInteger) {                           // if fraction is an integer add closing tag and return
+        if (isInteger) {            // if fraction is an integer add closing tag and return
             html += '</div>';
             return html;
         }
@@ -138,19 +153,31 @@ export class CompositeOperand extends Operand {
         throw new Error("Method not implemented.");
     }
     value(): number | number[] {
-        let total = (<Operand>this._value[0]).value();
-        for (let i=2; i<this._values.length; i+=2) {
-         //   total = (<Operator>this._value[i-1]).reduce(total, <Operand>this._value[i]).value();
-        }
-        return total;
+        return MathModule.reduce(this._values);
     }
-    reduce(): Operand {
-        //
-        return this;
+    toString(): string {
+        let str = '';
+        for (const el of this._values) {
+            str += el.toString() + ' ';
+        }
+        return str;
+    }
+    reduce(): number | number[] {
+        return MathModule.reduce(this._values);
+    }
+    reduceOperand(): Operand {
+        let total = this.reduce(),
+            totalType = (typeof total === "number")?        // determine type of operand
+                Operand.INTEGER_OPERAND
+                : Operand.FRACTION_OPERAND;
+        return OperandFactory.obtainOperand(totalType, total);
     }
     getLayout(): string {
-        //
-        return ''
+        let html = '';
+        for (const el of this._values) {
+            html += el.getLayout();
+        }
+        return html;
     }
     draw(context: CanvasRenderingContext2D): void {
         throw new Error("Method not implemented.");

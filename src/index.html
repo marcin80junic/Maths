@@ -18,6 +18,7 @@
     <a href="#multiplication" class="button3d" draggable="false">Multiplication &times;</a>
     <a href="#division" class="button3d" draggable="false">Division &divide;</a>
     <a href="#fractions" class="button3d" draggable="false">Fractions &frac12;</a>
+    <a href="#custom" class="button3d" draggable="false">Custom</a>
     <a href="#test" class="button3d" draggable="false">*Test*</a>
     <a href="#settings" class="button3d" draggable="false">Settings</a>
   </nav>
@@ -130,6 +131,23 @@
       </div>
     </div>
 
+    <div id="custom">
+      <div class="intro">
+        <h2 class="center">Custom</h2>
+        <p>
+
+        </p>
+      </div>
+      <div class="content">
+        <form id="customForm" autocomplete="off">
+          <fieldset>
+            <legend class="center">Exercise fractions</legend>
+            <div id="custom-exercises"></div>
+          </fieldset>
+        </form>
+      </div>
+    </div>
+
     <div id="test">
       <div class="intro">
         <h2 class="center">Test</h2>
@@ -213,24 +231,53 @@
                 <label>Operations allowed: </label>
                 <div class="checkbox-group">
                   <div>
-                    <label for="+">Addition</label>
+                    <label for="fractions_addition">Addition</label>
                     <input type="checkbox" class="checkbox form-element" name="signs" value="addition"
-                           id="+" checked="true">                   
+                           id="fractions_addition" checked="true">                   
                   </div>
                   <div>
-                    <label for="-">Subtraction</label>
+                    <label for="fractions_subtraction">Subtraction</label>
                     <input type="checkbox" class="checkbox form-element" name="signs" value="subtraction"
-                           id="-" checked="true">                   
+                           id="fractions_subtraction" checked="true">                   
                   </div>
                   <div>
-                    <label for="x">Multiplication</label>
+                    <label for="fractions_multiplication">Multiplication</label>
                     <input type="checkbox" class="checkbox form-element" name="signs" value="multiplication"
-                           id="x">                   
+                           id="fractions_multiplication">                   
                   </div>
                   <div>
-                    <label for="/">Division</label>
+                    <label for="fractions_division">Division</label>
                     <input type="checkbox" class="checkbox form-element" name="signs" value="division"
-                           id="/">         
+                           id="fractions_division">         
+                  </div>
+                </div>
+              </div>
+            </fieldset>
+
+            <fieldset id="custom-settings">
+              <legend class="center">Custom</legend>
+              <div class="settings-line">
+                <label>Operations allowed: </label>
+                <div class="checkbox-group">
+                  <div>
+                    <label for="custom_addition">Addition</label>
+                    <input type="checkbox" class="checkbox form-element" name="signs" value="addition"
+                           id="custom_addition" checked="true">                   
+                  </div>
+                  <div>
+                    <label for="custom_subtraction">Subtraction</label>
+                    <input type="checkbox" class="checkbox form-element" name="signs" value="subtraction"
+                           id="custom_subtraction" checked="true">                   
+                  </div>
+                  <div>
+                    <label for="custom_multiplication">Multiplication</label>
+                    <input type="checkbox" class="checkbox form-element" name="signs" value="multiplication"
+                           id="custom_multiplication" checked="true">                   
+                  </div>
+                  <div>
+                    <label for="custom_division">Division</label>
+                    <input type="checkbox" class="checkbox form-element" name="signs" value="division"
+                           id="custom_division" checked="true">         
                   </div>
                 </div>
               </div>

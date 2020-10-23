@@ -26,15 +26,14 @@ export abstract class ContainerHandler {
             result = this.module.numbersBank[index][answerIdx].value(),   
             answer_inputs = this.rows.eq(index).find(".answer"),
             answers = this.collectAnswers(answer_inputs),
-            isCorrect = (answers.length > 1)?
+            isCorrect = (result instanceof Array)?
                 this.compareFractions(answers, <number[]>result)
                 : result === answers[0],
             icon = this.icons.eq(index);
-        console.log(answers)
+       
         if (isCorrect) {
-            /* each text field to be replaced by given correct answer */
             answer_inputs.each(function (idx: number) {   
-                $(this).hide().after(`<div> ${answers[idx]} </div>`);   // hide text input and display answer
+                $(this).hide().after(`<div>${answers[idx]}</div>`);     // hide text input and display answer
             });
             icon.prop("src", Configuration.ICON_TICK)                   // change icon to `tick`
                 .addClass("answered");                                  // add some left margin to it
@@ -48,26 +47,30 @@ export abstract class ContainerHandler {
     private collectAnswers(inputs: JQuery): number[] {
         const answers: number[] = [];
         let answer: string;
-        inputs.each(function (idx) {  //collect answer(s) and check if they're not empty
+        inputs.each(function (idx) {                        //collect answer(s) and check if they're not empty
             answer = <string>$(this).val();
-            answers.push(parseInt(answer));
+            answers.push(
+                (answer === "")? 0: parseInt(answer)
+            );
         });
         return answers;
     };
     
     private compareFractions(answers: number[], results: number[]): boolean {
-        console.log(`answers: ${answers} , results: ${results}`);
-        return false;
+        if (answers.length === 1) {
+            answers = [answers[0], 1];
+        }
+        if (answers.length === 3) {
+            answers = [answers[0] * answers[2] + answers[1], answers[2]];
+        }
+        return answers[0] / answers[1] === results[0] / results[1];
     }
 
     protected textInputHandlers(parents: JQuery, callback?: Function) {
-
         this.input_fields.on("paste", () => false);
-
         this.input_fields.on("click", function() {
             (<HTMLInputElement>this).select();
         });
-
         this.input_fields.on("blur", function () {
             let field = $(this);
             if (field.val() === "") {
@@ -81,7 +84,6 @@ export abstract class ContainerHandler {
                 parent.find(".icon").prop("src", Configuration.ICON_QUESTION);
             }
         });
-
         this.input_fields.on("keydown", function (e) {
             const field = $(this),
                 row = field.parents(".columns-line-operation"),
@@ -143,7 +145,6 @@ export class ExerciseContainerHandler extends ContainerHandler {
     }
 
     handleContent(callback: Function): void {
-
         /* listeners for all check buttons on page */
         this.buttons_check.on("click", (event) => {     
             let index = this.buttons_check.index(event.target),
@@ -152,7 +153,6 @@ export class ExerciseContainerHandler extends ContainerHandler {
             $(this).trigger('blur');
             event.preventDefault();
         });
-
         this.button_reset.on("click", () => {               
             this.module.resetScore();                                   // reset the score
             this.scoreboard.text(this.module.getScore());               // and scoreboard
@@ -167,14 +167,12 @@ export class ExerciseContainerHandler extends ContainerHandler {
             this.icons.removeClass("answered");                         // remove extra margin
             this.button_reset.trigger('blur');                          // remove focus from button
         });
-
         this.button_reload.on("click", (e) => {   //reload button
             e.preventDefault();
             e.stopImmediatePropagation();
             this.module.init();
             callback();
         });
-
         this.button_submit.on("click", (e) => {
             e.preventDefault();
             this.buttons_check.each((index, btn) => {
@@ -184,7 +182,6 @@ export class ExerciseContainerHandler extends ContainerHandler {
             });
             this.button_submit.trigger('blur');
         });
-
         /* run it as soon as page is loaded */
         /* to be replaced by mutation observer */
         setTimeout(() => this.adjustLinesLength(this.rows), 500);
