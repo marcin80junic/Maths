@@ -1,7 +1,20 @@
-import { OperationElement } from "./operation";
-import { Operand, OperandFactory } from "./operation_operands";
-import { Operator, OperatorFactory } from "./operation_operators";
+import { Configuration } from "./module_config";
+import { OperationElement } from "./operation_el_interface";
+import { Operand } from "./operand_abstract";
+import { Operator } from "./operator_abstract";
+import { OperatorFactory } from "./operator_factory";
+import { OperandFactory } from "./operand_factory";
 
+
+export type Options = {
+    level: number,
+    operation: OperationElement[],
+    operator: Operator,
+    operandType: string,
+    subtotal: number | number[],
+    length: number,
+    index: number
+}
 
 
 export class MathModuleBuilder {
@@ -10,7 +23,6 @@ export class MathModuleBuilder {
 
     constructor() {
         this.module = new MathModule();
-        this.module.equals = OperatorFactory.obtainOperator(Operator.EQUALS_OPERATOR);
     }
 
     setName(name: string) {
@@ -18,8 +30,11 @@ export class MathModuleBuilder {
         return this;
     }
     
-    setNamespace(name: string) {
-        this.module.namespace = name;
+    setNamespace(namespace: string) {
+        this.module.namespace = namespace;
+        this.module.operationLengths = (namespace === Configuration.MULTIPLICATION)?
+            [2, 3]
+            : [2, 3, 4, 5, 6];
         return this;
     }
     setOparators(...operators: Operator[]) {
@@ -48,13 +63,13 @@ export class MathModule {
         [MathModule.DIFFICULTY_SUPER_HARD, 2]
     ]);
     public static readonly NUM_OF_EXERCISES = [4, 6, 8, 10, 12, 14, 16, 18, 20];
-    public static readonly OPERATION_LENGTHS = [2, 3, 4, 5, 6];
+    public static readonly EQUALS: Operator = OperatorFactory.obtainOperator(Operator.EQUALS_OPERATOR);
 
     name: string;
     namespace: string;
     operators: Operator[];
-    equals: Operator;
     operandTypes: string[];
+    operationLengths: number[];
 
     level: number;
     exercisesCount: number;
@@ -99,41 +114,50 @@ export class MathModule {
     }
 
     private opGenerator(length: number): OperationElement[] {
-        let operation: OperationElement[] = [],
-            operator: Operator,
-            operandType: string,
-            operand: Operand,
+        let operand: Operand,
             value: number | number[],
-            subtotal: number | number[],
-            resultType: string;
+            resultType: string,
+            options: Options = {
+                level: this.level,
+                operation: [],
+                operator: null,
+                operandType: null,
+                subtotal: undefined,
+                length: length,
+                index: 0
+            };
 
         for (let j=0; j<length; j++) {
+            options.index = j * 2;
             if (j !== 1) {                                                  
-                operator = Operator.randomValue(this.operators)                 // obtain random operator
+                options.operator = Operator.randomValue(this.operators)         // obtain random operator
             }
-            operandType = Operator.randomValue(this.operandTypes);              // obtain random operand type
+            options.operandType = Operator.randomValue(this.operandTypes);      // obtain random operand type
             
-            if (operandType === Operand.COMPOSITE_OPERAND) {
-                console.log(operandType);
+            if (options.operandType === Operand.COMPOSITE_OPERAND) {
+                console.log(options.operandType);
                 j--;
                 continue;
             }
-            value = operator.getNumber(this.level, subtotal, operandType, length - j);  // obtain next number
-            operand = OperandFactory.obtainOperand(operandType, value);         // create next operand object
+            value = options.operator.getNumber(options);                        // obtain next number
+            operand = OperandFactory.obtainOperand(options.operandType, value); // create next operand object
             if (j === 0) {
-                operation.push(operand);
+                options.operation.push(operand);
             } else {
-                operation.push(operator, operand);
+                options.operation.push(options.operator, operand);
             }
-            subtotal = MathModule.reduce(operation);
+            options.subtotal = MathModule.reduce(options.operation);
+            
         }
 
-        resultType = (typeof subtotal === "number")?        // determine type of operand
+        resultType = (typeof options.subtotal === "number")?        // determine type of operand
             Operand.INTEGER_OPERAND
             : Operand.FRACTION_OPERAND;
-        /* add equals sign and reduced operand as a result */
-        operation.push(this.equals, OperandFactory.obtainOperand(resultType, subtotal).reduceOperand());
-        return operation;
+        console.log(`TOTAL subtotal = ${options.subtotal}`);
+        options.operation.push(                             // add equals sign and reduced operand as a result
+            MathModule.EQUALS, OperandFactory.obtainOperand(resultType, options.subtotal).reduceOperand()
+        );
+        return options.operation;
     }
 
     private generateAnswersMap() {
@@ -185,7 +209,7 @@ export class MathModule {
                 };
         let total: number | number[] = operation[0].value();
 
-        if (operation.length === 1) {
+        if (operation.length < 3) {
             return total;
         }
         if (operation.length === 3) {
@@ -213,7 +237,6 @@ export class MathModule {
                 }
             }
         }
-        console.log(`temp array: ${temp}`)
         if (temp.length > 0) {
             total = temp[0].value();
         }
@@ -222,7 +245,6 @@ export class MathModule {
                 total = temp[j].reduce(total, temp[j + 1].value());
             }
         }
-        console.log(`total: ${total}`)
         return total;
     }
 

@@ -34,7 +34,7 @@ export class LayoutCreator {
         html += `<div class="interface-item">
                     <label for="operationLength">How many numbers?</label>
                     <select class="operationLength form-element ${Configuration.noTouchClass}">`;
-                for (const length of MathModule.OPERATION_LENGTHS) {
+                for (const length of module.operationLengths) {
                     html += (module.operationLength === length) ?
                         `<option selected="selected">${length}</option>`
                         : `<option>${length}</option>`;

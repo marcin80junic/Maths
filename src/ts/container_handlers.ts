@@ -32,8 +32,8 @@ export abstract class ContainerHandler {
             icon = this.icons.eq(index);
        
         if (isCorrect) {
-            answer_inputs.each(function (idx: number) {   
-                $(this).hide().after(`<div>${answers[idx]}</div>`);     // hide text input and display answer
+            answer_inputs.each(function (idx: number) {                 // hide text input and display answer
+                $(this).hide().after(`<div>${(answers[idx] === 0)? '': answers[idx]}</div>`);     
             });
             icon.prop("src", Configuration.ICON_TICK)                   // change icon to `tick`
                 .addClass("answered");                                  // add some left margin to it
@@ -47,10 +47,10 @@ export abstract class ContainerHandler {
     private collectAnswers(inputs: JQuery): number[] {
         const answers: number[] = [];
         let answer: string;
-        inputs.each(function (idx) {                        //collect answer(s) and check if they're not empty
+        inputs.each(function (idx) {                        // collect answer(s) and check if they're not empty
             answer = <string>$(this).val();
             answers.push(
-                (answer === "")? 0: parseInt(answer)
+                (answer === "")? 0: parseInt(answer)        // assume 0 if input is empty
             );
         });
         return answers;

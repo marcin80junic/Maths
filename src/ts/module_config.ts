@@ -286,7 +286,6 @@ export class MediaPlayback {
     }
 
     public static playSound(sound: HTMLAudioElement, volume: number) {
-        
         if (sound === MediaPlayback.SOUND_CHEER) {
             sound.currentTime = 0.5;
         }

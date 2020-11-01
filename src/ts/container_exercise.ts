@@ -1,8 +1,9 @@
 import $ from 'jquery';
 import { MathModule, MathModuleBuilder } from "./module_math";
 import { AbstractContainerFactory, Container } from "./container_home";
-import { Operator, OperatorFactory } from './operation_operators';
-import { Operand } from './operation_operands';
+import { Operator } from './operator_abstract';
+import { OperatorFactory } from './operator_factory';
+import { Operand } from './operand_abstract';
 import { Configuration } from "./module_config";
 import { LayoutCreator } from './container_layout';
 import { ContainerHandler, ExerciseContainerHandler } from './container_handlers';
