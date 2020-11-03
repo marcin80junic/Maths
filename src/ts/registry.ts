@@ -5,7 +5,7 @@ import { AdditionContainerFactory,
         MultiplicationContainerFactory, 
         DivisionContainerFactory,
         FractionsContainerFactory,
-        CustomContainerFactory} from "./container_exercise";
+        CustomContainerFactory} from "./container_factories";
 import { TestAccordionFactory } from "./container_accordion";
 import { SettingsContainerFactory } from "./container_settings";
 import { Configuration } from './module_config';
