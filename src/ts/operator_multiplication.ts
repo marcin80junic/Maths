@@ -68,11 +68,6 @@ export class MultiplicationOperator extends Operator {
             } else {
                 subtotal = [1, 6];
             }
-        /*    if(minuend) {
-                console.log("operation: "+options.operation.map((val)=>val.toString()))
-                console.log(`minuend: ${minuend[0]}, ${minuend[1]}`);
-                console.log(`subtotal: ${subtotal[0]}, ${subtotal[1]}`);
-            }*/
         
             switch (options.level) {
                 case 0:
@@ -80,166 +75,37 @@ export class MultiplicationOperator extends Operator {
                         console.log("NUMBERRRRR")
                     }
                     if (minuend) {
-                        den = (subtotal[1] > 3)?
-                            Operator.isPrime(subtotal[1])?
-                                (Operator.isPrime(subtotal[0]) && (subtotal[0] > 2))?
-                                    subtotal[0]
-                                    : 2
-                                : Operator.isPrime(subtotal[0])?
-                                    (subtotal[0] > 1) ?
-                                        subtotal[0]
-                                        : 2
-                                    : Operator.range(
-                                        2,
-                                        100,
-                                        false,
-                                        Operator.filterDivisors(subtotal[1], divisors)
-                                    )
-                            : (Operator.isPrime(subtotal[0]) && subtotal[0] > 1)?
-                                subtotal[0]
-                                : subtotal[0] * Operator.range(
-                                    2,
-                                    subtotal[1] * 2,
-                                    false,
-                                    Operator.filterDivisors(subtotal[0], divisors)
-                                );
-                        num = minuend[0] > 2?
-                                Operator.isPrime(subtotal[1])?
-                                    subtotal[1]
-                                    : Operator.range(
-                                        1,
-                                        minuend[0] - 1,
-                                        false,
-                                        Operator.filterDivisors(subtotal[1], divisors)
-                                    )
-                                : Operator.range(
-                                    1,
-                                    Math.ceil(minuend[1] / 2),
-                                    false,
-                                    Operator.filterDivisors(minuend[1], divisors)
-                                );
+                       
                     } else {
-                        den = subtotal[0] > 1?
-                            Operator.isPrime(subtotal[0])?
-                                subtotal[0]
-                                : Operator.range(
-                                    2,
-                                    subtotal[0],
-                                    false,
-                                    Operator.filterDivisors(subtotal[0], divisors)
-                                )
-                            : Operator.range(2, 4);
-                        num = subtotal[1] > 2?
-                            Operator.isPrime(subtotal[1])?
-                                subtotal[1]
-                                : Operator.range(
-                                    1,
-                                    subtotal[1],
-                                    false,
-                                    Operator.filterDivisors(subtotal[1], divisors))
-                            : 1;
+                        
                     }
                     fraction = [num, den];
                     break;
                 case 1:
                     if (minuend) {
-                        den = (subtotal[1] > 3)?
-                            Operator.isPrime(subtotal[1])?
-                                (Operator.isPrime(subtotal[0]) && (subtotal[0] > 2))?
-                                    subtotal[0]
-                                    : 2
-                                : Operator.isPrime(subtotal[0])?
-                                    (subtotal[0] > 1) ?
-                                        subtotal[0]
-                                        : 2
-                                    : Operator.range(
-                                        2,
-                                        100,
-                                        false,
-                                        Operator.filterDivisors(subtotal[1], divisors)
-                                    )
-                            : (Operator.isPrime(subtotal[0]) && subtotal[0] > 1)?
-                                subtotal[0]
-                                : subtotal[0] * Operator.range(
-                                    2,
-                                    subtotal[1] * 2,
-                                    false,
-                                    Operator.filterDivisors(subtotal[0], divisors)
-                                );
-                        num = minuend[0] > 2?
-                                Operator.isPrime(subtotal[1])?
-                                    subtotal[1]
-                                    : Operator.range(
-                                        1,
-                                        minuend[0] - 1,
-                                        false,
-                                        Operator.filterDivisors(subtotal[1], divisors)
-                                    )
-                                : Operator.range(
-                                    1,
-                                    Math.ceil(minuend[1] / 2),
-                                    false,
-                                    Operator.filterDivisors(minuend[1], divisors)
-                                );
+                       
                     } else {
-                        den = subtotal[0] > 1?
-                            Operator.isPrime(subtotal[0])?
-                                subtotal[0]
-                                : Operator.range(
-                                    2,
-                                    subtotal[0],
-                                    false,
-                                    Operator.filterDivisors(subtotal[0], divisors)
-                                )
-                            : Operator.range(2, 4);
-                        num = subtotal[1] > 2?
-                            Operator.isPrime(subtotal[1])?
-                                subtotal[1]
-                                : Operator.range(
-                                    1,
-                                    subtotal[1],
-                                    false,
-                                    Operator.filterDivisors(subtotal[1], divisors))
-                            : 1;
+                        
                     }
                     fraction = [num, den];
                     break;
                 case 2:
                     if (minuend) {
-                        den = subtotal[1] > 3?
-                            Operator.isPrime(subtotal[1])?
-                                subtotal[1]
-                                : Operator.range(2, subtotal[1])
-                            : subtotal[1];
-                        num = minuend[0] > 2?
-                            Operator.range(
-                                1,
-                                minuend[0] - 1,
-                                false,
-                                Operator.filterDivisors(subtotal[1], divisors)
-                            )
-                            : 1;
+
                     } else {
-                        den = subtotal[0] > 1?
-                            Operator.isPrime(subtotal[0])?
-                                subtotal[0]
-                                : Operator.range(2, subtotal[0],)
-                            : Operator.range(2, 6);
-                        num = subtotal[1] > 2?
-                            Operator.isPrime(subtotal[1])?
-                                subtotal[1]
-                                : Operator.range(2, subtotal[1])
-                            : 1;
+
                     }
                     fraction = [num, den];
                     break;
             }
             console.log("fraction multiplicatoion: "+fraction[0] +", "+fraction[1]);
          
-            return (fraction[0] % fraction[1] === 0)?
-                this.getNumber(options)
-                : fraction;
+            return fraction;
         }
+    }
+
+    private createFraction(minuend: number[], subtotal: number[]) {
+        
     }
 
     reduce(prev: number | number[], curr: number | number[]): number | number[] {

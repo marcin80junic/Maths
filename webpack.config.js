@@ -58,7 +58,6 @@ module.exports = {
             {
                 test: /\.s[ac]ss$/i,
                 use: [
-
                     devMode ? 
                         'style-loader'
                         : MiniCssExtractPlugin.loader,

@@ -1,6 +1,6 @@
 import { Configuration } from "./module_config";
 import { MathModule } from "./module_math";
-import { OperationElement } from "./operation";
+import { OperationElement } from "./operation_el_interface";
 
 
 
@@ -45,9 +45,9 @@ export class LayoutCreator {
         html += `<div class="interface-item-score"> 
                     <div>Your Score:</div>
                     <div>
-                        <div class="score">0</div>
+                        <div id="score">0</div>
                         <div>/</div>
-                        <div>${module.exercisesCount}</div>
+                        <div id="score-max">${module.exercisesCount}</div>
                     </div>
                 </div>
             </div>`;            // end of interface

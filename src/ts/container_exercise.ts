@@ -107,6 +107,8 @@ class ExerciseContainer extends Container {
     protected mainContainer: JQuery;
     protected buttonContainer: JQuery;
 
+    protected maxScore: JQuery;
+
     constructor(container: JQuery, content: MathModule) {
         super(container);
         this.module = content;
@@ -141,6 +143,7 @@ class ExerciseContainer extends Container {
             .html(LayoutCreator.createMainContainer(this.module, false));
         this.buttonContainer = $(LayoutCreator.createButtonsContainer());
         this.formContainer.append(this.interfaceContainer, this.mainContainer, this.buttonContainer);
+        this.maxScore = this.interfaceContainer.find('#score-max');
     }
 
     private updateContainerProps() {
@@ -166,6 +169,9 @@ class ExerciseContainer extends Container {
         this.module.exercisesCount = this.localConfig.exercisesCount;
         this.module.operationLength = this.localConfig.operationLength;
         this.module.init();
+        if (this.maxScore) {
+            this.maxScore.html(`${this.module.exercisesCount}`);
+        }
         if (this.mainContainer) {
             this.reloadMainContainer();
         };
@@ -241,6 +247,7 @@ class ExerciseContainer extends Container {
   
 }
 
+
 class FractionContainer extends ExerciseContainer {
     
     constructor(container: JQuery, content: MathModule) {
@@ -257,6 +264,7 @@ class FractionContainer extends ExerciseContainer {
     }
 
 }
+
 
 class CustomContainer extends ExerciseContainer {
     

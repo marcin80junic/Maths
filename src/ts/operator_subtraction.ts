@@ -65,8 +65,6 @@ export class SubtractionOperator extends Operator {
                 subtotal = [num, den];
             }
 
-            console.log("subtotal: "+subtotal[0]+", "+subtotal[1])
-
             switch (options.level) {
                 case 0:
                     den = (typeof subtotal === "number")?
@@ -80,8 +78,8 @@ export class SubtractionOperator extends Operator {
                     break;
                 case 1:
                     den = (typeof subtotal === "number")?
-                    Operator.range(2, 6)
-                    : 2
+                        Operator.range(2, 6)
+                        : 2
                     fraction = [num, den];
                     break;
                 case 2:
@@ -95,10 +93,15 @@ export class SubtractionOperator extends Operator {
                     break;
             }
             console.log("fraction subtraction: " + fraction[0]+", "+fraction[1]);
+
             return (fraction[0] % fraction[1] === 0)?
                         this.getNumber(options)
                         : fraction;
         }
+    }
+
+    private calculateFraction(subtotal: number[] = null, left: number) {
+
     }
 
     reduce(prev: number | number[], curr: number | number[]): number | number[] {

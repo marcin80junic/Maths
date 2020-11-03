@@ -137,7 +137,7 @@ export class ExerciseContainerHandler extends ContainerHandler {
 
     constructor(container: JQuery<HTMLElement>, module: MathModule) {
         super(container, module);
-        this.scoreboard = container.find(".score");
+        this.scoreboard = container.find("#score");
         this.buttons_check = container.find(".check");
         this.button_reset = container.find(".reset");
         this.button_reload = container.find(".reload");

@@ -151,6 +151,26 @@ export abstract class Operator implements OperationElement {
         return temp;
     }
 
+    /*
+        divisors method takes number and returns its divisors NOT including 1
+    */
+    static divisors(number: number): number[] {
+        const divArray: number[] = [];
+
+        if (number <= 1) {
+            return divArray;
+        }
+
+        for (let i = 2; i < number / 2 + 1; i++) {
+            if (number % i === 0) {
+                divArray.push(i);
+            }
+        }
+        
+        divArray.push(number);
+        return divArray;
+    }
+
 }
 
 

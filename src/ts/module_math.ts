@@ -153,7 +153,6 @@ export class MathModule {
         resultType = (typeof options.subtotal === "number")?        // determine type of operand
             Operand.INTEGER_OPERAND
             : Operand.FRACTION_OPERAND;
-        console.log(`TOTAL subtotal = ${options.subtotal}`);
         options.operation.push(                             // add equals sign and reduced operand as a result
             MathModule.EQUALS, OperandFactory.obtainOperand(resultType, options.subtotal).reduceOperand()
         );
