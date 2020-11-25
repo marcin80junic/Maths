@@ -1,4 +1,5 @@
 import { Options } from "./module_math";
+import { Operand } from "./operand_abstract";
 import { OperationElement } from "./operation_el_interface";
 
 
@@ -19,13 +20,26 @@ export abstract class Operator implements OperationElement {
     ]);
 
     protected symbol: string;
+    protected options: Options;
 
     protected constructor(symbol: string) {
         this.symbol = symbol;
     }
-      
-    abstract getNumber(options: Options): number | number[];
+    
+    abstract getInteger(level: number, subtotal: number | number[], length: number, left: number): number;
+    abstract getFraction(level: number, subtotal: number | number[], length: number, left: number): number[];
     abstract reduce(prev: number | number[], curr: number | number[]): number | number[];
+
+    getNumber(options: Options): number | number[] {
+        const left = options.length - options.index / 2;
+        if (options.index === 0) console.log("===============")
+        this.options = options;
+        if (options.operandType === Operand.INTEGER_OPERAND) {
+            return this.getInteger(options.level, options.subtotal, options.length, left);
+        } else {
+            return this.getFraction(options.level, options.subtotal, options.length, left);
+        }
+    }
 
     value(): number {
         return NaN;
@@ -73,7 +87,7 @@ export abstract class Operator implements OperationElement {
                     }
                 }
                 /* return random number matching above conditions or NaN if no numbers left */
-                return (temp.length === 0) ? NaN : Operator.randomValue(temp);
+                return (temp.length === 0) ? NaN : Operator.randomValueOf(temp);
             }
             /* case when excludePrimes is true and no optional array provided */
             if (max - min > 0) {  // making sure there will be a not-prime number in range
@@ -93,7 +107,7 @@ export abstract class Operator implements OperationElement {
                     temp.push(num);
                 }
             }
-            return (temp.length === 0) ? NaN : Operator.randomValue(temp);
+            return (temp.length === 0) ? NaN : Operator.randomValueOf(temp);
         }
         /* simle case when min and max parameters are in order and no optional parameters are provided*/
         return random = Math.floor(Math.random() * (max - min + 1) + min);
@@ -117,7 +131,7 @@ export abstract class Operator implements OperationElement {
     /*
         *Takes an array and returns its one random value
     */
-    static randomValue(array: Array<any>) {
+    static randomValueOf(array: Array<any>) {
         if (array.length === 0) {
             return undefined;
         }
@@ -140,33 +154,20 @@ export abstract class Operator implements OperationElement {
         return [fraction[0] / x, fraction[1] / x];
     }
 
-    static filterDivisors(divident: number, divisors: number[]): number[] {
-        const temp = [];
-
-        for (const div of divisors) {
-            if (divident % div === 0 || div % divident === 0) {
-                temp.push(div);
-            }
-        }
-        return temp;
-    }
-
     /*
         divisors method takes number and returns its divisors NOT including 1
     */
-    static divisors(number: number): number[] {
+    static divisorsOf(number: number): number[] {
         const divArray: number[] = [];
 
         if (number <= 1) {
             return divArray;
         }
-
         for (let i = 2; i < number / 2 + 1; i++) {
             if (number % i === 0) {
                 divArray.push(i);
             }
         }
-        
         divArray.push(number);
         return divArray;
     }
@@ -189,6 +190,12 @@ export class EqualsOperator extends Operator {
         return this.instance;
     }
 
+    getInteger(level: number, subtotal: number | number[], length: number, left: number): number {
+        throw new Error("Method not implemented.");
+    }
+    getFraction(level: number, subtotal: number | number[], length: number, left: number): number[] {
+        throw new Error("Method not implemented.");
+    }
     getNumber(options: Options): number | number[] {
         throw new Error("Method not implemented.");
     }

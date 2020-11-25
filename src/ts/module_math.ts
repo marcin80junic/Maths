@@ -32,9 +32,10 @@ export class MathModuleBuilder {
     
     setNamespace(namespace: string) {
         this.module.namespace = namespace;
-        this.module.operationLengths = (namespace === Configuration.MULTIPLICATION)?
-            [2, 3]
-            : [2, 3, 4, 5, 6];
+        this.module.operationLengths = 
+            (namespace === Configuration.MULTIPLICATION || namespace === Configuration.DIVISION)?
+                [2, 3]
+                : [2, 3, 4, 5, 6];
         return this;
     }
     setOparators(...operators: Operator[]) {
@@ -130,9 +131,9 @@ export class MathModule {
         for (let j=0; j<length; j++) {
             options.index = j * 2;
             if (j !== 1) {                                                  
-                options.operator = Operator.randomValue(this.operators)         // obtain random operator
+                options.operator = Operator.randomValueOf(this.operators)         // obtain random operator
             }
-            options.operandType = Operator.randomValue(this.operandTypes);      // obtain random operand type
+            options.operandType = Operator.randomValueOf(this.operandTypes);      // obtain random operand type
             
             if (options.operandType === Operand.COMPOSITE_OPERAND) {
                 console.log(options.operandType);
@@ -147,7 +148,6 @@ export class MathModule {
                 options.operation.push(options.operator, operand);
             }
             options.subtotal = MathModule.reduce(options.operation);
-            
         }
 
         resultType = (typeof options.subtotal === "number")?        // determine type of operand
@@ -172,7 +172,7 @@ export class MathModule {
                 for (let j=0; j<operation.length; j+=2) {
                     nums.push(j);
                 }
-                this.answersMap.set(i, Operator.randomValue(nums));
+                this.answersMap.set(i, Operator.randomValueOf(nums));
             }
         }
     }
@@ -182,9 +182,9 @@ export class MathModule {
         *passed to the function
     */
     private contains(array: OperationElement[]) {
-        const operationString = JSON.stringify(array);
+        const operationString = array.toString();
         for (const subarray of this.numbersBank) {
-            if (JSON.stringify(subarray) === operationString) {
+            if (subarray.toString() === operationString) {
                 return true;
             }
         }
@@ -216,7 +216,6 @@ export class MathModule {
         }
 
         for (let i=1; i<operation.length; i+=2) {
-
             if (isHighPrecedence(operation[i])) {
                 if ((i - 2 >= 0) && isHighPrecedence(operation[i - 2])) {
                     temp[temp.length - 1] = 
@@ -236,6 +235,7 @@ export class MathModule {
                 }
             }
         }
+        
         if (temp.length > 0) {
             total = temp[0].value();
         }
