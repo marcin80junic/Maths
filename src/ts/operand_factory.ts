@@ -8,20 +8,14 @@ import { CompositeOperand } from "./operand_composite";
 
 export class OperandFactory {
 
-    public static obtainOperand(type: string, values: number | number[]): Operand {
+    public static obtainOperand(type: string, values: number | number[] | OperationElement[]): Operand {
         switch (type) {
             case Operand.INTEGER_OPERAND:
                 return new IntegerOperand(values);
             case Operand.FRACTION_OPERAND:
                 return new FractionOperand([values[0], values[1]]);
             case Operand.COMPOSITE_OPERAND:
-                const elements: OperationElement[] = [];
-           /*     for (const element of values) {
-                    if ('value' in element) {
-                        elements.push(element);
-                    }
-                }*/
-                return new CompositeOperand(elements);
+                return new CompositeOperand(values);
             default:
                 throw new Error(`not recognized operand type: ${type}`);
         }

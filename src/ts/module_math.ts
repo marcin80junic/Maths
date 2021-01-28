@@ -114,10 +114,12 @@ export class MathModule {
         this.generateAnswersMap();
     }
 
-    private opGenerator(length: number): OperationElement[] {
+    private opGenerator(length: number, isComposite = false): OperationElement[] {
         let operand: Operand,
-            value: number | number[],
+            operandTypes = this.operandTypes.slice(),
+            value: number | number[] | OperationElement[],
             resultType: string,
+            compLength: number,
             options: Options = {
                 level: this.level,
                 operation: [],
@@ -129,33 +131,47 @@ export class MathModule {
             };
 
         for (let j=0; j<length; j++) {
+
             options.index = j * 2;
-            if (j !== 1) {                                                  
-                options.operator = Operator.randomValueOf(this.operators)         // obtain random operator
+
+            if (j !== 1) {                                                  // first 2 operands share operator                                   
+                options.operator = Operator.randomValueOf(this.operators)   // obtain random operator
             }
-            options.operandType = Operator.randomValueOf(this.operandTypes);      // obtain random operand type
+
+            /* remove composite operand if there are less than 2 numbers to equals sign */
+            if ((length - j < 2) || (isComposite && length - j < 3)) { 
+                operandTypes = operandTypes.filter((val) => val !== Operand.COMPOSITE_OPERAND);
+            }
+            options.operandType = Operator.randomValueOf(operandTypes);     // obtain random operand type
             
-            if (options.operandType === Operand.COMPOSITE_OPERAND) {
-                console.log(options.operandType);
-                j--;
-                continue;
+            if (options.operandType === Operand.COMPOSITE_OPERAND) {        // obtain composite operand
+                compLength = Operator.range(2, length - j);                 // obtain operands length
+                value = this.opGenerator(compLength, true);                 // and its elements
+                j += compLength;                                            // update counter
+            } else {                            // or obtain next number and create simple operand object
+                value = options.operator.getNumber(options);                
             }
-            value = options.operator.getNumber(options);                        // obtain next number
-            operand = OperandFactory.obtainOperand(options.operandType, value); // create next operand object
-            if (j === 0) {
+            operand = OperandFactory.obtainOperand(options.operandType, value);
+
+            /* don't push operator if first element of operation */
+            if (j === 0 || (compLength && (j - compLength === 0))) {
                 options.operation.push(operand);
             } else {
                 options.operation.push(options.operator, operand);
             }
-            options.subtotal = MathModule.reduce(options.operation);
-        }
 
-        resultType = (typeof options.subtotal === "number")?        // determine type of operand
-            Operand.INTEGER_OPERAND
-            : Operand.FRACTION_OPERAND;
-        options.operation.push(                             // add equals sign and reduced operand as a result
-            MathModule.EQUALS, OperandFactory.obtainOperand(resultType, options.subtotal).reduceOperand()
-        );
+            options.subtotal = MathModule.reduce(options.operation);// calculate and store total up to now
+            console.log(`operation: ${options.operation}`);
+        }                                                               
+
+        if (!isComposite) {                                         // only if not creating composite operand
+            resultType = (typeof options.subtotal === "number")?    // determine type of operand
+                Operand.INTEGER_OPERAND
+                : Operand.FRACTION_OPERAND;
+            options.operation.push(                     // add equals sign and reduced operand as a result
+                MathModule.EQUALS, OperandFactory.obtainOperand(resultType, options.subtotal).reduceOperand()
+            );
+        }
         return options.operation;
     }
 
@@ -206,6 +222,7 @@ export class MathModule {
                             : Operand.FRACTION_OPERAND;
                     return OperandFactory.obtainOperand(sumType, sum);
                 };
+        console.log(`reducing: ${operation}`)
         let total: number | number[] = operation[0].value();
 
         if (operation.length < 3) {

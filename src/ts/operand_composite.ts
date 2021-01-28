@@ -7,28 +7,20 @@ import { OperationElement } from "./operation_el_interface";
 
 export class CompositeOperand extends Operand {
 
-    private _values: OperationElement[];
+    protected _value: OperationElement[];
 
-    constructor(value: OperationElement[]) {
-        super(0);
-        this._values = value;
-    }
-
-    getOperand(min: number, max: number): Operand {
-        throw new Error("Method not implemented.");
-    }
     value(): number | number[] {
-        return MathModule.reduce(this._values);
+        return MathModule.reduce(this._value);
     }
     toString(): string {
         let str = '';
-        for (const el of this._values) {
+        for (const el of this._value) {
             str += el.toString() + ' ';
         }
         return str;
     }
     reduce(): number | number[] {
-        return MathModule.reduce(this._values);
+        return MathModule.reduce(this._value);
     }
     reduceOperand(): Operand {
         let total = this.reduce(),
@@ -38,12 +30,13 @@ export class CompositeOperand extends Operand {
         return OperandFactory.obtainOperand(totalType, total);
     }
     getLayout(): string {
-        let html = '';
-        for (const el of this._values) {
+        let html = '(';
+        for (const el of this._value) {
             html += el.getLayout();
         }
-        return html;
+        return html + ')';
     }
+
     draw(context: CanvasRenderingContext2D): void {
         throw new Error("Method not implemented.");
     }

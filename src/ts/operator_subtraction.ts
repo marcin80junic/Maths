@@ -74,6 +74,7 @@ export class SubtractionOperator extends Operator {
         }
 
         if (this.options.index > 3) {
+            console.log('calling this.options')
             operatorType = this.options.operation[this.options.index - 3].toString();
                 if (
                     operatorType === Operator.OPERATORS.get(Operator.MULTIPLICATION_OPERATOR)

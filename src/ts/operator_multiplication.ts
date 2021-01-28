@@ -105,7 +105,8 @@ export class MultiplicationOperator extends Operator {
         switch (level) {
             case 0:
                 if (typeof subtotal === "number") {
-                    throw "NUMBERRRRR";
+                    num = Operator.range(1, den - 1);
+                    return [num, den];
                 }
                 num = minuend?
                     getNumeratorSupplied(den, ...divisors)

@@ -32,7 +32,6 @@ export abstract class Operator implements OperationElement {
 
     getNumber(options: Options): number | number[] {
         const left = options.length - options.index / 2;
-        if (options.index === 0) console.log("===============")
         this.options = options;
         if (options.operandType === Operand.INTEGER_OPERAND) {
             return this.getInteger(options.level, options.subtotal, options.length, left);
@@ -98,7 +97,7 @@ export abstract class Operator implements OperationElement {
                     }
                 }
             }
-            return Operator.isPrime(min) ? NaN : min;   // case when min === max
+            return Operator.isPrime(min)? NaN : min;   // case where min === max
         }
         /* if excludesPrime is false and optArray is provided */
         if (optArray) {

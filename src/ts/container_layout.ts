@@ -8,6 +8,7 @@ export class LayoutCreator {
 
     public static createInterfaceContainer(module: MathModule): string {
         let html = '<div class="interface">';
+
         /* level selection */
         html += `<div class="interface-item">               
                     <label for="level">Difficulty:</label>
@@ -19,6 +20,7 @@ export class LayoutCreator {
                 };
             html += `</select>
                 </div>`;        // end of level selection
+
         /* number of exercises choice */
         html += `<div class="interface-item">               
                     <label for="exercisesCount">How many exercises?</label>
@@ -30,6 +32,7 @@ export class LayoutCreator {
                 }
             html += `</select>
                 </div>`;        // end of num of exercises choice
+
         /* operation length choice */
         html += `<div class="interface-item">
                     <label for="operationLength">How many numbers?</label>
@@ -41,6 +44,7 @@ export class LayoutCreator {
                     }
             html += `</select>
                 </div>`;        // end of operation length choice
+                
         /* current score */
         html += `<div class="interface-item-score"> 
                     <div>Your Score:</div>

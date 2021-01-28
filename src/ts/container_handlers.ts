@@ -10,6 +10,7 @@ export abstract class ContainerHandler {
     protected icons: JQuery;
     protected module: MathModule;
     protected player: MediaPlayback;
+    protected observer: MutationObserver;
 
     constructor (container: JQuery<HTMLElement>, module: MathModule) {
         this.rows = container.find(".columns-line-operation");
@@ -17,6 +18,13 @@ export abstract class ContainerHandler {
         this.icons = this.rows.find('.icon');
         this.module = module;
         this.player = MediaPlayback.getPlayer();
+        this.observer = new MutationObserver(
+            () => {
+                this.adjustLinesLength(this.rows);
+                this.observer.disconnect();     // only triggers once
+            }
+        );
+        this.observer.observe(container[0], {attributes: true, attributeFilter: ["data-loaded"]});
     }
 
     abstract handleContent(callback?: Function): void;
@@ -160,8 +168,8 @@ export class ExerciseContainerHandler extends ContainerHandler {
                 .removeClass("warning")                                     // remove red border if any
                 .filter(':hidden')                                          // filter only answered ones
                 .show()                                                     // put them back on the screen
-                .next()                                                     // next element is an answer
-                .remove();                                                  // to be removed
+                .next()                                                     // next element is an answer..
+                .remove();                                                  // ..to be removed
             this.icons.prop("src", Configuration.ICON_QUESTION);        // reset icons
             this.buttons_check.removeClass("invisible");                // reset buttons
             this.icons.removeClass("answered");                         // remove extra margin
@@ -182,9 +190,9 @@ export class ExerciseContainerHandler extends ContainerHandler {
             });
             this.button_submit.trigger('blur');
         });
-        /* run it as soon as page is loaded */
-        /* to be replaced by mutation observer */
-        setTimeout(() => this.adjustLinesLength(this.rows), 500);
+
+        
+     //   setTimeout(() => this.adjustLinesLength(this.rows), 500);
         this.textInputHandlers(this.rows, (index: number) => this.buttons_check.eq(index).trigger('click'));  
     }
 

@@ -8,9 +8,9 @@ export abstract class Operand implements OperationElement {
     public static readonly FRACTION_OPERAND = "fraction";
     public static readonly COMPOSITE_OPERAND = "composite";
 
-    protected _value: number | number[];
+    protected _value: number | number[] | OperationElement[];
 
-    constructor(value: number | number[]) {
+    constructor(value: number | number[] | OperationElement[]) {
         this._value = value;
     }
 

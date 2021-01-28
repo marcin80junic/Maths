@@ -5,7 +5,7 @@ import { Operand } from "./operand_abstract";
 
 export class FractionOperand extends Operand {
 
-    _value: number[];
+    protected _value: number[];
 
     value(): number[] {
         return this._value;

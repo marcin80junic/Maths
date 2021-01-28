@@ -8,8 +8,7 @@ import { SubtractionOperator } from "./operator_subtraction";
 export class OperatorFactory {
     
     public static obtainOperator(name: string): Operator {
-
-        switch(name) {
+        switch(name.trim()) {
             case Operator.ADDITION_OPERATOR:
                 return AdditionOperator.getInstance(Operator.OPERATORS.get(name));
             case Operator.SUBTRACTION_OPERATOR:
@@ -21,7 +20,7 @@ export class OperatorFactory {
             case Operator.EQUALS_OPERATOR:
                 return EqualsOperator.getInstance(Operator.OPERATORS.get(name));
             default:
-                throw new Error('not recognized operator string');
+                throw new Error(`not recognized operator string: "${name}"`);
         }
 
     }
