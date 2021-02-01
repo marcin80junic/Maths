@@ -1,14 +1,16 @@
 import $ from 'jquery';
-import { HomeContainerFactory, Container } from "./container_home";
-import { AdditionContainerFactory,
+import { Container } from "./container/container";
+import { HomeContainerFactory,
+        AdditionContainerFactory,
         SubtractionContainerFactory,
         MultiplicationContainerFactory, 
         DivisionContainerFactory,
         FractionsContainerFactory,
-        CustomContainerFactory} from "./container_factories";
-import { TestAccordionFactory } from "./container_accordion";
-import { SettingsContainerFactory } from "./container_settings";
-import { Configuration } from './module_config';
+        CustomContainerFactory,
+        TestAccordionFactory,
+        SettingsContainerFactory 
+    } from "./container/containerFactory";
+import { Configuration } from './config/configuration';
 
 
 export abstract class ModuleRegistry {

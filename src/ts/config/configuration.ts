@@ -1,13 +1,12 @@
                                                                                 // @ts-ignore
-import icon_questMark from '../../public/pics/question.png';                    // @ts-ignore
-import icon_cross from '../../public/pics/wrong.png';                           // @ts-ignore
-import icon_tick from '../../public/pics/correct.png';                          // @ts-ignore
-import icon_volumeMuted from '../../public/pics/speaker-muted.png';             // @ts-ignore
-import icon_volumeLow from '../../public/pics/speaker-low-volume.png';          // @ts-ignore
-import icon_volumeMedium from '../../public/pics/speaker-medium-volume.png';    // @ts-ignore
-import icon_volumeHigh from '../../public/pics/speaker-high-volume.png';        // @ts-ignore
-import sound_cheer from '../../public/sounds/cheering.mp3';                     // @ts-ignore
-import sound_wrong from '../../public/sounds/fart.mp3';
+import icon_questMark from '../../../public/pics/question.png';                    // @ts-ignore
+import icon_cross from '../../../public/pics/wrong.png';                           // @ts-ignore
+import icon_tick from '../../../public/pics/correct.png';                          // @ts-ignore
+import icon_volumeMuted from '../../../public/pics/speaker-muted.png';             // @ts-ignore
+import icon_volumeLow from '../../../public/pics/speaker-low-volume.png';          // @ts-ignore
+import icon_volumeMedium from '../../../public/pics/speaker-medium-volume.png';    // @ts-ignore
+import icon_volumeHigh from '../../../public/pics/speaker-high-volume.png'; 
+
 
 /*
     Application configuration implements singleton pattern
@@ -75,7 +74,7 @@ export class Configuration {
 
     /* touchscreen detection */
     public static readonly isTouchscreen = "ontouchstart" in document.documentElement;
-    public static readonly noTouchClass = Configuration.isTouchscreen? "": "no-touch";
+    public static readonly noTouchClass = Configuration.isTouchscreen ? "" : "no-touch";
 
 
     private constructor() {
@@ -135,7 +134,7 @@ export class Configuration {
         }
     }
 
-    save (map: Map<string, string>): void {
+    save(map: Map<string, string>): void {
         const eventTypes: Set<string> = new Set();
         for (const [key, value] of map) {
             this.accessStorage(key, value);
@@ -158,13 +157,13 @@ export class Configuration {
                     return loaded;
                 }
             }
-        } catch(error) {
+        } catch (error) {
             console.error("can't access the local storage");
         }
     }
 
-    public addListener (type: string, callback: Function) {
-        switch(type) {
+    public addListener(type: string, callback: Function) {
+        switch (type) {
             case Configuration.EVENT_MEDIA:
                 this.subscribers_media.push(callback);
                 break;
@@ -183,7 +182,7 @@ export class Configuration {
             case Configuration.EVENT_TEST:
                 this.subscribers_test.push(callback);
                 break;
-        }  
+        }
     }
 
     private notifySubscibers(events: Iterable<string>) {
@@ -229,9 +228,9 @@ export class Configuration {
     /* setters and getters for configuration properties */
     get system_volume() { return parseFloat(this._system_volume); }
     set system_volume(newVal) { this._system_volume = "" + newVal; }
-    get general_tooltips() { return (this._general_tooltips === "true")? true: false; }
+    get general_tooltips() { return (this._general_tooltips === "true") ? true : false; }
     set general_tooltips(newVal) { this._general_tooltips = "" + newVal; }
-    get general_randomize() { return (this._general_randomize === "true")? true: false; }
+    get general_randomize() { return (this._general_randomize === "true") ? true : false; }
     set general_randomize(newVal) { this._general_randomize = "" + newVal; }
     get fractions_operators() { return this._fractions_operators.split(",") }
     set fractions_operators(newVal) { this._fractions_operators = newVal.join(",") }
@@ -243,54 +242,5 @@ export class Configuration {
     set test_times(newVal) { this._test_times = newVal.join(",") }
     get test_questions() { return parseInt(this._test_questions, 10) }
     set test_questions(newVal) { this._test_questions = "" + newVal }
-
-}
-
-
-export class MediaPlayback {
-
-    public static readonly SOUND_CHEER = new Audio(sound_cheer);
-    public static readonly SOUND_FART = new Audio(sound_wrong);
-
-    private static instance: MediaPlayback;
-    private sound: HTMLAudioElement;
-    private volume: number
-
-    constructor() {
-        Configuration.getConfig().addListener(Configuration.VOLUME, this.init);
-        this.sound = MediaPlayback.SOUND_CHEER;
-        this.init();
-    }
-
-    public static getPlayer() {
-        if (!this.instance) {
-            this.instance = new MediaPlayback();
-        }
-        return this.instance;
-    }
-
-    private init() {
-        this.volume = Configuration.getConfig().system_volume;
-    }
-
-    playSound(isCorrect: boolean) {
-        if (this.sound.currentTime > 0 && !this.sound.ended) {
-            this.sound.pause();
-            this.sound.currentTime = 0;
-        }
-        this.sound = (isCorrect === true)?
-            MediaPlayback.SOUND_CHEER
-            : MediaPlayback.SOUND_FART;
-        this.sound.volume = this.volume;
-        this.sound.play();
-    }
-
-    public static playSound(sound: HTMLAudioElement, volume: number) {
-        if (sound === MediaPlayback.SOUND_CHEER) {
-            sound.currentTime = 0.5;
-        }
-        sound.volume = volume;
-        sound.play();
-    }
 
 }

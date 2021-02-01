@@ -1,15 +1,12 @@
 import $ from 'jquery';
-import { AbstractContainerFactory, Container } from "./container_home";
-import { Configuration, MediaPlayback } from "./module_config";
+import { Configuration } from '../config/configuration';
+import { ContainerHandler } from '../handler/containerHandler';
+import { SoundPlayer } from '../media/soundPlayer';
+import { Container } from "./container";
 
 
-export class SettingsContainerFactory implements AbstractContainerFactory {
-    createContainer(container: JQuery): Container {
-        return new SettingsContainer(container);
-    }
-}
 
-export class SettingsContainer extends Container {
+export class SettingsContainer extends Container implements ContainerHandler {
 
     /* set of interactive input fields */
     private readonly system_volume_input = this.container.find('#volume');
@@ -40,7 +37,7 @@ export class SettingsContainer extends Container {
     show() {
         if (!this.loaded) {
             this.updateInputFields();
-            this.listen();
+            this.handleContent();
         }
         super.show();
     }
@@ -52,6 +49,7 @@ export class SettingsContainer extends Container {
     displayTooltip(): boolean {
         throw new Error("Method not implemented.");
     }
+
 
     private updateInputFields(): void {
         const setCheckBtnGroup = ($checkButton: JQuery, values: string[]) => {
@@ -84,7 +82,7 @@ export class SettingsContainer extends Container {
         this.test_questions_input.val(this.config.test_questions);
     }
 
-    private listen(): void {
+    handleContent(): void {
         const updateApplyButton = () => this.form_apply_button.prop('disabled', this.changed.size === 0);
         const updateChanged = (key: string, value: string) => {
             if (this.config.gettersMap.get(key)() === value) {
@@ -116,8 +114,7 @@ export class SettingsContainer extends Container {
                 .on('input change', () => this.updateVolumeLabel(<number>this.system_volume_input.val()));
             this.system_volume_input.on('change', () => {
                 let volume = parseFloat((<number>this.system_volume_input.val() / 100).toFixed(2));
-                console.log(volume + ", " + typeof volume)
-                MediaPlayback.playSound(MediaPlayback.SOUND_CHEER, volume);
+                SoundPlayer.playSound(SoundPlayer.SOUND_CHEER, volume);
                 updateChanged(Configuration.VOLUME, '' + volume)
             });
         }

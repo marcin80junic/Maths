@@ -1,11 +1,11 @@
 import $ from 'jquery';
-import { MathModule } from "./module_math";
-import { Container } from "./container_home";
-import { OperatorFactory } from './operator_factory';
-import { Configuration } from "./module_config";
-import { LayoutCreator } from './container_layout';
-import { ContainerHandler, ExerciseContainerHandler } from './container_handlers';
-import { ExerciseConfig } from './container_config';
+import { Container } from './container';
+import { Configuration } from "../config/configuration";
+import { ExerciseConfig } from '../config/exerciseConfig';
+import { ExerciseLayoutCreator } from '../layout/exerciseLayoutCreator';
+import { ContainerHandler } from '../handler/containerHandler';
+import { ExerciseContainerHandler } from '../handler/exerciseHandler';
+import { MathModule } from "../maths/mathModule";
 
 
 export class ExerciseContainer extends Container {
@@ -21,67 +21,32 @@ export class ExerciseContainer extends Container {
     protected interfaceContainer: JQuery;
     protected mainContainer: JQuery;
     protected buttonContainer: JQuery;
-
     protected maxScore: JQuery;
 
-    constructor(container: JQuery, content: MathModule) {
+    constructor(container: JQuery, content: MathModule, localConfig: ExerciseConfig) {
         super(container);
         this.module = content;
-        this.getGlobalConfig();
-        this.getLocalConfig();
+        this.setupGlobalConfig();
+        this.localConfig = localConfig;
+        this.updateLocalExercisesProps();
         this.createContainers();
-        this.localConfig.listen(this.interfaceContainer);
         this.assignHandler();
         this.activateTooltips();
+        this.localConfig.listen(this.interfaceContainer, () => this.updateLocalExercisesProps());
     }
 
-    protected getGlobalConfig() {
+    protected setupGlobalConfig() {
         this.globalConfig = Configuration.getConfig();
-        this.globalConfig.addListener(Configuration.EVENT_CONTAINER, () => this.updateContainerProps());
+        this.globalConfig.addListener(Configuration.EVENT_CONTAINER, () => this.updateGlobalContainerProps());
         this.globalConfig.addListener(Configuration.EVENT_EXERCISE, () => this.configChanged = true);
-        this.updateContainerProps();
-        this.updateExercisesProps();
+        this.updateGlobalContainerProps();
+        this.updateGlobalExercisesProps();
     }
 
-    private getLocalConfig() {
-        this.localConfig = new ExerciseConfig(this.module.namespace, () => this.updateLocalProps());
-        this.updateLocalProps();
-    }
-
-    private createContainers(): void {
-        let name = this.module.namespace.substring(this.module.namespace.lastIndexOf(".") + 1);
-        this.formContainer = this.container.find(`#${name}-exercises`);
-        this.interfaceContainer = $(LayoutCreator.createInterfaceContainer(this.module));
-        this.mainContainer = 
-            $('<div class="mainContainer"></div>')
-            .html(LayoutCreator.createMainContainer(this.module, false));
-        this.buttonContainer = $(LayoutCreator.createButtonsContainer());
-        this.formContainer.append(this.interfaceContainer, this.mainContainer, this.buttonContainer);
-        this.maxScore = this.interfaceContainer.find('#score-max');
-    }
-
-    private updateContainerProps() {
-        this.showTooltips = this.globalConfig.general_tooltips;
-        if (this.mainContainer) {
-            this.activateTooltips();
-        }
-    }
-
-    protected updateExercisesProps() {
-        this.module.randomize = this.globalConfig.general_randomize;
-    }
-
-    protected updateOperators(array: string[]) {
-        this.module.operators = [];
-        for (const operator of array) {
-            this.module.operators.push(OperatorFactory.obtainOperator(operator));
-        }
-    }
-
-    private updateLocalProps() {
-        this.module.level = this.localConfig.level;
-        this.module.exercisesCount = this.localConfig.exercisesCount;
-        this.module.operationLength = this.localConfig.operationLength;
+    private updateLocalExercisesProps() {
+        this.module.level = this.localConfig.getLevel();
+        this.module.exercisesCount = this.localConfig.getExercisesCount();
+        this.module.operationLength = this.localConfig.getOperationLength();
         this.module.init();
         if (this.maxScore) {
             this.maxScore.html(`${this.module.exercisesCount}`);
@@ -91,10 +56,16 @@ export class ExerciseContainer extends Container {
         };
     }
 
-    private reloadMainContainer() {
-        this.mainContainer.html(LayoutCreator.createMainContainer(this.module, false));
-        this.assignHandler();
-        this.activateTooltips();
+    private createContainers(): void {
+        let name = this.module.namespace.substring(this.module.namespace.lastIndexOf(".") + 1);
+        this.formContainer = this.container.find(`#${name}-exercises`);
+        this.interfaceContainer = $(ExerciseLayoutCreator.createInterfaceContainer(this.module));
+        this.mainContainer = 
+            $('<div class="mainContainer"></div>')
+            .html(ExerciseLayoutCreator.createMainContainer(this.module, false));
+        this.buttonContainer = $(ExerciseLayoutCreator.createButtonsContainer());
+        this.formContainer.append(this.interfaceContainer, this.mainContainer, this.buttonContainer);
+        this.maxScore = this.interfaceContainer.find('#score-max');
     }
 
     private assignHandler() {
@@ -106,11 +77,25 @@ export class ExerciseContainer extends Container {
             }
         );
     }
+
+    private updateGlobalContainerProps() {
+        this.showTooltips = this.globalConfig.general_tooltips;
+    }
+
+    protected updateGlobalExercisesProps() {
+        this.module.randomize = this.globalConfig.general_randomize;
+        this.module.init();
+    }
+
+    private reloadMainContainer() {
+        this.mainContainer.html(ExerciseLayoutCreator.createMainContainer(this.module, false));
+        this.assignHandler();
+        this.activateTooltips();
+    }
     
     show() {
         if (this.configChanged) {
-            this.updateExercisesProps();
-            this.module.init();
+            this.updateGlobalExercisesProps();
             this.reloadMainContainer();
             this.configChanged = false;
         }
@@ -171,40 +156,4 @@ export class ExerciseContainer extends Container {
         }
     }
   
-}
-
-
-export class FractionContainer extends ExerciseContainer {
-    
-    constructor(container: JQuery, content: MathModule) {
-        super(container, content);
-    }
-
-    protected getGlobalConfig() {
-        super.getGlobalConfig();
-        this.globalConfig.addListener(Configuration.EVENT_FRACTIONS, () => this.configChanged = true);
-    }
-    protected updateExercisesProps() {
-        super.updateExercisesProps();
-        this.updateOperators(this.globalConfig.fractions_operators);
-    }
-
-}
-
-
-export class CustomContainer extends ExerciseContainer {
-    
-    constructor(container: JQuery, content: MathModule) {
-        super(container, content);
-    }
-
-    protected getGlobalConfig() {
-        super.getGlobalConfig();
-        this.globalConfig.addListener(Configuration.EVENT_CUSTOM, () => this.configChanged = true);
-    }
-    protected updateExercisesProps() {
-        super.updateExercisesProps();
-        this.updateOperators(this.globalConfig.custom_operators);
-    }
-
 }

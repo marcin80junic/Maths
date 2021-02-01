@@ -1,10 +1,10 @@
-import { Configuration } from "./module_config";
-import { MathModule } from "./module_math";
-import { OperationElement } from "./operation_el_interface";
+import { Configuration } from "../config/configuration";
+import { MathModule } from "../maths/mathModule";
+import { OperationElement } from "../maths/operation_el_interface";
 
 
 
-export class LayoutCreator {
+export class ExerciseLayoutCreator {
 
     public static createInterfaceContainer(module: MathModule): string {
         let html = '<div class="interface">';

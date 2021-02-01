@@ -1,8 +1,8 @@
 import './sass/index.scss';
 import $ from 'jquery';
 import { ModuleRegistry } from './ts/registry';
-import { Container } from './ts/container_home';
-import { Configuration } from './ts/module_config';
+import { Container } from './ts/container/container';
+import { Configuration } from './ts/config/configuration';
 
 
 
