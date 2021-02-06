@@ -1,6 +1,6 @@
 import { Configuration } from "../config/configuration";
 import { MathModule } from "../maths/mathModule";
-import { OperationElement } from "../maths/operation_el_interface";
+import { OperationElement } from "../maths/operationElement/operationElement";
 
 
 
@@ -65,8 +65,8 @@ export class ExerciseLayoutCreator {
             html: string;
 
         html = `<div class="columns">`
-        for (let i=0; i<module.numbersBank.length; i++) {
-            operation = module.numbersBank[i];
+        for (let i=0; i<module.operationsBank.length; i++) {
+            operation = module.operationsBank[i];
             answerIdx = module.answersMap.get(i);
             html +=                                     // beginning of single operation line
                 `<div class="columns-line tooltip">

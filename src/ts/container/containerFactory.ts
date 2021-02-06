@@ -1,8 +1,8 @@
 import { Configuration } from "../config/configuration";
 import { MathModuleBuilder } from "../maths/mathModuleBuilder";
-import { Operand } from "../maths/operand_abstract";
-import { Operator } from "../maths/operator_abstract";
-import { OperatorFactory } from "../maths/operator_factory";
+import { Operand } from "../maths/operationElement/operand_abstract";
+import { Operator } from "../maths/operationElement/operator_abstract";
+import { OperatorFactory } from "../maths/operationElement/operator_factory";
 import { Container } from "./container";
 import { CustomContainer } from "./customContainer";
 import { ExerciseContainer } from "./exerciseContainer";
