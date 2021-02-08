@@ -6,6 +6,7 @@ import icon_volumeMuted from '../../../public/pics/speaker-muted.png';          
 import icon_volumeLow from '../../../public/pics/speaker-low-volume.png';          // @ts-ignore
 import icon_volumeMedium from '../../../public/pics/speaker-medium-volume.png';    // @ts-ignore
 import icon_volumeHigh from '../../../public/pics/speaker-high-volume.png'; 
+import { SoundPlayer } from '../media/soundPlayer';
 
 
 /*
@@ -75,6 +76,9 @@ export class Configuration {
     /* touchscreen detection */
     public static readonly isTouchscreen = "ontouchstart" in document.documentElement;
     public static readonly noTouchClass = Configuration.isTouchscreen ? "" : "no-touch";
+
+    /* default sound player */
+    public static readonly PLAYER = SoundPlayer.getPlayer();
 
 
     private constructor() {
@@ -163,6 +167,7 @@ export class Configuration {
     }
 
     public addListener(type: string, callback: Function) {
+
         switch (type) {
             case Configuration.EVENT_MEDIA:
                 this.subscribers_media.push(callback);

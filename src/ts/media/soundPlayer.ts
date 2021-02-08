@@ -13,21 +13,21 @@ export class SoundPlayer {
     private sound: HTMLAudioElement;
     private volume: number
 
-    constructor() {
-        Configuration.getConfig().addListener(Configuration.VOLUME, this.init);
+    private constructor() {
+        Configuration.getConfig().addListener(Configuration.EVENT_MEDIA, this.updateVolume);
         this.sound = SoundPlayer.SOUND_CHEER;
-        this.init();
     }
 
     public static getPlayer() {
         if (!this.instance) {
             this.instance = new SoundPlayer();
+            this.instance.updateVolume();
         }
         return this.instance;
     }
 
-    private init() {
-        this.volume = Configuration.getConfig().system_volume;
+    private updateVolume() {
+        SoundPlayer.instance.volume = Configuration.getConfig().system_volume;
     }
 
     playSound(isCorrect: boolean) {
