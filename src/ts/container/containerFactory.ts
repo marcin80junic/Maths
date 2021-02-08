@@ -34,7 +34,7 @@ export class AdditionContainerFactory implements ContainerFactory {
         builder
             .setName("addition")
             .setNamespace(Configuration.ADDITION)
-            .setOparators(OperatorFactory.obtainOperator(Operator.ADDITION_OPERATOR))
+            .setOperators(OperatorFactory.obtainOperator(Operator.ADDITION_OPERATOR))
             .setOperands(Operand.INTEGER_OPERAND);
         return new ExerciseContainer(
             container,
@@ -51,7 +51,7 @@ export class SubtractionContainerFactory implements ContainerFactory {
         builder
             .setName("subtraction")
             .setNamespace(Configuration.SUBTRACTION)
-            .setOparators(OperatorFactory.obtainOperator(Operator.SUBTRACTION_OPERATOR))
+            .setOperators(OperatorFactory.obtainOperator(Operator.SUBTRACTION_OPERATOR))
             .setOperands(Operand.INTEGER_OPERAND);
         return new ExerciseContainer(
             container,
@@ -68,7 +68,7 @@ export class MultiplicationContainerFactory implements ContainerFactory {
         builder
             .setName("multiplication")
             .setNamespace(Configuration.MULTIPLICATION)
-            .setOparators(OperatorFactory.obtainOperator(Operator.MULTIPLICATION_OPERATOR))
+            .setOperators(OperatorFactory.obtainOperator(Operator.MULTIPLICATION_OPERATOR))
             .setOperands(Operand.INTEGER_OPERAND);
         return new ExerciseContainer(
             container,
@@ -85,7 +85,7 @@ export class DivisionContainerFactory implements ContainerFactory {
         builder
             .setName("division")
             .setNamespace(Configuration.DIVISION)
-            .setOparators(OperatorFactory.obtainOperator(Operator.DIVISION_OPERATOR))
+            .setOperators(OperatorFactory.obtainOperator(Operator.DIVISION_OPERATOR))
             .setOperands(Operand.INTEGER_OPERAND);
         return new ExerciseContainer(
             container,
@@ -107,7 +107,7 @@ export class FractionsContainerFactory implements ContainerFactory {
         builder
             .setName("fractions")
             .setNamespace(Configuration.FRACTIONS)
-            .setOparators(...operators)
+            .setOperators(...operators)
             .setOperands(Operand.FRACTION_OPERAND);
         return new FractionContainer(
             container,
@@ -129,7 +129,7 @@ export class CustomContainerFactory implements ContainerFactory {
         builder
             .setName("custom")
             .setNamespace(Configuration.CUSTOM)
-            .setOparators(...operators)
+            .setOperators(...operators)
             .setOperands(Operand.INTEGER_OPERAND, Operand.FRACTION_OPERAND, Operand.COMPOSITE_OPERAND);
         return new CustomContainer(
             container,
