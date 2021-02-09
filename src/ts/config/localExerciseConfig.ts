@@ -38,7 +38,7 @@ export class LocalExerciseConfig implements ExerciseConfig {
         let temp: string;
         for (let [key, value] of this.settings) {
             temp = this.accessStorage(key);
-            if (temp) {
+            if (temp && temp !== 'undefined') {
                 value(temp);
             }
         }
@@ -67,7 +67,7 @@ export class LocalExerciseConfig implements ExerciseConfig {
         this.levelInput.on('change', () => {
             const name = this.levelInput.find("option:selected").text();
             this.level = MathModule.DIFFICULTIES.get(name);
-            this.accessStorage(this.level_ns, '' + this.level);
+            this.accessStorage(this.level_ns, '' + this._level);
             callback();
         });
         this.exercisesCountInput.on('change', () => {
