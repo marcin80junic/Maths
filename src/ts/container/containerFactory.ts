@@ -130,7 +130,7 @@ export class CustomContainerFactory implements ContainerFactory {
             .setName("custom")
             .setNamespace(Configuration.CUSTOM)
             .setOperators(...operators)
-            .setOperands(Operand.INTEGER_OPERAND, Operand.FRACTION_OPERAND, Operand.COMPOSITE_OPERAND);
+            .setOperands(...config.custom_operands);
         return new CustomContainer(
             container,
             builder.build(),

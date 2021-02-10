@@ -15,6 +15,8 @@ export class SettingsContainer extends Container implements ContainerHandler {
     private readonly general_randomize_input = this.container.find('input[name="isRandomized"]');
     private readonly general_tooltips_input = this.container.find('input[name="showTooltips"]');
     private readonly fractions_operators_input = this.container.find('#fractions-settings input[name="signs"]');
+    private readonly custom_parentesis_input = this.container.find('#custom-settings input[name="parentesis"]');
+    private readonly custom_operands_input = this.container.find('#custom-settings input[name="operands"]');
     private readonly custom_operators_input = this.container.find('#custom-settings input[name="signs"]');
     private readonly test_modules_input = this.container.find('#test-settings input[name="modules"]');
     private readonly test_times_input = this.container.find('select[name="times"]');
@@ -52,6 +54,19 @@ export class SettingsContainer extends Container implements ContainerHandler {
 
 
     private updateInputFields(): void {
+        const setupCustomOperands = (operands: string[]) => {
+            console.log("loading: " + operands)
+            let int = operands.includes("integer"),
+                fra = operands.includes("fraction"),
+                value = (int && fra)? "both": int? "integer": "fraction",
+                parentesis = operands.includes("composite")? "composite": "";
+            this.custom_operands_input
+                .filter(`[value="${value}"]`)
+                .prop('checked', true);
+            this.custom_parentesis_input
+                .filter(`[value="${parentesis}"]`)
+                .prop('checked', true);
+        };
         const setCheckBtnGroup = ($checkButton: JQuery, values: string[]) => {
             let checked = false;
             values.forEach((val: string) => {
@@ -61,15 +76,18 @@ export class SettingsContainer extends Container implements ContainerHandler {
             });
             $checkButton.prop('checked', checked);
         };
-        this.system_volume_input.val(this.config.system_volume * 100);  
-        this.updateVolumeLabel(this.config.system_volume * 100);    
-        this.general_randomize_input.filter(`[value="${this.config.general_randomize}"]`)
+        this.system_volume_input.val(this.config.system_volume * 100);
+        this.updateVolumeLabel(this.config.system_volume * 100);
+        this.general_randomize_input
+            .filter(`[value="${this.config.general_randomize}"]`)
             .prop('checked', true);
-        this.general_tooltips_input.filter(`[value="${this.config.general_tooltips}"]`)
+        this.general_tooltips_input
+            .filter(`[value="${this.config.general_tooltips}"]`)
             .prop('checked', true);
         this.fractions_operators_input.each((i: number, el: HTMLElement) => {
             setCheckBtnGroup ($(el), this.config.fractions_operators);
         });
+        setupCustomOperands(this.config.custom_operands);
         this.custom_operators_input.each((i: number, el: HTMLElement) => {
             setCheckBtnGroup ($(el), this.config.custom_operators);
         });
@@ -107,6 +125,20 @@ export class SettingsContainer extends Container implements ContainerHandler {
                 times[i] = <string>$(el).val();
             });
             return times.join(",");
+        };
+        const readCustomRadioButtons = () => {
+            let operands = [],
+                parentesis = this.custom_parentesis_input.filter(':checked').val(),
+                option = this.custom_operands_input.filter(':checked').val();
+            if (parentesis) {
+                operands.push(parentesis)
+            }
+            if (option === "both") {
+                operands.push("integer", "fraction");
+            } else {
+                operands.push(option);
+            }
+            updateChanged(Configuration.CUSTOM_OPERANDS, operands.join(","));
         }
 
         if (!Configuration.isTouchscreen) {
@@ -119,17 +151,19 @@ export class SettingsContainer extends Container implements ContainerHandler {
             });
         }
         this.general_randomize_input.on('change', () => {
-            let isRand = '' + this.general_randomize_input.filter(':checked').val();
+            const isRand = `${this.general_randomize_input.filter(':checked').val()}`;
             updateChanged(Configuration.RANDOMIZE, isRand);
         });
         this.general_tooltips_input.on('change reset', () => {
-            let isTooltip = '' + this.general_tooltips_input.filter(':checked').val();
+            const isTooltip = `${this.general_tooltips_input.filter(':checked').val()}`;
             updateChanged(Configuration.TOOLTIPS, isTooltip)
         });
         this.fractions_operators_input.on('change', () => {
             const options = readCheckBtnGroup(this.fractions_operators_input);
             updateChanged(Configuration.FRACTIONS_OPERATORS, options);
         });
+        this.custom_parentesis_input.on('change', readCustomRadioButtons);
+        this.custom_operands_input.on('change', readCustomRadioButtons);
         this.custom_operators_input.on('change', () => {
             const options = readCheckBtnGroup(this.custom_operators_input);
             updateChanged(Configuration.CUSTOM_OPERATORS, options);

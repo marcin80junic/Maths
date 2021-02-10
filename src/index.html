@@ -257,6 +257,36 @@
             <fieldset id="custom-settings">
               <legend class="center">Custom</legend>
               <div class="settings-line">
+                <label>Operands allowed: </label>
+                <div class="single-line">
+                  <label class="custom-radio">Integers
+                    <input type="radio" name="operands" value="integer" checked="true">
+                    <span class="checkmark form-element"></span>
+                  </label>
+                  <label class="custom-radio">Fractions
+                    <input type="radio" name="operands" value="fraction">
+                    <span class="checkmark form-element"></span>
+                  </label>
+                  <label class="custom-radio">Both
+                    <input type="radio" name="operands" value="both">
+                    <span class="checkmark form-element"></span>
+                  </label>
+                </div>
+              </div>
+              <div class="settings-line">
+                <label>Use parentesis: </label>
+                <div class="single-line">
+                  <label class="custom-radio">Yes
+                    <input type="radio" name="parentesis" value="composite" checked="true">
+                    <span class="checkmark form-element"></span>
+                  </label>
+                  <label class="custom-radio">No
+                    <input type="radio" name="parentesis" value="">
+                    <span class="checkmark form-element"></span>
+                  </label>
+                </div>
+              </div>
+              <div class="settings-line">
                 <label>Operations allowed: </label>
                 <div class="checkbox-group">
                   <div>
@@ -272,12 +302,12 @@
                   <div>
                     <label for="custom_multiplication">Multiplication</label>
                     <input type="checkbox" class="checkbox form-element" name="signs" value="multiplication"
-                           id="custom_multiplication" checked="true">                   
+                           id="custom_multiplication">                   
                   </div>
                   <div>
                     <label for="custom_division">Division</label>
                     <input type="checkbox" class="checkbox form-element" name="signs" value="division"
-                           id="custom_division" checked="true">         
+                           id="custom_division">         
                   </div>
                 </div>
               </div>

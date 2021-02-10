@@ -15,6 +15,7 @@ export class CustomContainer extends ExerciseContainer {
         this.globalConfig.addListener(Configuration.EVENT_CUSTOM, () => this.configChanged = true);
     }
     protected updateGlobalExercisesProps() {
+        this.module.updateOperands(this.globalConfig.custom_operands);
         this.module.updateOperators(this.globalConfig.custom_operators);
         super.updateGlobalExercisesProps();
     }
