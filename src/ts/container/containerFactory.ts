@@ -11,6 +11,7 @@ import { HomeContainer } from "./homeContainer";
 import { TestContainer } from "./testContainer";
 import { SettingsContainer } from "./settingsContainer";
 import { LocalExerciseConfig } from "../config/localExerciseConfig";
+import { TestContainerHandler } from "../handler/testContainerHandler";
 
 
 export interface ContainerFactory {
@@ -35,7 +36,8 @@ export class AdditionContainerFactory implements ContainerFactory {
             .setName("addition")
             .setNamespace(Configuration.ADDITION)
             .setOperators(OperatorFactory.obtainOperator(Operator.ADDITION_OPERATOR))
-            .setOperands(Operand.INTEGER_OPERAND);
+            .setOperands(Operand.INTEGER_OPERAND)
+            .setOperationsLengths(2, 3, 4, 5, 6);
         return new ExerciseContainer(
             container,
             builder.build(),
@@ -52,7 +54,8 @@ export class SubtractionContainerFactory implements ContainerFactory {
             .setName("subtraction")
             .setNamespace(Configuration.SUBTRACTION)
             .setOperators(OperatorFactory.obtainOperator(Operator.SUBTRACTION_OPERATOR))
-            .setOperands(Operand.INTEGER_OPERAND);
+            .setOperands(Operand.INTEGER_OPERAND)
+            .setOperationsLengths(2, 3, 4, 5, 6);
         return new ExerciseContainer(
             container,
             builder.build(),
@@ -69,7 +72,8 @@ export class MultiplicationContainerFactory implements ContainerFactory {
             .setName("multiplication")
             .setNamespace(Configuration.MULTIPLICATION)
             .setOperators(OperatorFactory.obtainOperator(Operator.MULTIPLICATION_OPERATOR))
-            .setOperands(Operand.INTEGER_OPERAND);
+            .setOperands(Operand.INTEGER_OPERAND)
+            .setOperationsLengths(2, 3);
         return new ExerciseContainer(
             container,
             builder.build(),
@@ -86,7 +90,8 @@ export class DivisionContainerFactory implements ContainerFactory {
             .setName("division")
             .setNamespace(Configuration.DIVISION)
             .setOperators(OperatorFactory.obtainOperator(Operator.DIVISION_OPERATOR))
-            .setOperands(Operand.INTEGER_OPERAND);
+            .setOperands(Operand.INTEGER_OPERAND)
+            .setOperationsLengths(2, 3);
         return new ExerciseContainer(
             container,
             builder.build(),
@@ -108,7 +113,8 @@ export class FractionsContainerFactory implements ContainerFactory {
             .setName("fractions")
             .setNamespace(Configuration.FRACTIONS)
             .setOperators(...operators)
-            .setOperands(Operand.FRACTION_OPERAND);
+            .setOperands(Operand.FRACTION_OPERAND)
+            .setOperationsLengths(2, 3, 4, 5, 6);
         return new FractionContainer(
             container,
             builder.build(),
@@ -130,7 +136,8 @@ export class CustomContainerFactory implements ContainerFactory {
             .setName("custom")
             .setNamespace(Configuration.CUSTOM)
             .setOperators(...operators)
-            .setOperands(...config.custom_operands);
+            .setOperands(...config.custom_operands)
+            .setOperationsLengths(2, 3, 4, 5, 6);
         return new CustomContainer(
             container,
             builder.build(),
@@ -140,9 +147,9 @@ export class CustomContainerFactory implements ContainerFactory {
 }
 
 
-export class TestAccordionFactory implements ContainerFactory {
+export class TestContainerFactory implements ContainerFactory {
     createContainer(container: JQuery): Container {
-        return new TestContainer(container);
+        return new TestContainer(container, new TestContainerHandler(container));
     }
 }
 

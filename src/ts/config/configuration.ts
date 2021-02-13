@@ -54,7 +54,8 @@ export class Configuration {
     public static readonly CUSTOM_OPERATORS = `${Configuration.CUSTOM}.operators`;
     public static readonly TEST_MODULES = `${Configuration.TEST}.modules`;
     public static readonly TEST_TIMES = `${Configuration.TEST}.times`;
-    public static readonly TEST_QUESTIONS = `${Configuration.TEST}.questions`
+    public static readonly TEST_QUESTIONS = `${Configuration.TEST}.questions`;
+    public static readonly TEST_UNLOCKED = `${Configuration.TEST}.unlocked`;
 
     /* set of namespaces used to identify groups of event listeners */
     public static readonly EVENT_MEDIA = 'media';
@@ -72,8 +73,9 @@ export class Configuration {
     private _custom_operands = "integer";
     private _custom_operators = "addition,subtraction";
     private _test_modules = "addition,subtraction,multiplication,division,fractions";
-    private _test_times = "10, 8, 6";
+    private _test_times = "10,8,6";
     private _test_questions = "4";
+    private _test_unlocked = "0";
 
     /* touchscreen detection */
     public static readonly isTouchscreen = "ontouchstart" in document.documentElement;
@@ -93,7 +95,8 @@ export class Configuration {
             [Configuration.CUSTOM_OPERATORS, this.setCustomOperators],
             [Configuration.TEST_MODULES, this.setTestModules],
             [Configuration.TEST_TIMES, this.setTestTimes],
-            [Configuration.TEST_QUESTIONS, this.setTestQuestions]
+            [Configuration.TEST_QUESTIONS, this.setTestQuestions],
+            [Configuration.TEST_UNLOCKED, this.setTestUnlocked]
         ]);
         this.gettersMap = new Map([
             [Configuration.VOLUME, () => this._system_volume],
@@ -104,7 +107,8 @@ export class Configuration {
             [Configuration.CUSTOM_OPERATORS, () => this._custom_operators],
             [Configuration.TEST_MODULES, () => this._test_modules],
             [Configuration.TEST_TIMES, () => this._test_times],
-            [Configuration.TEST_QUESTIONS, () => this._test_questions]
+            [Configuration.TEST_QUESTIONS, () => this._test_questions],
+            [Configuration.TEST_UNLOCKED, () => this._test_unlocked]
         ]);
         this.eventsMap = new Map([
             [Configuration.VOLUME, [Configuration.EVENT_MEDIA]],
@@ -235,6 +239,7 @@ export class Configuration {
     private setTestModules = (newValue: string) => this._test_modules = newValue;
     private setTestTimes = (newValue: string) => this._test_times = newValue;
     private setTestQuestions = (newValue: string) => this._test_questions = newValue;
+    private setTestUnlocked = (newValue: string) => this._test_unlocked = newValue;
 
     /* setters and getters for configuration properties */
     get system_volume() { return parseFloat(this._system_volume); }
@@ -255,5 +260,5 @@ export class Configuration {
     set test_times(newVal) { this._test_times = newVal.join(",") }
     get test_questions() { return parseInt(this._test_questions, 10) }
     set test_questions(newVal) { this._test_questions = "" + newVal }
-
+    get test_unlocked () { return parseInt(this._test_unlocked, 10) }
 }

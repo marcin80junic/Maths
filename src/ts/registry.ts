@@ -7,7 +7,7 @@ import { HomeContainerFactory,
         DivisionContainerFactory,
         FractionsContainerFactory,
         CustomContainerFactory,
-        TestAccordionFactory,
+        TestContainerFactory,
         SettingsContainerFactory 
     } from "./container/containerFactory";
 import { Configuration } from './config/configuration';
@@ -33,7 +33,7 @@ export abstract class ModuleRegistry {
         [ModuleRegistry.DIVISION_CONTAINER, DivisionContainerFactory],
         [ModuleRegistry.FRACTIONS_CONTAINER, FractionsContainerFactory],
         [ModuleRegistry.CUSTOM_CONTAINER, CustomContainerFactory],
-        [ModuleRegistry.TEST_CONTAINER, TestAccordionFactory],
+        [ModuleRegistry.TEST_CONTAINER, TestContainerFactory],
         [ModuleRegistry.SETTINGS_CONTAINER, SettingsContainerFactory]
     ]);
 

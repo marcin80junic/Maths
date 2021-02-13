@@ -3,7 +3,7 @@ import { MathModule } from "../maths/mathModule";
 
 
 
-export class TestContainerHandler extends AbstractExerciseHandler {
+export class TestHandler extends AbstractExerciseHandler {
 
     private constructor(container: JQuery<HTMLElement>, module: MathModule) {
         super(container, module);
