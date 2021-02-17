@@ -8,11 +8,13 @@ export abstract class Container {
         this.container = container;
     }
 
-    show() { 
+    show (): Container { 
         this.container.fadeIn();
+        return this;
     }
-    hide(callback: Function) { 
+    hide (callback: Function): Container { 
         this.container.fadeOut(() => callback());
+        return this;
     }
 
     abstract displayTooltip(element: JQuery): boolean;

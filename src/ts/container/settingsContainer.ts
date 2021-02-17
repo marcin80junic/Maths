@@ -41,11 +41,11 @@ export class SettingsContainer extends Container implements ContainerHandler {
             this.updateInputFields();
             this.handleContent();
         }
-        super.show();
+        return super.show();
     }
 
     hide(callback: Function) {
-        super.hide(callback);
+        return super.hide(callback);
     }
     
     displayTooltip(): boolean {

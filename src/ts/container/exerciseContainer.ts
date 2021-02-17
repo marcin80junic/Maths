@@ -103,10 +103,11 @@ export class ExerciseContainer extends Container {
         if (!this.formContainer.is('[data-loaded]')) {
             this.formContainer.attr("data-loaded", "true");    // only triggers when first displayed
         }
+        return this;
     }
 
     hide(callback: Function) {
-        super.hide(callback)
+        return super.hide(callback)
     }
 
     displayTooltip(element: JQuery): boolean {
