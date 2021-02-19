@@ -55,7 +55,6 @@ export class SettingsContainer extends Container implements ContainerHandler {
 
     private updateInputFields(): void {
         const setupCustomOperands = (operands: string[]) => {
-            console.log("loading: " + operands)
             let int = operands.includes("integer"),
                 fra = operands.includes("fraction"),
                 value = (int && fra)? "both": int? "integer": "fraction",

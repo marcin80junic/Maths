@@ -1,6 +1,6 @@
 
 export interface ContainerHandler {
 
-    handleContent(callback?: Function): void;
+    handleContent(callback1?: Function, callback2?: Function): void;
 
 }

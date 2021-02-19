@@ -70,12 +70,7 @@ export class ExerciseContainer extends Container {
 
     private assignHandler() {
         this.handler = new ExerciseContainerHandler(this.formContainer, this.module);
-        this.handler.handleContent(
-            () => {
-                this.reloadMainContainer();
-                this.formContainer.attr("data-loaded", "true");     // triggers lines length adjustment
-            }
-        );
+        this.handler.handleContent( () => this.reloadMainContainer() );
     }
 
     private updateGlobalContainerProps() {
@@ -91,6 +86,7 @@ export class ExerciseContainer extends Container {
         this.mainContainer.html(ExerciseLayoutCreator.createMainContainer(this.module, false));
         this.assignHandler();
         this.activateTooltips();
+        this.formContainer.attr("data-loaded", "true");     // triggers lines length adjustment
     }
     
     show() {

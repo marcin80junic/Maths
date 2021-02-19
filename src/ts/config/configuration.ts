@@ -119,7 +119,8 @@ export class Configuration {
             [Configuration.CUSTOM_OPERATORS, [Configuration.EVENT_CUSTOM]],
             [Configuration.TEST_MODULES, [Configuration.EVENT_TEST]],
             [Configuration.TEST_TIMES, [Configuration.EVENT_TEST]],
-            [Configuration.TEST_QUESTIONS, [Configuration.EVENT_TEST]]
+            [Configuration.TEST_QUESTIONS, [Configuration.EVENT_TEST]],
+            [Configuration.TEST_UNLOCKED, [Configuration.EVENT_TEST]]
         ]);
         this.subscribers_media = [];
         this.subscribers_container = [];
