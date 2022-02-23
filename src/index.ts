@@ -1,4 +1,4 @@
-import './sass/index.scss';
+import './sass/styles.scss';
 import $ from 'jquery';
 import { maths } from './ts/m03-maths';
 
